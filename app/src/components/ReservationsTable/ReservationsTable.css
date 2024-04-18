@@ -1,0 +1,19 @@
+.reservations__table__wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.reservations__table {
+  width: 100%;
+  max-width: 800px;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.reservations__table th,
+.reservations__table td {
+  border: 1px solid var(--clr-text);
+  width: fit-content;
+  padding: 1rem;
+  text-align: center;
+}

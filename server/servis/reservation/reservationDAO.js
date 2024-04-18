@@ -1,0 +1,111 @@
+// ReservationDAO.js
+import DB from "../database.js";
+
+class ReservationDAO {
+  constructor() {
+    this.db = new DB();
+    this.db.connect();
+  }
+
+  async getAll() {
+    try {
+      let sql = `
+        SELECT 
+          r.id_reservation,
+          r.date,
+          r.time,
+          t.quantity,
+          u.name,
+          u.email,
+          u.phone
+        FROM 
+          "reservation" r
+        JOIN 
+          "table" t ON r.table_id = t.id_table
+        JOIN 
+          "user" u ON r.user_id = u.id_user;
+      `;
+      const data = await this.db.query(sql, []);
+      const rows = data.rows;
+      return rows;
+    } catch (error) {
+      console.error("Error while getting all reservations:", error);
+      throw error;
+    }
+  }
+
+  async getOne(id_reservation) {
+    try {
+      let sql = `SELECT * FROM "reservation" WHERE id_reservation=$1;`;
+      const data = await this.db.query(sql, [id_reservation]);
+      const rows = data.rows;
+      return rows.length === 1 ? rows[0] : null;
+    } catch (error) {
+      console.error("Error while getting Reservation by id:", error);
+      throw error;
+    }
+  }
+
+  async insert(reservation) {
+    try {
+      let sql = `INSERT INTO "reservation" ("date", "time", "occupied", "email", user_id, table_id) VALUES ($1,$2,$3,$4,$5,$6)`;
+      let data = [
+        reservation.date,
+        reservation.time,
+        reservation.occupied,
+        reservation.email,
+        reservation.user_id,
+        reservation.table_id,
+      ];
+      await this.db.query(sql, data);
+      return true;
+    } catch (error) {
+      console.error("Error while inserting Reservation:", error);
+      throw error;
+    }
+  }
+
+  async delete(id_reservation) {
+    try {
+      let sql = `DELETE FROM "reservation" WHERE id_reservation=$1`;
+      await this.db.query(sql, [id_reservation]);
+      return true;
+    } catch (error) {
+      console.error("Error while deleting Reservation:", error);
+      throw error;
+    }
+  }
+
+  async update(id_reservation, reservation) {
+    try {
+      let sql = `UPDATE "reservation" SET date=$1, time=$2, occupied=$3, email=$4, table_id=$5, user_id WHERE id_reservation=$6`;
+      let data = [
+        reservation.date,
+        reservation.time,
+        reservation.occupied,
+        reservation.email,
+        reservation.table_id,
+        reservation.user_id,
+        id_reservation,
+      ];
+      await this.db.query(sql, data);
+      return true;
+    } catch (error) {
+      console.error("Error while updating Reservation:", error);
+      throw error;
+    }
+  }
+
+  async checkAvailability(date, time) {
+    try {
+      let sql = `SELECT * FROM "reservation" WHERE date=$1 AND time=$2;`;
+      const data = await this.db.query(sql, [date, time]);
+      return data.rows.length === 0;
+    } catch (error) {
+      console.error("Error while checking availability:", error);
+      throw error;
+    }
+  }
+}
+
+export default ReservationDAO;

@@ -1,0 +1,13 @@
+.bottom__footer__container {
+  width: 100%;
+  /* border: 1px solid blue; */
+  background-color: var(--clr-secondary);
+  color: var(--clr-neutral);
+}
+
+.bottom__footer__content {
+  padding: 1rem;
+  text-align: center;
+  text-transform: uppercase;
+  font-family: var(--ff-primary);
+}

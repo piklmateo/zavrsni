@@ -1,0 +1,41 @@
+.add-dish__form__wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.add__dish__buttons {
+  display: flex;
+  gap: 2rem;
+  justify-content: space-between;
+}
+
+.btn__add-dish {
+  background-color: var(--clr-secondary);
+  color: var(--clr-neutral);
+  cursor: pointer;
+  transition: 200ms ease-in-out;
+}
+
+.btn__add-dish:hover {
+  border: 1px solid var(--clr-secondary);
+  color: var(--clr-secondary);
+  background-color: var(--clr-neutral);
+  cursor: pointer;
+}
+
+.btn__cancel {
+  background-color: var(--clr-primary);
+  color: var(--clr-neutral);
+  cursor: pointer;
+  transition: 200ms ease-in-out;
+}
+
+.btn__cancel:hover {
+  border: 1px solid var(--clr-primary);
+  color: var(--clr-primary);
+  background-color: var(--clr-neutral);
+  cursor: pointer;
+}

@@ -1,0 +1,7 @@
+.hero__container {
+  width: 100%;
+  height: 100vh;
+  text-align: center;
+  padding-top: 10rem;
+  background-color: azure;
+}
