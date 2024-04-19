@@ -46,7 +46,6 @@ const Dish = () => {
       price: formData.get("price"),
       category_id: formData.get("category"),
     };
-
     console.log("dish:", dishData);
 
     try {

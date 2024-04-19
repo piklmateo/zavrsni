@@ -7,7 +7,7 @@
   "scripts": {
     "serve": "webpack-dev-server",
     "watch": "webpack --watch",
-    "build": "MODE_ENV=production webpack",
+    "build": "NODE_ENV=production webpack",
     "build-dev": "webpack",
     "clean": "rm -rf dist"
   },

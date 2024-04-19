@@ -2,20 +2,25 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const path = require("path");
+const TerserWebpackPlugin = require("terser-webpack-plugin");
 const { runtime } = require("webpack");
 
-let mode = "development";
-if (process.env.MODE_ENV === "production") {
-  mode = "production";
-}
+const dev = process.env.NODE_ENV !== "production";
+
+console.log("DEV: " + dev);
 
 module.exports = {
-  mode: mode,
+  mode: dev ? "development" : "production",
   entry: "./src/main.jsx",
   output: {
     path: path.resolve(__dirname, "dist"),
+    publicPath: "/",
     filename: "bundle.js",
     assetModuleFilename: "images/[hash][ext][query]",
+  },
+  optimization: {
+    minimize: true,
+    minimizer: [new TerserWebpackPlugin()],
   },
   plugins: [
     new CleanWebpackPlugin(),
@@ -54,7 +59,7 @@ module.exports = {
       },
     ],
   },
-
+  devtool: dev ? "inline-source-map" : false,
   devServer: {
     historyApiFallback: true, //fix za router
     hot: true,
