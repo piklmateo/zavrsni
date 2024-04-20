@@ -1,96 +1,104 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router";
+
+import { jwtDecode } from "jwt-decode";
 import "./ReservationForm.css";
 
 const ReservationForm = () => {
-  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+  });
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleChange = (event) => {
+    const target = event.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [target.name]: target.value,
+    }));
+  };
 
-    const form = event.target;
-    const formData = new FormData(form);
-
-    const reservationData = {
-      name: formData.get("name"),
-      email: formData.get("email"),
-      phone: formData.get("phone"),
-      date: formData.get("date"),
-      time: formData.get("time"),
-      numOfPeople: formData.get("num-of-people"),
-    };
-
-    try {
-      const jwtToken = sessionStorage.getItem("token");
-      const availabilityResponse = await fetch(
-        "http://localhost:12413/api/reservations/check",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + jwtToken,
-          },
-          body: JSON.stringify({
-            date: reservationData.date,
-            time: reservationData.time,
-          }),
-        }
-      );
-
-      if (!availabilityResponse.ok) {
-        throw new Error("Failed to check availability");
+  const fetchUser = async (userID) => {
+    const token = sessionStorage.getItem("token");
+    const res = await fetch(
+      `http://localhost:12413/api/users/profile/${userID}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+          Authorization: "Bearer " + token,
+        },
       }
+    );
 
-      const availabilityData = await availabilityResponse.json();
-
-      if (availabilityData.available) {
-        const reservationResponse = await fetch(
-          "http://localhost:12413/api/reservations",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + jwtToken,
-            },
-            body: JSON.stringify(reservationData),
-          }
-        );
-
-        if (!reservationResponse.ok) {
-          throw new Error("Failed to make reservation");
-        }
-
-        console.log("Reservation successful:", reservationResponse.data);
-        navigate("/");
-      } else {
-        alert(
-          "Selected date and time are not available. Please choose another slot."
-        );
-      }
-    } catch (error) {
-      console.error("Error during reservation:", error);
-      alert(
-        "An error occurred while making the reservation. Please try again later."
-      );
+    if (res.ok) {
+      const data = await res.json();
+      setFormData({
+        ...formData,
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+      });
+      console.log("formaData: " + formData);
+    } else {
+      console.log("error");
     }
   };
+
+  useEffect(() => {
+    try {
+      const token = sessionStorage.getItem("token");
+      console.log("token token: " + token);
+      if (token) {
+        const decodedToken = jwtDecode(token);
+        const id = decodedToken.user.id_user;
+        fetchUser(id);
+      } else {
+        console.log("error");
+      }
+    } catch (error) {
+      console.log("error: ", error);
+    }
+  }, []);
+
+  useEffect(() => {});
 
   return (
     <div className="main__layout__container">
       <div className="reservation__form__wrapper">
         <h1>Reservation</h1>
-        <form className="form" onSubmit={handleSubmit}>
+        <form className="form">
           <div className="input__name">
             <label htmlFor="name">Name</label>
-            <input type="text" name="name" id="name" required />
+            <input
+              type="text"
+              name="name"
+              id="name"
+              value={formData.name || ""}
+              onChange={handleChange}
+              required
+            />
           </div>
           <div className="input__email">
             <label htmlFor="email">Email</label>
-            <input type="email" name="email" id="email" required />
+            <input
+              type="email"
+              name="email"
+              id="email"
+              value={formData.email || ""}
+              onChange={handleChange}
+              required
+            />
           </div>
           <div className="input__phone">
             <label htmlFor="phone">Phone(optional)</label>
-            <input type="tel" name="phone" id="phone" />
+            <input
+              type="tel"
+              name="phone"
+              id="phone"
+              value={formData.phone || ""}
+              onChange={handleChange}
+            />
           </div>
           <div className="input__date">
             <label htmlFor="date">Date</label>
@@ -114,8 +122,8 @@ const ReservationForm = () => {
             </select>
           </div>
           <div className="select__num-of-people">
-            <label htmlFor="num-of-people">How many people ?</label>
-            <select name="num-of-people" id="num-of-people">
+            <label htmlFor="people">How many people ?</label>
+            <select name="people" id="people">
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
