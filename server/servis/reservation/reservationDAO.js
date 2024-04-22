@@ -10,20 +10,19 @@ class ReservationDAO {
   async getAll() {
     try {
       let sql = `
-        SELECT 
-          r.id_reservation,
-          r.date,
-          r.time,
-          t.quantity,
-          u.name,
-          u.email,
-          u.phone
-        FROM 
-          "reservation" r
-        JOIN 
-          "table" t ON r.table_id = t.id_table
-        JOIN 
-          "user" u ON r.user_id = u.id_user;
+      SELECT
+      COALESCE(u.name, r.name) AS name,
+      COALESCE(u.email, r.email) AS email,
+      COALESCE(u.phone, r.phone) AS phone,
+      r.date,
+      r.time,
+      t.number AS table_number,
+      r.id_reservation
+      FROM reservation r
+      LEFT JOIN "user" u ON r.user_id = u.id_user
+      LEFT JOIN "table" t ON r.table_id = t.id_table
+      ORDER BY r.date DESC;
+
       `;
       const data = await this.db.query(sql, []);
       const rows = data.rows;
@@ -48,7 +47,7 @@ class ReservationDAO {
 
   async insert(reservation) {
     try {
-      let sql = `INSERT INTO "reservation" ("date", "time", "occupied", "email", user_id, table_id) VALUES ($1,$2,$3,$4,$5,$6)`;
+      let sql = `INSERT INTO "reservation" ("date", "time", "occupied", "email", user_id, table_id, "name", "phone") VALUES ($1,$2,$3,$4,$5,$6,$7,$8)`;
       let data = [
         reservation.date,
         reservation.time,
@@ -56,6 +55,8 @@ class ReservationDAO {
         reservation.email,
         reservation.user_id,
         reservation.table_id,
+        reservation.name,
+        reservation.phone,
       ];
       await this.db.query(sql, data);
       return true;

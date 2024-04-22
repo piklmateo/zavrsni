@@ -22,10 +22,7 @@ function startServer() {
   server.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "http://localhost:8080");
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-    res.setHeader(
-      "Access-Control-Allow-Headers",
-      "Content-Type, Authorization"
-    );
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
     res.setHeader("Access-Control-Expose-Headers", "Authorization");
     next();
   });
@@ -68,63 +65,23 @@ function prepareUserPaths() {
   server.delete("/api/users", jwt.verifyToken, restUser.deleteUsers);
 
   server.get("/api/users/:id_user", jwt.verifyToken, restUser.getUser);
-  server.get(
-    "/api/users/profile/:id_user",
-    jwt.verifyToken,
-    restUser.getProfileData
-  );
+  server.get("/api/users/profile/:id_user", jwt.verifyToken, restUser.getProfileData);
   server.post("/api/users/:id_user", jwt.verifyToken, restUser.postUser);
   server.put("/api/users/:id_user", jwt.verifyToken, restUser.putUser);
   server.delete("/api/users/:id_user", jwt.verifyToken, restUser.deleteUser);
 }
 
 function prepareReservationPaths() {
-  server.get(
-    "/api/reservations",
-    jwt.verifyToken,
-    restReservation.getReservations
-  );
-  server.post(
-    "/api/reservations/check",
-    jwt.verifyToken,
-    restReservation.checkAvailability
-  );
-  server.post(
-    "/api/reservations",
-    jwt.verifyToken,
-    restReservation.postReservations
-  );
-  server.put(
-    "/api/reservations",
-    jwt.verifyToken,
-    restReservation.putReservations
-  );
-  server.delete(
-    "/api/reservations",
-    jwt.verifyToken,
-    restReservation.deleteReservations
-  );
+  server.get("/api/reservations", jwt.verifyToken, restReservation.getReservations);
+  server.post("/api/reservations/check", jwt.verifyToken, restReservation.checkAvailability);
+  server.post("/api/reservations", restReservation.postReservations);
+  server.put("/api/reservations", jwt.verifyToken, restReservation.putReservations);
+  server.delete("/api/reservations", jwt.verifyToken, restReservation.deleteReservations);
 
-  server.get(
-    "/api/reservations/:id",
-    jwt.verifyToken,
-    restReservation.getReservation
-  );
-  server.post(
-    "/api/reservations/:id",
-    jwt.verifyToken,
-    restReservation.postReservation
-  );
-  server.put(
-    "/api/reservations/:id",
-    jwt.verifyToken,
-    restReservation.putReservation
-  );
-  server.delete(
-    "/api/reservations/:id",
-    jwt.verifyToken,
-    restReservation.deleteReservation
-  );
+  server.get("/api/reservations/:id", jwt.verifyToken, restReservation.getReservation);
+  server.post("/api/reservations/:id", jwt.verifyToken, restReservation.postReservation);
+  server.put("/api/reservations/:id", jwt.verifyToken, restReservation.putReservation);
+  server.delete("/api/reservations/:id", jwt.verifyToken, restReservation.deleteReservation);
 }
 
 function prepareDishPaths() {

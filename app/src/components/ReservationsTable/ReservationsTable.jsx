@@ -41,8 +41,8 @@ const ReservationsTable = () => {
 
   const formatTime = (timeString) => {
     const time = new Date(`1970-01-01T${timeString}Z`);
-    const hours = time.getHours().toString().padStart(2, "0");
-    const minutes = time.getMinutes().toString().padStart(2, "0");
+    const hours = time.getUTCHours().toString().padStart(2, "0");
+    const minutes = time.getUTCMinutes().toString().padStart(2, "0");
     return `${hours}:${minutes}`;
   };
 
@@ -54,16 +54,13 @@ const ReservationsTable = () => {
             <thead>
               <tr>
                 <th>
-                  <h2>Id</h2>
-                </th>
-                <th>
                   <h2>Date</h2>
                 </th>
                 <th>
                   <h2>Time</h2>
                 </th>
                 <th>
-                  <h2>People</h2>
+                  <h2>Table</h2>
                 </th>
                 <th>
                   <h2>Name</h2>
@@ -79,10 +76,9 @@ const ReservationsTable = () => {
             <tbody>
               {reservations.map((reservation) => (
                 <tr key={reservation.id_reservation}>
-                  <td>{reservation.id_reservation}</td>
                   <td>{formatDate(reservation.date)}</td>
                   <td>{formatTime(reservation.time)}</td>
-                  <td>{reservation.quantity}</td>
+                  <td>{reservation.table_number}</td>
                   <td>{reservation.name}</td>
                   <td>{reservation.email}</td>
                   <td>{reservation.phone}</td>
