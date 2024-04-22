@@ -2,10 +2,11 @@
 
 Ovaj repozitorij sadrži završni rad koji predstavlja web aplikaciju za restoran napisanu u Reactu za frontend i Node.js s Expressom za backend. Aplikacija omogućuje rezervaciju stolova, naručivanje hrane, prikaz rezervacija i narudžbi te druge funkcionalnosti relevantne za restoranski posao.
 
-## Naziv rada (hr)
+## Naziv rada
+### (hr)
 Usporedba alata za automatizaciju procesa programiranja na strani klijenta
 
-## Naziv rada (en)
+### (en)
 Comparison of tools for automating front-end programming process
 
 ## Opis rada
