@@ -47,11 +47,10 @@ class ReservationDAO {
 
   async insert(reservation) {
     try {
-      let sql = `INSERT INTO "reservation" ("date", "time", "occupied", "email", user_id, table_id, "name", "phone") VALUES ($1,$2,$3,$4,$5,$6,$7,$8)`;
+      let sql = `INSERT INTO "reservation" ("date", "time", "email", user_id, table_id, "name", "phone") VALUES ($1,$2,$3,$4,$5,$6,$7)`;
       let data = [
         reservation.date,
         reservation.time,
-        reservation.occupied,
         reservation.email,
         reservation.user_id,
         reservation.table_id,

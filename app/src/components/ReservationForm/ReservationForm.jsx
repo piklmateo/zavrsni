@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import LeftArrow from "../../assets/images/left-arrow.svg";
 import RightArrow from "../../assets/images/right-arrow.svg";
+import { today } from "../../helpers/dateTimeFormat.js";
 import { jwtDecode } from "jwt-decode";
 import "./ReservationForm.css";
 
@@ -15,60 +16,17 @@ const ReservationForm = () => {
   });
 
   const [reservationData, setReservationData] = useState({
-    date: "",
-    time: "",
+    date: today,
+    time: "12:00:00",
     table_id: 1,
     user_id: null,
-    name: "",
-    phone: "",
-    email: "",
   });
 
-  const handleNameChange = (event) => {
+  const handleChange = (event, setStateFunction, stateKey) => {
     const { value } = event.target;
-    setFormData((prevState) => ({
+    setStateFunction((prevState) => ({
       ...prevState,
-      name: value,
-    }));
-  };
-
-  const handleEmailChange = (event) => {
-    const { value } = event.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      email: value,
-    }));
-  };
-
-  const handlePhoneChange = (event) => {
-    const { value } = event.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      phone: value,
-    }));
-  };
-
-  const handleDateChange = (event) => {
-    const { value } = event.target;
-    setReservationData((prevState) => ({
-      ...prevState,
-      date: value,
-    }));
-  };
-
-  const handleTimeChange = (event) => {
-    const { value } = event.target;
-    setReservationData((prevState) => ({
-      ...prevState,
-      time: value,
-    }));
-  };
-
-  const handleTableIdChange = (event) => {
-    const { value } = event.target;
-    setReservationData((prevState) => ({
-      ...prevState,
-      table_id: parseInt(value),
+      [stateKey]: value,
     }));
   };
 
@@ -178,7 +136,7 @@ const ReservationForm = () => {
                 name="date"
                 id="date"
                 value={reservationData.date}
-                onChange={handleDateChange}
+                onChange={(event) => handleChange(event, setReservationData, "date")}
                 required
               />
             </div>
@@ -187,7 +145,13 @@ const ReservationForm = () => {
             <>
               <div className="select__time">
                 <label htmlFor="time">Time</label>
-                <select name="time" id="time" value={reservationData.time} onChange={handleTimeChange} required>
+                <select
+                  name="time"
+                  id="time"
+                  value={reservationData.time}
+                  onChange={(event) => handleChange(event, setReservationData, "time")}
+                  required
+                >
                   <option value="12:00:00">12 PM</option>
                   <option value="13:30:00">13:30 PM</option>
                   <option value="15:00:00">15 PM</option>
@@ -203,7 +167,7 @@ const ReservationForm = () => {
                   name="people"
                   id="people"
                   value={reservationData.table_id}
-                  onChange={handleTableIdChange}
+                  onChange={(event) => handleChange(event, setReservationData, "table_id")}
                   required
                 >
                   <option value={2}>Table 2 - 2 people</option>
@@ -222,7 +186,14 @@ const ReservationForm = () => {
             <>
               <div className="input__name">
                 <label htmlFor="name">Name</label>
-                <input type="text" name="name" id="name" value={formData.name} onChange={handleNameChange} required />
+                <input
+                  type="text"
+                  name="name"
+                  id="name"
+                  value={formData.name}
+                  onChange={(event) => handleChange(event, setFormData, "name")}
+                  required
+                />
               </div>
               <div className="input__email">
                 <label htmlFor="email">Email</label>
@@ -231,13 +202,19 @@ const ReservationForm = () => {
                   name="email"
                   id="email"
                   value={formData.email}
-                  onChange={handleEmailChange}
+                  onChange={(event) => handleChange(event, setFormData, "email")}
                   required
                 />
               </div>
               <div className="input__phone">
                 <label htmlFor="phone">Phone(optional)</label>
-                <input type="tel" name="phone" id="phone" value={formData.phone} onChange={handlePhoneChange} />
+                <input
+                  type="tel"
+                  name="phone"
+                  id="phone"
+                  value={formData.phone}
+                  onChange={(event) => handleChange(event, setFormData, "phone")}
+                />
               </div>
               <div>
                 <button className="btn btn__reserve">Reserve</button>
