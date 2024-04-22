@@ -9,9 +9,6 @@ Ovaj repozitorij sadrži završni rad koji predstavlja web aplikaciju za restora
 - **Baza podataka**: PostgreSQL
 - **Admin sučelje za bazu podataka**: pgAdmin4
 
-
-6. Otvorite web preglednik i posjetite adresu `http://localhost:3000` kako biste pristupili aplikaciji.
-
 ## Autor
 Mateo Pikl
 
