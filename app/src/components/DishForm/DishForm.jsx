@@ -1,38 +1,30 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCategories } from "../../state/category/categorySlice";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import "./DishFrom.css";
 
 const Dish = () => {
   const navigate = useNavigate();
-  const [categories, setCategories] = useState([]);
+  const dispatch = useDispatch();
+  const categoryList = useSelector((state) => state.category.category);
+  const status = useSelector((state) => state.category.status);
+  const error = useSelector((state) => state.category.error);
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const jwtToken = sessionStorage.getItem("token");
-        const res = await fetch("http://localhost:12413/api/categories", {
-          method: "GET",
-          headers: {
-            "Content-type": "application-json",
-            Authorization: "Bearer " + jwtToken,
-          },
-        });
+    if (status === "idle") {
+      dispatch(fetchCategories());
+    }
+  }, [status, dispatch]);
 
-        if (res.ok) {
-          const data = await res.json();
-          setCategories(data);
-          console.log("Success: " + JSON.stringify(data));
-        } else {
-          console.log("Error fetching");
-        }
-      } catch (error) {
-        console.log("Error: " + error);
-      }
-    };
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
 
-    fetchCategories();
-  }, []);
+  if (status === "failed") {
+    return <div>Error: {error}</div>;
+  }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -90,8 +82,8 @@ const Dish = () => {
           <div className="add-dish__form__category">
             <label htmlFor="category">Category</label>
             <select name="category" id="category">
-              {categories.map((category, index) => (
-                <option key={index} value={category.id_category}>
+              {categoryList.map((category, index) => (
+                <option key={category.category_id || index} value={category.id_category}>
                   {category.name}
                 </option>
               ))}

@@ -1,36 +1,30 @@
 import React, { useEffect, useState } from "react";
-import "./ReservationsTable.css";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchReservations } from "../../state/reservations/reservationsSlice.js";
 import { formatDate, formatTime } from "../../helpers/dateTimeFormat.js";
+import "./ReservationsTable.css";
+import { useNavigate } from "react-router";
 
 const ReservationsTable = () => {
-  const [reservations, setReservations] = useState([]);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const reservationList = useSelector((state) => state.reservations.reservations);
+  const status = useSelector((state) => state.reservations.status);
+  const error = useSelector((state) => state.reservations.error);
 
   useEffect(() => {
-    const fetchReservations = async () => {
-      try {
-        const jwtToken = sessionStorage.getItem("token");
-        const res = await fetch("http://localhost:12413/api/reservations", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + jwtToken,
-          },
-        });
+    if (status === "idle") {
+      dispatch(fetchReservations());
+    }
+  }, [status, dispatch]);
 
-        if (res.ok) {
-          const data = await res.json();
-          setReservations(data);
-          console.log("Fetched reservations successfully:", data);
-        } else {
-          console.error("Failed to fetch reservations:", res.statusText);
-        }
-      } catch (error) {
-        console.error("Error fetching reservations:", error);
-      }
-    };
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
 
-    fetchReservations();
-  }, []);
+  if (status === "failed") {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <>
@@ -60,7 +54,7 @@ const ReservationsTable = () => {
               </tr>
             </thead>
             <tbody>
-              {reservations.map((reservation) => (
+              {reservationList.map((reservation) => (
                 <tr key={reservation.id_reservation}>
                   <td>{formatDate(reservation.date)}</td>
                   <td>{formatTime(reservation.time)}</td>
