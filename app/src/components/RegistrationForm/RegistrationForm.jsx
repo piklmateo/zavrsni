@@ -11,7 +11,6 @@ const RegistrationForm = () => {
     email: "",
     username: "",
   });
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,7 +29,7 @@ const RegistrationForm = () => {
       });
 
       if (res.ok) {
-        navigate("/login");
+        window.location.href = "/login";
       } else {
         return;
       }

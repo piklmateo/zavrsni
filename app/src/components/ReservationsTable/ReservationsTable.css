@@ -1,11 +1,14 @@
 .reservations__table__wrapper {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  gap: 2rem;
 }
 
 .reservations__table {
   width: 100%;
-  max-width: 800px;
+  /* max-width: 800px; */
   border-collapse: collapse;
   margin-top: 1rem;
 }
@@ -16,4 +19,52 @@
   width: fit-content;
   padding: 1rem;
   text-align: center;
+}
+
+.reservations__table tr:nth-of-type(2n) {
+  background-color: var(--clr-border);
+}
+
+.reservations__table th {
+  background-color: var(--clr-primary);
+  color: var(--clr-neutral);
+  font-weight: var(--fw-900);
+}
+
+@media (max-width: 690px) {
+  .reservations__table th {
+    display: none;
+  }
+
+  .reservations__table td {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+    text-align: left;
+  }
+
+  .reservations__table td:nth-of-type(1)::before {
+    content: "DATE:  ";
+  }
+
+  .reservations__table td:nth-of-type(2)::before {
+    content: "TIME:  ";
+  }
+
+  .reservations__table td:nth-of-type(3)::before {
+    content: "TABLE:  ";
+  }
+
+  .reservations__table td:nth-of-type(4)::before {
+    content: "NAME:  ";
+  }
+
+  .reservations__table td:nth-of-type(5)::before {
+    content: "EMAIL:  ";
+  }
+
+  .reservations__table td:nth-of-type(6)::before {
+    content: "PHONE:  ";
+  }
 }

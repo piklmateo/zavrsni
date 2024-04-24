@@ -30,6 +30,7 @@ const ReservationsTable = () => {
     <>
       <div className="main__layout__container">
         <div className="reservations__table__wrapper">
+          <h1>Reservations</h1>
           <table className="reservations__table">
             <thead>
               <tr>

@@ -4,7 +4,6 @@ import "./LoginForm.css";
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({ username: "", password: "" });
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -28,7 +27,7 @@ const LoginForm = () => {
           const token = authHeader.split(" ")[1];
           console.log("TOKEN NA FRONTENDU: " + token);
           sessionStorage.setItem("token", token);
-          navigate("/");
+          window.location.href = "/";
         } else {
           console.error("Login failed: No Authorization header in response");
         }

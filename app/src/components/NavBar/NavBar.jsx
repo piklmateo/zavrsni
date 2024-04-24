@@ -5,11 +5,18 @@ import { FaPhone } from "react-icons/fa6";
 import "./NavBar.css";
 
 const NavBar = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("token");
+    setIsLoggedIn(!!token);
+  }, []);
 
   const handleLogout = () => {
     sessionStorage.removeItem("token");
-    navigate("/login");
+    setIsLoggedIn(false);
+    window.location.href = "/login";
   };
 
   return (
@@ -27,8 +34,8 @@ const NavBar = () => {
                 </Link>
               </li>
               <li className="nav__list__item">
-                <Link className="nav__link" to="/profile">
-                  Profile
+                <Link className="nav__link" to="/menu">
+                  Menu
                 </Link>
               </li>
               <li className="nav__list__item">
@@ -36,29 +43,41 @@ const NavBar = () => {
                   Reservation
                 </Link>
               </li>
-              <li className="nav__list__item">
-                <Link className="nav__link" to="/reservations">
-                  Reservations
-                </Link>
-              </li>
-              <li className="nav__list__item">
-                <Link className="nav__link" to="/menu">
-                  Menu
-                </Link>
-              </li>
+
+              {isLoggedIn && (
+                <>
+                  <li className="nav__list__item">
+                    <Link className="nav__link" to="/reservations">
+                      Reservations
+                    </Link>
+                  </li>
+                  <li className="nav__list__item">
+                    <Link className="nav__link" to="/profile">
+                      Profile
+                    </Link>
+                  </li>
+                </>
+              )}
             </ul>
           </nav>
 
           <div className="contact__container">
-            <Link to="/login">
-              <button className="btn btn__login">Login</button>
-            </Link>
-            <Link to="/registration">
-              <button className="btn btn__register">Register</button>
-            </Link>
-            <button className="btn btn__logout" onClick={handleLogout}>
-              Logout
-            </button>
+            {!isLoggedIn && (
+              <>
+                <Link to="/login">
+                  <button className="btn btn__login">Login</button>
+                </Link>
+                <Link to="/registration">
+                  <button className="btn btn__register">Register</button>
+                </Link>
+              </>
+            )}
+
+            {isLoggedIn && (
+              <button className="btn btn__logout" onClick={handleLogout}>
+                Logout
+              </button>
+            )}
           </div>
         </div>
       </div>
