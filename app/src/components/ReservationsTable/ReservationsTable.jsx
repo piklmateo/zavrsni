@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchReservations } from "../../state/reservations/reservationsSlice.js";
+import { fetchReservations } from "../../state/slices/reservations/reservationsSlice.js";
 import { formatDate, formatTime } from "../../helpers/dateTimeFormat.js";
 import "./ReservationsTable.css";
 import { useNavigate } from "react-router";

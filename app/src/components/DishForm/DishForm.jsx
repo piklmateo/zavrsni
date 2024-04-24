@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCategories } from "../../state/category/categorySlice";
+import { fetchCategories } from "../../state/slices/category/categorySlice";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import "./DishFrom.css";

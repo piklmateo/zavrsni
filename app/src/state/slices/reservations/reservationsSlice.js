@@ -11,7 +11,7 @@ export const fetchReservations = createAsyncThunk("reservations/fetchReservation
     const token = sessionStorage.getItem("token");
     if (!token) {
       console.log("You don't have a valid token");
-      return []; // Return empty array or null, depending on your application's logic
+      return [];
     }
 
     const res = await fetch("http://localhost:12413/api/reservations", {
@@ -53,6 +53,3 @@ const reservationsSlice = createSlice({
 });
 
 export default reservationsSlice.reducer;
-
-// Action creators
-// export const {} = reservationsSlice.actions;

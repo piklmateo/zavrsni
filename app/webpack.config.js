@@ -59,7 +59,7 @@ module.exports = {
       },
     ],
   },
-  devtool: dev ? "inline-source-map" : false,
+  devtool: dev ? "inline-source-map" : "source-map", //staviti false na kraju
   devServer: {
     historyApiFallback: true, //fix za router
     hot: true,

@@ -32,7 +32,7 @@ const ReservationForm = () => {
 
   const fetchUser = async (userID) => {
     const token = sessionStorage.getItem("token");
-    const res = await fetch(`http://localhost:12413/api/users/profile/${userID}`, {
+    const res = await fetch(`http://localhost:12413/api/users/${userID}`, {
       method: "GET",
       headers: {
         "Content-type": "application/json",

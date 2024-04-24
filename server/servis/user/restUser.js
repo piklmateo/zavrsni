@@ -45,8 +45,8 @@ const restUser = {
     res.type("application/json");
     try {
       let udao = new UserDAO();
-      let username = req.params.username;
-      const user = await udao.getOne(username);
+      let id_user = req.params.id_user;
+      const user = await udao.getOne(id_user);
       res.send(JSON.stringify(user));
     } catch (error) {
       console.error(error);
@@ -54,12 +54,12 @@ const restUser = {
     }
   },
 
-  getProfileData: async function (req, res) {
+  getUserByUsername: async function (req, res) {
     res.type("application/json");
     try {
       let udao = new UserDAO();
-      let id_user = req.params.id_user;
-      const user = await udao.getProfileData(id_user);
+      let username = req.params.username;
+      const user = await udao.getOne(username);
       res.send(JSON.stringify(user));
     } catch (error) {
       console.error(error);
@@ -92,10 +92,10 @@ const restUser = {
       const data = req.body;
       const user = await udao.update(id_user, data);
       res.send(JSON.stringify(user));
-      res.status(201);
+      // res.status(201);
     } catch (error) {
       console.log("error: " + error);
-      res.status(500);
+      res.status(500).send("Internal Server Error");
     }
   },
 
@@ -105,7 +105,7 @@ const restUser = {
 
     try {
       let udao = new UserDAO();
-      const check = await udao.getOne(username);
+      const check = await udao.getUserByUsername(username);
       console.log("USERNAME: " + username);
       if (check) {
         res.send("Username already exists. Try logging in.");
@@ -144,7 +144,7 @@ const restUser = {
       }
 
       let udao = new UserDAO();
-      const user = await udao.getOne(username);
+      const user = await udao.getUserByUsername(username);
 
       if (!user) {
         res.status(401).send("Invalid username or password");

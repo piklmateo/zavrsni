@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/images/logo-transparent.png";
 import { FaPhone } from "react-icons/fa6";
 import "./NavBar.css";
 
 const NavBar = () => {
+  const navigate = useNavigate();
+
   const handleLogout = () => {
     sessionStorage.removeItem("token");
+    navigate("/login");
   };
 
   return (
@@ -53,11 +56,9 @@ const NavBar = () => {
             <Link to="/registration">
               <button className="btn btn__register">Register</button>
             </Link>
-            <Link to="/">
-              <button className="btn btn__logout" onClick={handleLogout}>
-                Logout
-              </button>
-            </Link>
+            <button className="btn btn__logout" onClick={handleLogout}>
+              Logout
+            </button>
           </div>
         </div>
       </div>

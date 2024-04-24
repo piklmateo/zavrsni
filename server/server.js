@@ -65,7 +65,7 @@ function prepareUserPaths() {
   server.delete("/api/users", jwt.verifyToken, restUser.deleteUsers);
 
   server.get("/api/users/:id_user", jwt.verifyToken, restUser.getUser);
-  server.get("/api/users/profile/:id_user", jwt.verifyToken, restUser.getProfileData);
+  server.get("/api/users/:username", jwt.verifyToken, restUser.getUserByUsername);
   server.post("/api/users/:id_user", jwt.verifyToken, restUser.postUser);
   server.put("/api/users/:id_user", jwt.verifyToken, restUser.putUser);
   server.delete("/api/users/:id_user", jwt.verifyToken, restUser.deleteUser);

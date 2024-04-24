@@ -19,19 +19,7 @@ class UserDAO {
     }
   }
 
-  async getOne(username) {
-    try {
-      let sql = `SELECT * FROM "user" WHERE username=$1;`;
-      const data = await this.db.query(sql, [username]);
-      const rows = data.rows;
-      return rows.length === 1 ? rows[0] : null;
-    } catch (error) {
-      console.error("Error while getting user by username:", error);
-      throw error;
-    }
-  }
-
-  async getProfileData(id_user) {
+  async getOne(id_user) {
     try {
       let sql = `SELECT * FROM "user" WHERE id_user=$1;`;
       const data = await this.db.query(sql, [id_user]);
@@ -43,18 +31,22 @@ class UserDAO {
     }
   }
 
+  async getUserByUsername(username) {
+    try {
+      let sql = `SELECT * FROM "user" WHERE username=$1;`;
+      const data = await this.db.query(sql, [username]);
+      const rows = data.rows;
+      return rows.length === 1 ? rows[0] : null;
+    } catch (error) {
+      console.error("Error while getting user by id:", error);
+      throw error;
+    }
+  }
+
   async insert(user) {
     try {
       let sql = `INSERT INTO "user" (name, surname, phone, password, role_id, email, username) VALUES ($1,$2,$3,$4,$5,$6,$7)`;
-      let data = [
-        user.name,
-        user.surname,
-        user.phone,
-        user.password,
-        user.role_id || 1,
-        user.email,
-        user.username,
-      ];
+      let data = [user.name, user.surname, user.phone, user.password, user.role_id || 1, user.email, user.username];
       await this.db.query(sql, data);
       return true;
     } catch (error) {
@@ -74,17 +66,10 @@ class UserDAO {
     }
   }
 
-  async update(username, user) {
+  async update(id_user, user) {
     try {
-      let sql = `UPDATE "user" SET name=$1, surname=$2, phone=$3, password=$4, email=$5 WHERE username=$6`;
-      let data = [
-        user.name,
-        user.surname,
-        user.phone,
-        user.password,
-        user.email,
-        username,
-      ];
+      let sql = `UPDATE "user" SET name=$1, surname=$2, phone=$3 WHERE id_user=$4`;
+      let data = [user.name, user.surname, user.phone, id_user];
       await this.db.query(sql, data);
       return true;
     } catch (error) {
