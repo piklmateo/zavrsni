@@ -5,10 +5,18 @@ import RightArrow from "../../assets/images/right-arrow.svg";
 import { today } from "../../helpers/dateTimeFormat.js";
 import { jwtDecode } from "jwt-decode";
 import "./ReservationForm.css";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUserData, updateUser } from "../../state/slices/user/userSlice";
 
 const ReservationForm = () => {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
+
+  const dispatch = useDispatch();
+  const userList = useSelector((state) => state.user.user);
+  const status = useSelector((state) => state.user.status);
+  const error = useSelector((state) => state.user.error);
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -22,6 +30,28 @@ const ReservationForm = () => {
     user_id: null,
   });
 
+  useEffect(() => {
+    if (status === "idle") {
+      dispatch(fetchUserData());
+    }
+  }, [status, dispatch]);
+
+  useEffect(() => {
+    setFormData({
+      name: userList.name || "",
+      email: userList.email || "",
+      phone: userList.phone || "",
+    });
+  }, [userList]);
+
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
+
+  if (status === "failed") {
+    return <div>Error: {error}</div>;
+  }
+
   const handleChange = (event, setStateFunction, stateKey) => {
     const { value } = event.target;
     setStateFunction((prevState) => ({
@@ -30,48 +60,8 @@ const ReservationForm = () => {
     }));
   };
 
-  const fetchUser = async (userID) => {
-    const token = sessionStorage.getItem("token");
-    const res = await fetch(`http://localhost:12413/api/users/${userID}`, {
-      method: "GET",
-      headers: {
-        "Content-type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    });
-
-    if (res.ok) {
-      const data = await res.json();
-      setFormData({
-        ...formData,
-        name: data.name,
-        email: data.email,
-        phone: data.phone,
-      });
-      console.log("formaData: " + formData);
-    } else {
-      console.log("error");
-    }
-  };
-
-  useEffect(() => {
-    try {
-      const token = sessionStorage.getItem("token");
-      console.log("token token: " + token);
-      if (token && !formData.name) {
-        const decodedToken = jwtDecode(token);
-        const id = decodedToken.user.id_user;
-        fetchUser(id);
-      } else {
-        console.log("error");
-      }
-    } catch (error) {
-      console.log("error: ", error);
-    }
-  }, [formData]);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     const token = sessionStorage.getItem("token");
 
     let dataToSend;
@@ -108,8 +98,9 @@ const ReservationForm = () => {
       });
 
       if (res.ok) {
+        dispatch(updateUser(dataToSend));
         navigate("/");
-        console.log("success!");
+        console.log("Successfull reservation!");
       } else {
         console.log("error res not ok");
       }
@@ -123,9 +114,15 @@ const ReservationForm = () => {
       <div className="reservation__form__wrapper">
         <h1>Reservation</h1>
         <div className="step__indicator">
-          <div className={`step__line ${step >= 1 ? "step__active" : ""}`}></div>
-          <div className={`step__line ${step >= 2 ? "step__active" : ""}`}></div>
-          <div className={`step__line ${step >= 3 ? "step__active" : ""}`}></div>
+          <div
+            className={`step__line ${step >= 1 ? "step__active" : ""}`}
+          ></div>
+          <div
+            className={`step__line ${step >= 2 ? "step__active" : ""}`}
+          ></div>
+          <div
+            className={`step__line ${step >= 3 ? "step__active" : ""}`}
+          ></div>
         </div>
         <form className="form" onSubmit={handleSubmit}>
           {step === 1 && (
@@ -136,7 +133,9 @@ const ReservationForm = () => {
                 name="date"
                 id="date"
                 value={reservationData.date}
-                onChange={(event) => handleChange(event, setReservationData, "date")}
+                onChange={(event) =>
+                  handleChange(event, setReservationData, "date")
+                }
                 required
               />
             </div>
@@ -149,7 +148,9 @@ const ReservationForm = () => {
                   name="time"
                   id="time"
                   value={reservationData.time}
-                  onChange={(event) => handleChange(event, setReservationData, "time")}
+                  onChange={(event) =>
+                    handleChange(event, setReservationData, "time")
+                  }
                   required
                 >
                   <option value="12:00:00">12 PM</option>
@@ -167,7 +168,9 @@ const ReservationForm = () => {
                   name="people"
                   id="people"
                   value={reservationData.table_id}
-                  onChange={(event) => handleChange(event, setReservationData, "table_id")}
+                  onChange={(event) =>
+                    handleChange(event, setReservationData, "table_id")
+                  }
                   required
                 >
                   <option value={2}>Table 2 - 2 people</option>
@@ -195,17 +198,6 @@ const ReservationForm = () => {
                   required
                 />
               </div>
-              <div className="input__email">
-                <label htmlFor="email">Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  id="email"
-                  value={formData.email}
-                  onChange={(event) => handleChange(event, setFormData, "email")}
-                  required
-                />
-              </div>
               <div className="input__phone">
                 <label htmlFor="phone">Phone(optional)</label>
                 <input
@@ -213,7 +205,22 @@ const ReservationForm = () => {
                   name="phone"
                   id="phone"
                   value={formData.phone}
-                  onChange={(event) => handleChange(event, setFormData, "phone")}
+                  onChange={(event) =>
+                    handleChange(event, setFormData, "phone")
+                  }
+                />
+              </div>
+              <div className="input__email">
+                <label htmlFor="email">Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  value={formData.email}
+                  onChange={(event) =>
+                    handleChange(event, setFormData, "email")
+                  }
+                  required
                 />
               </div>
               <div>
@@ -225,14 +232,20 @@ const ReservationForm = () => {
         <div className="navigation__buttons">
           {step !== 1 && (
             <div>
-              <button className="navigation__btn" onClick={() => setStep(step - 1)}>
+              <button
+                className="navigation__btn"
+                onClick={() => setStep(step - 1)}
+              >
                 <img alt="arrow-back" src={LeftArrow} width={40} height={40} />
               </button>
             </div>
           )}
           {step !== 3 && (
             <div>
-              <button className="navigation__btn" onClick={() => setStep(step + 1)}>
+              <button
+                className="navigation__btn"
+                onClick={() => setStep(step + 1)}
+              >
                 <img alt="arrow-next" src={RightArrow} width={40} height={40} />
               </button>
             </div>

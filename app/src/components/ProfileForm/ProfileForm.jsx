@@ -73,7 +73,7 @@ const ProfileForm = () => {
       });
 
       if (res.ok) {
-        // Update user data in Redux store
+        // Update za store
         dispatch(updateUser(formData));
         console.log("User profile updated successfully");
       } else {
@@ -107,7 +107,9 @@ const ProfileForm = () => {
                 name="surname"
                 id="surname"
                 value={formData.surname}
-                onChange={(event) => handleChange(event, setFormData, "surname")}
+                onChange={(event) =>
+                  handleChange(event, setFormData, "surname")
+                }
               />
             </div>
             <div className="profile__form__input profile__form__phone">
@@ -122,11 +124,23 @@ const ProfileForm = () => {
             </div>
             <div className="profile__form__input profile__form__email">
               <label htmlFor="email">Email</label>
-              <input type="email" name="email" id="email" value={formData.email} disabled />
+              <input
+                type="email"
+                name="email"
+                id="email"
+                value={formData.email}
+                disabled
+              />
             </div>
             <div className="profile__form__input profile__form__username">
               <label htmlFor="username">Username</label>
-              <input type="text" name="username" id="username" value={formData.username} disabled />
+              <input
+                type="text"
+                name="username"
+                id="username"
+                value={formData.username}
+                disabled
+              />
             </div>
             <button type="submit" className="btn btn__update">
               Update
