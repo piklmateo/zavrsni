@@ -82,3 +82,44 @@
   background-color: var(--clr-neutral);
   color: var(--clr-secondary);
 }
+
+.menu__navigation__container {
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.menu__navigation__list {
+  display: flex;
+  gap: 1rem;
+  list-style: none;
+}
+
+.menu__navigation__list__item {
+  list-style: none;
+}
+
+.menu__navigation__button {
+  cursor: pointer;
+  width: 100%;
+  padding: 0.5rem;
+  border-top: 0;
+  border-inline: 0;
+  border-bottom: 1px solid var(--clr-primary);
+  background-color: white;
+  transition: 200ms ease-in-out;
+}
+
+.menu__navigation__button:hover {
+  background-color: var(--clr-primary);
+  color: var(--clr-neutral);
+}
+
+.menu__navigation__button-active {
+  background-color: var(--clr-primary);
+  color: var(--clr-neutral);
+  font-weight: var(--fw-900);
+  cursor: pointer;
+}

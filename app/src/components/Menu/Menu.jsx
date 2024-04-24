@@ -52,6 +52,30 @@ const Menu = () => {
               </Link>
             </div>
           )}
+
+          <div className="menu__navigation__container">
+            <ul className="menu__navigation__list">
+              <li className="menu__navigation__list__item">
+                <button className="menu__navigation__button">Main course</button>
+              </li>
+              <li>
+                <button className="menu__navigation__button">Cold appetizers</button>
+              </li>
+              <li>
+                <button className="menu__navigation__button">Warm appetizers</button>
+              </li>
+              <li>
+                <button className="menu__navigation__button">Pizza</button>
+              </li>
+              <li>
+                <button className="menu__navigation__button">Pasta</button>
+              </li>
+              <li>
+                <button className="menu__navigation__button menu__navigation__button-active">Drinks</button>
+              </li>
+            </ul>
+          </div>
+
           <div className="menu__item__wrapper">
             {menuItems.map((item, index) => (
               <div className="menu__item" key={item.id || index}>
@@ -68,9 +92,7 @@ const Menu = () => {
                   <p>
                     {item.price} EUR / {item.price * 7.5} KN
                   </p>
-                  <div className="menu__item__category">
-                    {item.category_name}
-                  </div>
+                  <div className="menu__item__category">{item.category_name}</div>
                 </div>
               </div>
             ))}
