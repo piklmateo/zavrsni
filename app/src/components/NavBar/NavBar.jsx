@@ -1,16 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import logo from "../../assets/images/logo-transparent.png";
-import { FaPhone } from "react-icons/fa6";
+import { jwtDecode } from "jwt-decode";
 import "./NavBar.css";
 
 const NavBar = () => {
-  // const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [allowedRoutes, setAllowedRoutes] = useState([]);
+
+  const roleRoutes = {
+    1: ["/menu", "/profile", "/reservations", "/add-dish", "/add-drink"], // ADMIN
+    2: ["/menu", "/add-dish", "/add-drink"], // KUHAR
+    3: ["/menu", "/reservations", "/add-drink", "/add-dish"], // KONOBAR
+    4: ["/profile"], // KORISNIK
+  };
 
   useEffect(() => {
     const token = sessionStorage.getItem("token");
-    setIsLoggedIn(!!token);
+    if (token) {
+      setIsLoggedIn(true);
+      const decodedToken = jwtDecode(token);
+      const role = decodedToken.user.role;
+      setAllowedRoutes(roleRoutes[role] || []);
+    }
   }, []);
 
   const handleLogout = () => {
@@ -44,20 +56,27 @@ const NavBar = () => {
                 </Link>
               </li>
 
-              {isLoggedIn && (
-                <>
-                  <li className="nav__list__item">
-                    <Link className="nav__link" to="/reservations">
-                      Reservations
-                    </Link>
-                  </li>
-                  <li className="nav__list__item">
-                    <Link className="nav__link" to="/profile">
-                      Profile
-                    </Link>
-                  </li>
-                </>
-              )}
+              {isLoggedIn &&
+                allowedRoutes.map((route, index) => {
+                  if (route === "/reservations") {
+                    return (
+                      <li key={index} className="nav__list__item">
+                        <Link className="nav__link" to={route}>
+                          Reservations
+                        </Link>
+                      </li>
+                    );
+                  } else if (route === "/profile") {
+                    return (
+                      <li key={index} className="nav__list__item">
+                        <Link className="nav__link" to={route}>
+                          Profile
+                        </Link>
+                      </li>
+                    );
+                  }
+                  return null;
+                })}
             </ul>
           </nav>
 

@@ -46,7 +46,7 @@ class UserDAO {
   async insert(user) {
     try {
       let sql = `INSERT INTO "user" (name, surname, phone, password, role_id, email, username) VALUES ($1,$2,$3,$4,$5,$6,$7)`;
-      let data = [user.name, user.surname, user.phone, user.password, user.role_id || 1, user.email, user.username];
+      let data = [user.name, user.surname, user.phone, user.password, user.role_id || 4, user.email, user.username];
       await this.db.query(sql, data);
       return true;
     } catch (error) {

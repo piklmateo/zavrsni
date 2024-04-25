@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Route,
-  createBrowserRouter,
-  createRoutesFromElements,
-  RouterProvider,
-  Routes,
-} from "react-router-dom";
+import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from "react-router-dom";
 import MainLayout from "./layout/MainLayout.jsx";
 import HomePage from "./pages/HomePage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
@@ -16,19 +10,23 @@ import ReservationsPage from "./pages/ReservationsPage.jsx";
 import MenuPage from "./pages/MenuPage.jsx";
 import AddDishPage from "./pages/AddDishPage.jsx";
 import AddDrinkPage from "./pages/AddDrinkPage.jsx";
+import UserRoute from "./authorization/UserRoute.js";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<MainLayout />}>
       <Route index element={<HomePage />} />
+      <Route path="/menu" element={<MenuPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/registration" element={<RegistrationPage />} />
       <Route path="/reservation" element={<ReservationPage />} />
-      <Route path="/reservations" element={<ReservationsPage />} />
-      <Route path="/menu" element={<MenuPage />} />
-      <Route path="/add-dish" element={<AddDishPage />} />
-      <Route path="/add-drink" element={<AddDrinkPage />} />
-      <Route path="/profile" element={<ProfilePage />} />
+      <Route path="*" element={<HomePage />} />
+      <Route element={<UserRoute />}>
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/reservations" element={<ReservationsPage />} />
+        <Route path="/add-dish" element={<AddDishPage />} />
+        <Route path="/add-drink" element={<AddDrinkPage />} />
+      </Route>
     </Route>
   )
 );
