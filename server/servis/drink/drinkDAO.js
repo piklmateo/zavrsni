@@ -9,7 +9,11 @@ class DrinkDAO {
 
   async getAll() {
     try {
-      let sql = `SELECT * FROM "drink";`;
+      let sql = `
+        SELECT d.*, c.name AS category_name
+        FROM "drink" d
+        INNER JOIN "category" c ON d.category_id = c.id_category ORDER BY id_drink ASC;
+      `;
       const data = await this.db.query(sql, []);
       const rows = data.rows;
       return rows;

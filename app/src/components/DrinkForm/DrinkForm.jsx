@@ -35,7 +35,7 @@ const DrinkForm = () => {
     const drinkFormData = {
       name: formData.get("name"),
       price: formData.get("price"),
-      category: formData.get("category"),
+      category_id: formData.get("category"),
     };
 
     console.log("DrinkForm:", drinkFormData);
@@ -79,7 +79,7 @@ const DrinkForm = () => {
             <label htmlFor="category">Category</label>
             <select name="category" id="category">
               {categoryList.map((category, index) => (
-                <option key={category.id_category || index} value={category.id_category}>
+                <option key={category.category_id || index} value={category.id_category}>
                   {category.name}
                 </option>
               ))}
