@@ -1,0 +1,30 @@
+.order__modal__container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  justify-content: center;
+  text-align: left;
+}
+
+.order__modal__info > p {
+  font-size: var(--fs-smaller);
+  font-family: var(--ff-primary);
+  font-weight: var(--fw-200);
+}
+
+.btn__close {
+  background-color: var(--clr-primary);
+  color: var(--clr-neutral);
+  cursor: pointer;
+  transition: 200ms ease-in-out;
+  width: 100%;
+  padding-inline: 1rem;
+  justify-content: flex-start;
+}
+
+.btn__close:hover {
+  background-color: var(--clr-neutral);
+  color: var(--clr-primary);
+  border: 1px solid var(--clr-primary);
+}

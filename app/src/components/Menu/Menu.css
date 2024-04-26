@@ -7,39 +7,6 @@
   padding: 1rem;
 }
 
-.menu__item__buttons {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  gap: 2rem;
-}
-
-.btn__dish {
-  background-color: var(--clr-primary);
-  color: var(--clr-neutral);
-  cursor: pointer;
-  transition: 200ms ease-in-out;
-}
-
-.btn__dish:hover {
-  border: 1px solid var(--clr-primary);
-  background-color: var(--clr-neutral);
-  color: var(--clr-primary);
-}
-
-.btn__drink {
-  background-color: var(--clr-secondary);
-  color: var(--clr-neutral);
-  cursor: pointer;
-  transition: 200ms ease-in-out;
-}
-
-.btn__drink:hover {
-  border: 1px solid var(--clr-secondary);
-  background-color: var(--clr-neutral);
-  color: var(--clr-secondary);
-}
-
 .menu__navigation__container {
   margin-bottom: 2rem;
   display: flex;
@@ -81,4 +48,11 @@
   color: var(--clr-neutral);
   font-weight: var(--fw-900);
   cursor: pointer;
+}
+
+.menu__header {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }

@@ -13,9 +13,16 @@ const UserRoute = () => {
   const role = decodedToken.user.role;
 
   const roleRoutes = {
-    1: ["/menu", "/profile", "/reservations", "/add-dish", "/add-drink"], // ADMIN
-    2: ["/menu", "/add-dish", "/add-drink"], // KUHAR
-    3: ["/menu", "/reservations", "/add-drink", "/add-dish"], // KONOBAR
+    1: [
+      "/menu",
+      "/profile",
+      "/reservations",
+      "/add-dish",
+      "/add-drink",
+      "/order",
+    ], // ADMIN
+    2: ["/menu", "/add-dish", "/add-drink", "/order"], // KUHAR
+    3: ["/menu", "/reservations", "/add-drink", "/add-dish", "/order"], // KONOBAR
     4: ["/profile"], // KORISNIK
   };
 

@@ -1,5 +1,10 @@
 import React from "react";
-import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from "react-router-dom";
+import {
+  Route,
+  createBrowserRouter,
+  createRoutesFromElements,
+  RouterProvider,
+} from "react-router-dom";
 import MainLayout from "./layout/MainLayout.jsx";
 import HomePage from "./pages/HomePage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
@@ -11,6 +16,7 @@ import MenuPage from "./pages/MenuPage.jsx";
 import AddDishPage from "./pages/AddDishPage.jsx";
 import AddDrinkPage from "./pages/AddDrinkPage.jsx";
 import UserRoute from "./authorization/UserRoute.js";
+import OrderPage from "./pages/OrderPage.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -26,6 +32,7 @@ const router = createBrowserRouter(
         <Route path="/reservations" element={<ReservationsPage />} />
         <Route path="/add-dish" element={<AddDishPage />} />
         <Route path="/add-drink" element={<AddDrinkPage />} />
+        <Route path="/order" element={<OrderPage />} />
       </Route>
     </Route>
   )

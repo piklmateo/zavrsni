@@ -120,6 +120,10 @@ footer {
   width: 100%;
 }
 
+.mbl-2 {
+  margin-block: 2rem;
+}
+
 h1,
 h2,
 h3,

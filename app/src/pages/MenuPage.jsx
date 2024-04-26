@@ -1,11 +1,12 @@
 import React from "react";
 import Menu from "../components/Menu/Menu.jsx";
-import MenuHeader from "../components/MenuHeader/MenuHeader.jsx";
 
 const MenuPage = () => {
   return (
     <>
-      <MenuHeader />
+      <div className="menu__header">
+        <h1 className="text__center">Menu</h1>
+      </div>
       <Menu />
     </>
   );

@@ -22,12 +22,14 @@ const Drink = ({ category }) => {
     return <div>Error: {error}</div>;
   }
 
-  const filteredDrinks = drinkList.filter((drink) => drink.category_name === category);
+  const filteredDrinks = drinkList.filter(
+    (drink) => drink.category_name === category
+  );
 
   return (
     <div className="menu__item__wrapper">
       {filteredDrinks.map((drink, index) => (
-        <div className="menu__item" key={drink.id || index}>
+        <div className="menu__item" key={drink.id_drink || index}>
           <div className="menu__item__dish">
             <div className="menu__item__title">
               <p>{drink.name}</p>

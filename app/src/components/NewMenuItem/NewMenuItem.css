@@ -1,0 +1,32 @@
+.menu__item__buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  margin-block: 2rem;
+}
+
+.btn__dish {
+  background-color: var(--clr-primary);
+  color: var(--clr-neutral);
+  cursor: pointer;
+  transition: 200ms ease-in-out;
+}
+
+.btn__dish:hover {
+  border: 1px solid var(--clr-primary);
+  background-color: var(--clr-neutral);
+  color: var(--clr-primary);
+}
+
+.btn__drink {
+  background-color: var(--clr-secondary);
+  color: var(--clr-neutral);
+  cursor: pointer;
+  transition: 200ms ease-in-out;
+}
+
+.btn__drink:hover {
+  border: 1px solid var(--clr-secondary);
+  background-color: var(--clr-neutral);
+  color: var(--clr-secondary);
+}
