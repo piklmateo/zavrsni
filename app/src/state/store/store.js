@@ -5,6 +5,7 @@ import categorySlice from "../slices/category/categorySlice.js";
 import userSlice from "../slices/user/userSlice.js";
 import dishSlice from "../slices/dish/dishSlice.js";
 import drinkSlice from "../slices/drink/drinkSlice.js";
+import orderSlice from "../slices/order/orderSlice.js";
 
 const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ const store = configureStore({
     user: userSlice,
     dish: dishSlice,
     drink: drinkSlice,
+    order: orderSlice,
   },
 });
 

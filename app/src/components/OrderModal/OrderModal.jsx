@@ -15,7 +15,7 @@ const customStyles = {
   },
 };
 
-const OrderModal = ({ isOpen, closeModal, onDelete }) => {
+const OrderModal = ({ isOpen, closeModal, order }) => {
   return (
     <Modal
       isOpen={isOpen}
@@ -24,10 +24,15 @@ const OrderModal = ({ isOpen, closeModal, onDelete }) => {
       style={customStyles}
     >
       <div className="order__modal__container">
-        <div className="order__modal__info">
-          <h2>Confirm Deletion</h2>
-          <p>Are you sure you want to delete this item?</p>
-        </div>
+        {order.map((orderItem) => (
+          <div key={orderItem.id}>
+            <div className="order__modal__info">
+              <h2>{orderItem.name}</h2>
+              <p>{orderItem.price}</p>
+              <p>X{orderItem.quantity}</p>
+            </div>
+          </div>
+        ))}
         <div className="order__modal__buttons">
           <button className="btn btn__close" onClick={closeModal}>
             Close
