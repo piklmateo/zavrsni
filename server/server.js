@@ -6,6 +6,8 @@ import restReservation from "./servis/reservation/restReservation.js";
 import restDish from "./servis/dish/restDish.js";
 import restDrink from "./servis/drink/restDrink.js";
 import restOrder from "./servis/order/restOrder.js";
+import restOrderDish from "./servis/order_dish/restOrderDish.js";
+import restOrderDrink from "./servis/order_drink/restOrderDrink.js";
 import cors from "cors";
 import jwt from "./modules/jwt.js";
 
@@ -22,7 +24,10 @@ function startServer() {
   server.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "http://localhost:8080");
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+    res.setHeader(
+      "Access-Control-Allow-Headers",
+      "Content-Type, Authorization"
+    );
     res.setHeader("Access-Control-Expose-Headers", "Authorization");
     next();
   });
@@ -42,6 +47,8 @@ function startServer() {
   prepareDrinkPaths();
   prepareOrderPaths();
   prepareCategoryPaths();
+  prepareOrderDishPaths();
+  prepareOrderDrinkPaths();
 
   server.use((req, res) => {
     res.status(404);
@@ -65,23 +72,59 @@ function prepareUserPaths() {
   server.delete("/api/users", jwt.verifyToken, restUser.deleteUsers);
 
   server.get("/api/users/:id_user", jwt.verifyToken, restUser.getUser);
-  server.get("/api/users/:username", jwt.verifyToken, restUser.getUserByUsername);
+  server.get(
+    "/api/users/:username",
+    jwt.verifyToken,
+    restUser.getUserByUsername
+  );
   server.post("/api/users/:id_user", jwt.verifyToken, restUser.postUser);
   server.put("/api/users/:id_user", jwt.verifyToken, restUser.putUser);
   server.delete("/api/users/:id_user", jwt.verifyToken, restUser.deleteUser);
 }
 
 function prepareReservationPaths() {
-  server.get("/api/reservations", jwt.verifyToken, restReservation.getReservations);
-  server.post("/api/reservations/check", jwt.verifyToken, restReservation.checkAvailability);
+  server.get(
+    "/api/reservations",
+    jwt.verifyToken,
+    restReservation.getReservations
+  );
+  server.post(
+    "/api/reservations/check",
+    jwt.verifyToken,
+    restReservation.checkAvailability
+  );
   server.post("/api/reservations", restReservation.postReservations);
-  server.put("/api/reservations", jwt.verifyToken, restReservation.putReservations);
-  server.delete("/api/reservations", jwt.verifyToken, restReservation.deleteReservations);
+  server.put(
+    "/api/reservations",
+    jwt.verifyToken,
+    restReservation.putReservations
+  );
+  server.delete(
+    "/api/reservations",
+    jwt.verifyToken,
+    restReservation.deleteReservations
+  );
 
-  server.get("/api/reservations/:id", jwt.verifyToken, restReservation.getReservation);
-  server.post("/api/reservations/:id", jwt.verifyToken, restReservation.postReservation);
-  server.put("/api/reservations/:id", jwt.verifyToken, restReservation.putReservation);
-  server.delete("/api/reservations/:id", jwt.verifyToken, restReservation.deleteReservation);
+  server.get(
+    "/api/reservations/:id",
+    jwt.verifyToken,
+    restReservation.getReservation
+  );
+  server.post(
+    "/api/reservations/:id",
+    jwt.verifyToken,
+    restReservation.postReservation
+  );
+  server.put(
+    "/api/reservations/:id",
+    jwt.verifyToken,
+    restReservation.putReservation
+  );
+  server.delete(
+    "/api/reservations/:id",
+    jwt.verifyToken,
+    restReservation.deleteReservation
+  );
 }
 
 function prepareDishPaths() {
@@ -122,6 +165,86 @@ function prepareOrderPaths() {
   server.post("/api/orders/:id", jwt.verifyToken, restOrder.postOrder);
   server.put("/api/orders/:id", jwt.verifyToken, restOrder.putOrder);
   server.delete("/api/orders/:id", jwt.verifyToken, restOrder.deleteOrder);
+}
+
+function prepareOrderDishPaths() {
+  server.get("/api/order-dish", jwt.verifyToken, restOrderDish.getOrderDishes);
+  server.post(
+    "/api/order-dish",
+    jwt.verifyToken,
+    restOrderDish.postOrderDishes
+  );
+  server.put("/api/order-dish", jwt.verifyToken, restOrderDish.putOrderDishes);
+  server.delete(
+    "/api/order-dish",
+    jwt.verifyToken,
+    restOrderDish.deleteOrderDishes
+  );
+
+  server.get(
+    "/api/order-dish/:id",
+    jwt.verifyToken,
+    restOrderDish.getOrderDish
+  );
+  server.post(
+    "/api/order-dish/:id",
+    jwt.verifyToken,
+    restOrderDish.postOrderDish
+  );
+  server.put(
+    "/api/order-dish/:id",
+    jwt.verifyToken,
+    restOrderDish.putOrderDish
+  );
+  server.delete(
+    "/api/order-dish/:id",
+    jwt.verifyToken,
+    restOrderDish.deleteOrderDish
+  );
+}
+
+function prepareOrderDrinkPaths() {
+  server.get(
+    "/api/order-drink",
+    jwt.verifyToken,
+    restOrderDrink.getOrderDrinks
+  );
+  server.post(
+    "/api/order-drink",
+    jwt.verifyToken,
+    restOrderDrink.postOrderDrinks
+  );
+  server.put(
+    "/api/order-drink",
+    jwt.verifyToken,
+    restOrderDrink.putOrderDrinks
+  );
+  server.delete(
+    "/api/order-drink",
+    jwt.verifyToken,
+    restOrderDrink.deleteOrderDrinks
+  );
+
+  server.get(
+    "/api/order-drink/:id",
+    jwt.verifyToken,
+    restOrderDrink.getOrderDrink
+  );
+  server.post(
+    "/api/order-drink/:id",
+    jwt.verifyToken,
+    restOrderDrink.postOrderDrink
+  );
+  server.put(
+    "/api/order-drink/:id",
+    jwt.verifyToken,
+    restOrderDrink.putOrderDrink
+  );
+  server.delete(
+    "/api/order-drink/:id",
+    jwt.verifyToken,
+    restOrderDrink.deleteOrderDrink
+  );
 }
 
 startServer();

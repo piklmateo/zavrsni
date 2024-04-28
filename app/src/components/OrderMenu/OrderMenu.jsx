@@ -1,26 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { fetchDishes } from "../../state/slices/dish/dishSlice.js";
-import { fetchDrinks } from "../../state/slices/drink/drinkSlice.js";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import PlusIcon from "../../assets/images/plus.svg";
-import MinusIcon from "../../assets/images/minus.svg";
-import OrderModal from "../OrderModal/OrderModal.jsx";
 import { addItem, removeItem } from "../../state/slices/order/orderSlice.js";
+import OrderModal from "../OrderModal/OrderModal.jsx";
+import OrderItemCard from "../OrderItemCard/OrdeItemCard.jsx";
+import useMenuItems from "../../hooks/order/useMenuItems.js";
+import useOrder from "../../hooks/order/useOrder.js";
 import "./OrderMenu.css";
+import OrderSubmitButton from "../OrderSubmitButton/OrderSubmitButton.jsx";
 
 const OrderMenu = ({ category }) => {
-  const dispatch = useDispatch();
-  const dishList = useSelector((state) => state.dish.dish);
-  const dishStatus = useSelector((state) => state.dish.status);
-  const dishError = useSelector((state) => state.dish.error);
-  const drinkList = useSelector((state) => state.drink.drink);
-  const drinkStatus = useSelector((state) => state.drink.status);
-  const drinkError = useSelector((state) => state.drink.error);
-
-  const order = useSelector((state) => state.order);
-
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const { dishList, dishStatus, drinkList, drinkStatus } = useMenuItems();
+  const order = useOrder();
+  const dispatch = useDispatch();
 
+  //MODAL
   const openModal = () => {
     setModalIsOpen(true);
   };
@@ -28,21 +22,14 @@ const OrderMenu = ({ category }) => {
     setModalIsOpen(false);
   };
 
+  //MENU ITEMS
   const handleAddItem = (item) => {
     const id = item.id_dish || item.id_drink;
     dispatch(addItem({ ...item, id }));
   };
-
   const handleRemoveItem = (item) => {
     dispatch(removeItem(item));
   };
-
-  useEffect(() => {
-    if (dishStatus === "idle" && drinkStatus === "idle") {
-      dispatch(fetchDishes());
-      dispatch(fetchDrinks());
-    }
-  }, [drinkStatus, dishStatus, dispatch]);
 
   if (dishStatus === "loading" && drinkStatus === "loading") {
     return <div>Loading...</div>;
@@ -80,39 +67,16 @@ const OrderMenu = ({ category }) => {
       </div>
       <div className="order__grid">
         {menuItems.map((item) => (
-          <div
-            className="order__grid__item"
+          <OrderItemCard
             key={item.id_drink || item.id_dish}
-          >
-            <div className="order__item__info">
-              <div className="order__item__info__text">
-                <h3>{item.name}</h3>
-                <p>{item.price} €</p>
-              </div>
-              <div className="order__item__info__button">
-                <button className="btn__delete" onClick={openModal}>
-                  Delete
-                </button>
-              </div>
-            </div>
-            <div className="order__item__buttons">
-              <button
-                className="btn btn__minus"
-                onClick={() => handleRemoveItem(item)}
-              >
-                <img src={MinusIcon} alt="minus icon" width={25} height={25} />
-              </button>
-              <p>{item.quantity}</p>
-              <button
-                className="btn btn__plus"
-                onClick={() => handleAddItem(item)}
-              >
-                <img alt="plus icon" src={PlusIcon} width={25} height={25} />
-              </button>
-            </div>
-          </div>
+            item={item}
+            handleRemoveItem={handleRemoveItem}
+            handleAddItem={handleAddItem}
+            openModal={openModal}
+          />
         ))}
       </div>
+      <OrderSubmitButton />
       <OrderModal isOpen={modalIsOpen} closeModal={closeModal} order={order} />
     </div>
   );

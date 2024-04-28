@@ -21,6 +21,8 @@ const OrderModal = ({ isOpen, closeModal, order }) => {
       isOpen={isOpen}
       onRequestClose={closeModal}
       contentLabel="Order"
+      ariaHideApp={false}
+      appElement={document.getElementById("root")}
       style={customStyles}
     >
       <div className="order__modal__container">

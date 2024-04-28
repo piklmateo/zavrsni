@@ -1,0 +1,14 @@
+.btn__order {
+  background-color: var(--clr-primary);
+  color: var(--clr-neutral);
+  cursor: pointer;
+  transition: 100ms ease-in-out;
+  width: 100%;
+  max-width: 200px;
+}
+
+.btn__order:hover {
+  border: 1px solid var(--clr-primary);
+  background-color: var(--clr-neutral);
+  color: var(--clr-primary);
+}

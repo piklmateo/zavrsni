@@ -33,10 +33,10 @@ class OrderDAO {
 
   async insert(order) {
     try {
-      let sql = `INSERT INTO "order" ("date", "bill", "table_id", "reservation_id") VALUES ($1,$2,$3,$4)`;
-      let data = [order.date, order.bill, order.table_id || 1, order.reservation_id || 1];
-      await this.db.query(sql, data);
-      return true;
+      let sql = `INSERT INTO "order" ("date", "bill", "table_id") VALUES ($1, $2, $3) RETURNING id_order`;
+      let data = [order.date, order.bill, order.table_id || 1];
+      const result = await this.db.query(sql, data);
+      return result.rows[0].id_order;
     } catch (error) {
       console.error("Error while inserting order:", error);
       throw error;
@@ -57,7 +57,13 @@ class OrderDAO {
   async update(id_order, order) {
     try {
       let sql = `UPDATE "order" SET date=$1, bill=$2, table_id=$3, reservation_id=$4 WHERE id_order=$6`;
-      let data = [order.date, order.bill, order.table_id, order.reservation_id, id_order];
+      let data = [
+        order.date,
+        order.bill,
+        order.table_id,
+        order.reservation_id,
+        id_order,
+      ];
       await this.db.query(sql, data);
       return true;
     } catch (error) {

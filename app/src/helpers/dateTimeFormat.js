@@ -14,3 +14,4 @@ export const formatTime = (timeString) => {
 };
 
 export const today = new Date().toISOString().split("T")[0];
+export const todayTimestamp = new Date().toLocaleString();
