@@ -3,12 +3,7 @@ import React from "react";
 import PlusIcon from "../../assets/images/plus.svg";
 import MinusIcon from "../../assets/images/minus.svg";
 
-const OrderItemCard = ({
-  item,
-  handleRemoveItem,
-  handleAddItem,
-  openModal,
-}) => {
+const OrderItemCard = ({ item, handleRemoveItem, handleAddItem }) => {
   return (
     <div className="order__grid__item" key={item.id_drink || item.id_dish}>
       <div className="order__item__info">
@@ -17,9 +12,7 @@ const OrderItemCard = ({
           <p>{item.price} €</p>
         </div>
         <div className="order__item__info__button">
-          <button className="btn__delete" onClick={openModal}>
-            Delete
-          </button>
+          <button className="btn__delete">Delete</button>
         </div>
       </div>
       <div className="order__item__buttons">

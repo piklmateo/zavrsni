@@ -1,14 +1,31 @@
+// OrderDashboard.jsx
 import React, { useState } from "react";
-import NewMenuItem from "../NewMenuItem/NewMenuItem.jsx";
+import NewMenuItem from "../AddDishButton/AddDishButton.jsx";
 import MenuFilter from "../MenuFilter/MenuFilter.jsx";
 import OrderMenu from "../OrderMenu/OrderMenu.jsx";
-import NewOrderAndModal from "../NewOrderAndModal/NewOrderAndModal.jsx";
+import OrderModalButton from "../OrderModalButton/OrderModalButton.jsx";
+import OrderSubmitButton from "../OrderSubmitButton/OrderSubmitButton.jsx";
+import OrderModal from "../OrderModal/OrderModal.jsx";
+import useOrder from "../../hooks/order/useOrder.js";
+import AddDrinkButton from "../AddDrinkButton/AddDrinkButton.jsx";
+import AddDishButton from "../AddDishButton/AddDishButton.jsx";
+import "./OrderDashboard.css";
 
 const OrderDashboard = () => {
   const [selectedCategory, setSelectedCategory] = useState("Main course");
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const order = useOrder();
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
+  };
+
+  //MODAL
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+  const closeModal = () => {
+    setModalIsOpen(false);
   };
 
   return (
@@ -22,12 +39,17 @@ const OrderDashboard = () => {
 
       <OrderMenu category={selectedCategory} />
 
+      <OrderModal isOpen={modalIsOpen} closeModal={closeModal} order={order} />
+
       <div className="order__buttons__container">
-        <div className="flex-grow-1">
-          <NewOrderAndModal />
+        <div className="btn__submit__show">
+          <OrderSubmitButton />
+          <OrderModalButton openModal={openModal} />
         </div>
-        <div className="flex-grow-1 text-right">
-          <NewMenuItem />
+
+        <div className="btn__submit__show">
+          <AddDishButton />
+          <AddDrinkButton />
         </div>
       </div>
     </div>

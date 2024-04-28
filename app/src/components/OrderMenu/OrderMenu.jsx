@@ -1,26 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addItem, removeItem } from "../../state/slices/order/orderSlice.js";
-import OrderModal from "../OrderModal/OrderModal.jsx";
+
 import OrderItemCard from "../OrderItemCard/OrdeItemCard.jsx";
 import useMenuItems from "../../hooks/order/useMenuItems.js";
 import useOrder from "../../hooks/order/useOrder.js";
 import "./OrderMenu.css";
-import OrderSubmitButton from "../OrderSubmitButton/OrderSubmitButton.jsx";
 
 const OrderMenu = ({ category }) => {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
   const { dishList, dishStatus, drinkList, drinkStatus } = useMenuItems();
   const order = useOrder();
   const dispatch = useDispatch();
-
-  //MODAL
-  const openModal = () => {
-    setModalIsOpen(true);
-  };
-  const closeModal = () => {
-    setModalIsOpen(false);
-  };
 
   //MENU ITEMS
   const handleAddItem = (item) => {
@@ -72,12 +62,9 @@ const OrderMenu = ({ category }) => {
             item={item}
             handleRemoveItem={handleRemoveItem}
             handleAddItem={handleAddItem}
-            openModal={openModal}
           />
         ))}
       </div>
-      <OrderSubmitButton />
-      <OrderModal isOpen={modalIsOpen} closeModal={closeModal} order={order} />
     </div>
   );
 };

@@ -109,3 +109,15 @@
   border: 1px solid var(--clr-primary);
   color: var(--clr-primary);
 }
+
+@media (max-width: 950px) {
+  .order__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 630px) {
+  .order__grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -2,4 +2,55 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  gap: 2rem;
+}
+
+.btn__submit__show {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  min-width: 250px;
+  padding-top: 3rem;
+}
+
+.btn__order {
+  background-color: var(--clr-primary);
+  color: var(--clr-neutral);
+  cursor: pointer;
+  transition: 200ms ease-in-out;
+  height: auto; /* Set the height to auto or the desired height */
+  padding: 0.5rem 1rem; /* Adjust padding as needed */
+  width: 100%;
+}
+
+.btn__order:hover {
+  border: 1px solid var(--clr-primary);
+  background-color: var(--clr-neutral);
+  color: var(--clr-primary);
+}
+
+.btn__dish,
+.btn__drink {
+  background-color: var(--clr-secondary);
+  color: var(--clr-neutral);
+  cursor: pointer;
+  transition: 200ms ease-in-out;
+  height: auto; /* Set the height to auto or the desired height */
+  padding: 0.5rem 1rem; /* Adjust padding as needed */
+  width: 100%;
+}
+
+.btn__dish:hover,
+.btn__drink:hover {
+  border: 1px solid var(--clr-secondary);
+  background-color: var(--clr-neutral);
+  color: var(--clr-secondary);
+}
+
+@media (max-width: 630px) {
+  .order__buttons__container {
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+  }
 }
