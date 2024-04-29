@@ -1,10 +1,9 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { addItem, removeItem } from "../../state/slices/order/orderSlice.js";
-
+import { useDispatch } from "react-redux";
+import { addItem, removeItem } from "../../../state/slices/order/orderSlice.js";
 import OrderItemCard from "../OrderItemCard/OrdeItemCard.jsx";
-import useMenuItems from "../../hooks/order/useMenuItems.js";
-import useOrder from "../../hooks/order/useOrder.js";
+import useMenuItems from "../../../hooks/order/useMenuItems.js";
+import useOrder from "../../../hooks/order/useOrder.js";
 import "./OrderMenu.css";
 
 const OrderMenu = ({ category }) => {

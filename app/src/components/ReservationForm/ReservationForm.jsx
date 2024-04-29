@@ -37,11 +37,13 @@ const ReservationForm = () => {
   }, [status, dispatch]);
 
   useEffect(() => {
-    setFormData({
-      name: userList.name || "",
-      email: userList.email || "",
-      phone: userList.phone || "",
-    });
+    if (userList) {
+      setFormData({
+        name: userList.name || "",
+        email: userList.email || "",
+        phone: userList.phone || "",
+      });
+    }
   }, [userList]);
 
   if (status === "loading") {

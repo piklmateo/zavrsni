@@ -20,9 +20,17 @@ const UserRoute = () => {
       "/add-dish",
       "/add-drink",
       "/order",
+      "/order-list",
     ], // ADMIN
-    2: ["/menu", "/add-dish", "/add-drink", "/order"], // KUHAR
-    3: ["/menu", "/reservations", "/add-drink", "/add-dish", "/order"], // KONOBAR
+    2: ["/menu", "/add-dish", "/add-drink", "/order", "/order-list"], // KUHAR
+    3: [
+      "/menu",
+      "/reservations",
+      "/add-drink",
+      "/add-dish",
+      "/order",
+      "/order-list",
+    ], // KONOBAR
     4: ["/profile"], // KORISNIK
   };
 

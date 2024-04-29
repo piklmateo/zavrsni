@@ -1,0 +1,30 @@
+.order__list__card {
+  border: 1px solid var(--clr-border);
+  padding: 1rem;
+  display: flex;
+}
+
+.order__card__info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-grow: 1;
+}
+
+.order__card__info p,
+.order__card__content p {
+  font-family: var(--ff-primary);
+}
+
+.order__card__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1rem;
+}
+
+.order__item {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}

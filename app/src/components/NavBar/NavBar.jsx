@@ -16,9 +16,17 @@ const NavBar = () => {
       "/add-dish",
       "/add-drink",
       "/order",
+      "/order-list",
     ], // ADMIN
-    2: ["/menu", "/add-dish", "/add-drink", "/order"], // KUHAR
-    3: ["/menu", "/reservations", "/add-drink", "/add-dish", "/order"], // KONOBAR
+    2: ["/menu", "/add-dish", "/add-drink", "/order", "/order-list"], // KUHAR
+    3: [
+      "/menu",
+      "/reservations",
+      "/add-drink",
+      "/add-dish",
+      "/order",
+      "/order-list",
+    ], // KONOBAR
     4: ["/profile"], // KORISNIK
   };
 
@@ -86,6 +94,14 @@ const NavBar = () => {
                       <li key={index} className="nav__list__item">
                         <Link className="nav__link" to={route}>
                           Order
+                        </Link>
+                      </li>
+                    );
+                  } else if (route === "/order-list") {
+                    return (
+                      <li key={index} className="nav__list__item">
+                        <Link className="nav__link" to={route}>
+                          Order list
                         </Link>
                       </li>
                     );

@@ -1,13 +1,13 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { clear } from "../../state/slices/order/orderSlice.js";
-import useOrder from "../../hooks/order/useOrder.js";
+import { clear } from "../../../state/slices/order/orderSlice.js";
+import useOrder from "../../../hooks/order/useOrder.js";
 import {
   insertOrder,
   insertOrderDish,
   insertOrderDrink,
-} from "../../hooks/order/orderUtils.js";
-import { todayTimestamp } from "../../helpers/dateTimeFormat.js";
+} from "../../../hooks/order/orderUtils.js";
+import { todayTimestamp } from "../../../helpers/dateTimeFormat.js";
 import "./OrderSubmitButton.css";
 
 const OrderSubmitButton = () => {

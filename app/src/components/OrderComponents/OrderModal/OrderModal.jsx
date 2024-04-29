@@ -12,10 +12,23 @@ const customStyles = {
     transform: "translate(-50%, -50%)",
     width: "100%",
     maxWidth: "575px",
+    maxHeight: "600px",
+    overflowY: "scroll",
   },
 };
 
 const OrderModal = ({ isOpen, closeModal, order }) => {
+  const calculateBill = () => {
+    let totalBill = 0;
+    for (const item of order) {
+      totalBill += item.totalPrice;
+      console.log("totalPrice od itema: " + item.totalPrice);
+    }
+    return totalBill;
+  };
+
+  const bill = calculateBill();
+
   return (
     <Modal
       isOpen={isOpen}
@@ -29,12 +42,20 @@ const OrderModal = ({ isOpen, closeModal, order }) => {
         {order.map((orderItem) => (
           <div key={orderItem.id}>
             <div className="order__modal__info">
-              <h2>{orderItem.name}</h2>
-              <p>{orderItem.price}</p>
-              <p>X{orderItem.quantity}</p>
+              <div className="order__modal__info-left">
+                <h2>{orderItem.name}</h2>
+                <p>{orderItem.category_name}</p>
+              </div>
+              <div className="order__modal__info-right">
+                <p>X{orderItem.quantity}</p>
+                <p>{orderItem.price} €</p>
+              </div>
             </div>
           </div>
         ))}
+        <div className="order__modal__bill">
+          <p>Total: {bill} €</p>
+        </div>
         <div className="order__modal__buttons">
           <button className="btn btn__close" onClick={closeModal}>
             Close

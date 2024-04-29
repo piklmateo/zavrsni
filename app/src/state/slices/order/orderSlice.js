@@ -50,7 +50,6 @@ const orderSlice = createSlice({
       return state;
     },
     clear() {
-      // Simply return an empty array to clear the state
       return [];
     },
   },

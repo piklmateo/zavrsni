@@ -18,8 +18,8 @@
   color: var(--clr-neutral);
   cursor: pointer;
   transition: 200ms ease-in-out;
-  height: auto; /* Set the height to auto or the desired height */
-  padding: 0.5rem 1rem; /* Adjust padding as needed */
+  height: auto;
+  padding: 0.5rem 1rem;
   width: 100%;
 }
 
@@ -35,8 +35,8 @@
   color: var(--clr-neutral);
   cursor: pointer;
   transition: 200ms ease-in-out;
-  height: auto; /* Set the height to auto or the desired height */
-  padding: 0.5rem 1rem; /* Adjust padding as needed */
+  height: auto;
+  padding: 0.5rem 1rem;
   width: 100%;
 }
 

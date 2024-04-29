@@ -9,7 +9,40 @@ class OrderDAO {
 
   async getAll() {
     try {
-      let sql = `SELECT * FROM "order";`;
+      let sql = `SELECT 
+      o.id_order,
+      o.date,
+      od.dish_id,
+      d.name AS dish_name,
+      od.quantity AS dish_quantity,
+      NULL AS drink_id,
+      NULL AS drink_name,
+      NULL AS drink_quantity
+      FROM 
+          "order" o
+      LEFT JOIN 
+          order_dish od ON o.id_order = od.order_id
+      LEFT JOIN 
+          dish d ON od.dish_id = d.id_dish
+      UNION
+      SELECT 
+          o.id_order,
+          o.date,
+          NULL AS dish_id,
+          NULL AS dish_name,
+          NULL AS dish_quantity,
+          odr.drink_id,
+          dr.name AS drink_name,
+          odr.quantity AS drink_quantity
+      FROM 
+          "order" o
+      LEFT JOIN 
+          order_drink odr ON o.id_order = odr.order_id
+      LEFT JOIN 
+          drink dr ON odr.drink_id = dr.id_drink
+      ORDER BY 
+          id_order;  
+  `;
       const data = await this.db.query(sql, []);
       const rows = data.rows;
       return rows;

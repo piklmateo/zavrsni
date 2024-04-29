@@ -1,12 +1,11 @@
 // OrderDashboard.jsx
 import React, { useState } from "react";
-import NewMenuItem from "../AddDishButton/AddDishButton.jsx";
-import MenuFilter from "../MenuFilter/MenuFilter.jsx";
+import MenuFilter from "../../MenuFilter/MenuFilter.jsx";
 import OrderMenu from "../OrderMenu/OrderMenu.jsx";
 import OrderModalButton from "../OrderModalButton/OrderModalButton.jsx";
 import OrderSubmitButton from "../OrderSubmitButton/OrderSubmitButton.jsx";
 import OrderModal from "../OrderModal/OrderModal.jsx";
-import useOrder from "../../hooks/order/useOrder.js";
+import useOrder from "../../../hooks/order/useOrder.js";
 import AddDrinkButton from "../AddDrinkButton/AddDrinkButton.jsx";
 import AddDishButton from "../AddDishButton/AddDishButton.jsx";
 import "./OrderDashboard.css";

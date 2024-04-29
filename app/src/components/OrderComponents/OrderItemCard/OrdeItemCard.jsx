@@ -1,7 +1,7 @@
 // OrderItem.jsx
 import React from "react";
-import PlusIcon from "../../assets/images/plus.svg";
-import MinusIcon from "../../assets/images/minus.svg";
+import PlusIcon from "../../../assets/images/plus.svg";
+import MinusIcon from "../../../assets/images/minus.svg";
 
 const OrderItemCard = ({ item, handleRemoveItem, handleAddItem }) => {
   return (

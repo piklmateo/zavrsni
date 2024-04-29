@@ -7,33 +7,36 @@ const initialState = {
   error: null,
 };
 
-export const fetchUserData = createAsyncThunk("user/fetchUserData", async () => {
-  try {
-    const token = sessionStorage.getItem("token");
-    console.log("profile-token");
-    if (!token) {
-      console.log("You don't have a valid token");
-      return [];
-    }
-    const decodedToken = jwtDecode(token);
-    const id_user = decodedToken.user.id_user;
-    const res = await fetch(`http://localhost:12413/api/users/${id_user}`, {
-      method: "GET",
-      headers: {
-        "Content-type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    });
+export const fetchUserData = createAsyncThunk(
+  "user/fetchUserData",
+  async () => {
+    try {
+      const token = sessionStorage.getItem("token");
+      console.log("profile-token");
+      if (!token) {
+        console.log("You don't have a valid token");
+        return [];
+      }
+      const decodedToken = jwtDecode(token);
+      const id_user = decodedToken.user.id_user;
+      const res = await fetch(`http://localhost:12413/api/users/${id_user}`, {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
 
-    if (!res.ok) {
-      throw new Error("Fauled to fetch user data");
+      if (!res.ok) {
+        throw new Error("Failed to fetch user data");
+      }
+      const data = await res.json();
+      return data;
+    } catch (error) {
+      console.log("error: ", error);
     }
-    const data = await res.json();
-    return data;
-  } catch (error) {
-    console.log("error: ", error);
   }
-});
+);
 
 const userSlice = createSlice({
   name: "user",
