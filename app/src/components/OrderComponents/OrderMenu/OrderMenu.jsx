@@ -45,12 +45,10 @@ const OrderMenu = ({ category }) => {
     }));
   };
 
-  const menuItems = getMenuItemsWithQuantity().filter(
-    (item) => item.category_name === category
-  );
+  const menuItems = getMenuItemsWithQuantity().filter((item) => item.category_name === category);
 
   return (
-    <div className="order__menu__container">
+    <div className="order__item__container">
       <div className="order__item__heading">
         <h1>{category}</h1>
       </div>

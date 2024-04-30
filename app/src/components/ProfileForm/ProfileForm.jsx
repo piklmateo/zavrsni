@@ -1,10 +1,10 @@
 // ProfileForm.js
 import React, { useState, useEffect } from "react";
-import { jwtDecode } from "jwt-decode";
 import "./ProfileForm.css";
 import { useDispatch, useSelector } from "react-redux";
 // import { useNavigate } from "react-router";
-import { fetchUserData, updateUser } from "../../state/slices/user/userSlice";
+import { fetchUserData } from "../../state/slices/user/userSlice";
+import { updateUserProfile } from "../../hooks/user/userUtils.js";
 
 const ProfileForm = () => {
   const dispatch = useDispatch();
@@ -52,44 +52,12 @@ const ProfileForm = () => {
     }));
   };
 
-  const updateUserProfile = async (event) => {
-    event.preventDefault();
-
-    try {
-      const token = sessionStorage.getItem("token");
-      if (!token) {
-        console.log("User doesn't have a valid token");
-      }
-      const decodedToken = jwtDecode(token);
-      const id_user = decodedToken.user.id_user;
-
-      const res = await fetch(`http://localhost:12413/api/users/${id_user}`, {
-        method: "PUT",
-        headers: {
-          "Content-type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (res.ok) {
-        // Update za store
-        dispatch(updateUser(formData));
-        console.log("User profile updated successfully");
-      } else {
-        console.log("Failed to update user profile");
-      }
-    } catch (error) {
-      console.log("Error: " + error);
-    }
-  };
-
   return (
     <div>
       <div className="main__layout__container">
         <div className="profile__form__wrapper">
           <h1>profile</h1>
-          <form className="form" onSubmit={updateUserProfile}>
+          <form className="form" onSubmit={(event) => updateUserProfile(event, formData, dispatch)}>
             <div className="profile__form__input profile__form__name">
               <label htmlFor="name">Name</label>
               <input
@@ -107,9 +75,7 @@ const ProfileForm = () => {
                 name="surname"
                 id="surname"
                 value={formData.surname}
-                onChange={(event) =>
-                  handleChange(event, setFormData, "surname")
-                }
+                onChange={(event) => handleChange(event, setFormData, "surname")}
               />
             </div>
             <div className="profile__form__input profile__form__phone">
@@ -124,23 +90,11 @@ const ProfileForm = () => {
             </div>
             <div className="profile__form__input profile__form__email">
               <label htmlFor="email">Email</label>
-              <input
-                type="email"
-                name="email"
-                id="email"
-                value={formData.email}
-                disabled
-              />
+              <input type="email" name="email" id="email" value={formData.email} disabled />
             </div>
             <div className="profile__form__input profile__form__username">
               <label htmlFor="username">Username</label>
-              <input
-                type="text"
-                name="username"
-                id="username"
-                value={formData.username}
-                disabled
-              />
+              <input type="text" name="username" id="username" value={formData.username} disabled />
             </div>
             <button type="submit" className="btn btn__update">
               Update

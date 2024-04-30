@@ -53,7 +53,7 @@ const Dish = () => {
 
       if (res.ok) {
         console.log("Dish added successfully");
-        navigate("/menu");
+        window.location.href = "/order";
       } else {
         console.log("Error adding dish");
       }
@@ -83,19 +83,16 @@ const Dish = () => {
             <label htmlFor="category">Category</label>
             <select name="category" id="category">
               {categoryList.map((category, index) => (
-                <option
-                  key={category.category_id || index}
-                  value={category.id_category}
-                >
+                <option key={category.category_id || index} value={category.id_category}>
                   {category.name}
                 </option>
               ))}
             </select>
           </div>
 
-          <div className="add__dish__buttons">
+          <div className="add__cancel__buttons">
             <div className="full__width">
-              <button className="btn btn__add-dish">Add</button>
+              <button className="btn btn__add">Add</button>
             </div>
             <div className="full__width">
               <Link to="/order">

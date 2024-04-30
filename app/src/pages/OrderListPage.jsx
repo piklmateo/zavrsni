@@ -1,5 +1,5 @@
 import React from "react";
-import OrderList from "../components/OrderList/OrderList.jsx";
+import OrderList from "../components/OrderListComponents/OrderList/OrderList.jsx";
 
 const OrderListPage = () => {
   return <OrderList />;

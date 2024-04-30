@@ -1,5 +1,7 @@
 .order__list__card {
-  border: 1px solid var(--clr-border);
+  border-inline: 1px solid var(--clr-border);
+  border-top: 1px solid var(--clr-border);
+  border-bottom: 2px solid var(--clr-primary);
   padding: 1rem;
   display: flex;
 }
@@ -8,23 +10,32 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  flex-grow: 1;
 }
 
 .order__card__info p,
 .order__card__content p {
   font-family: var(--ff-primary);
+  font-size: var(--fs-regular);
+  float: right;
 }
 
 .order__card__content {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 1rem;
+  justify-content: flex-start;
+  flex-grow: 1;
 }
 
 .order__item {
   display: flex;
   flex-direction: row;
   gap: 1rem;
+}
+
+@media (max-width: 550px) {
+  .order__card__info p,
+  .order__card__content p {
+    font-size: var(--fs-smaller);
+  }
 }

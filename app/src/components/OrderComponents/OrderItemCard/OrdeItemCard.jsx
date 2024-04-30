@@ -2,6 +2,7 @@
 import React from "react";
 import PlusIcon from "../../../assets/images/plus.svg";
 import MinusIcon from "../../../assets/images/minus.svg";
+import "./OrderItemCard.css";
 
 const OrderItemCard = ({ item, handleRemoveItem, handleAddItem }) => {
   return (
@@ -16,10 +17,7 @@ const OrderItemCard = ({ item, handleRemoveItem, handleAddItem }) => {
         </div>
       </div>
       <div className="order__item__buttons">
-        <button
-          className="btn btn__minus"
-          onClick={() => handleRemoveItem(item)}
-        >
+        <button className="btn btn__minus" onClick={() => handleRemoveItem(item)}>
           <img src={MinusIcon} alt="minus icon" width={25} height={25} />
         </button>
         <p>{item.quantity}</p>

@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 import "./DrinkForm.css";
 
 const DrinkForm = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const categoryList = useSelector((state) => state.category.category);
   const status = useSelector((state) => state.category.status);
@@ -53,7 +52,7 @@ const DrinkForm = () => {
 
       if (res.ok) {
         console.log("drink added successfully");
-        navigate("/menu");
+        window.location.href = "/order";
       } else {
         console.log("Error adding drink");
       }
@@ -79,19 +78,16 @@ const DrinkForm = () => {
             <label htmlFor="category">Category</label>
             <select name="category" id="category">
               {categoryList.map((category, index) => (
-                <option
-                  key={category.category_id || index}
-                  value={category.id_category}
-                >
+                <option key={category.category_id || index} value={category.id_category}>
                   {category.name}
                 </option>
               ))}
             </select>
           </div>
 
-          <div className="add__drink__buttons">
+          <div className="add__cancel__buttons">
             <div className="full__width">
-              <button className="btn btn__add-drink">Add</button>
+              <button className="btn btn__add">Add</button>
             </div>
             <div className="full__width">
               <Link to="/order">
