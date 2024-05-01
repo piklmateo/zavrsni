@@ -8,6 +8,7 @@ import restDrink from "./servis/drink/restDrink.js";
 import restOrder from "./servis/order/restOrder.js";
 import restOrderDish from "./servis/order_dish/restOrderDish.js";
 import restOrderDrink from "./servis/order_drink/restOrderDrink.js";
+import restTable from "./servis/table/restTable.js";
 import cors from "cors";
 import jwt from "./modules/jwt.js";
 
@@ -49,6 +50,7 @@ function startServer() {
   prepareCategoryPaths();
   prepareOrderDishPaths();
   prepareOrderDrinkPaths();
+  prepareTablePaths();
 
   server.use((req, res) => {
     res.status(404);
@@ -156,15 +158,15 @@ function prepareDrinkPaths() {
 }
 
 function prepareOrderPaths() {
-  server.get("/api/orders", jwt.verifyToken, restOrder.getOrders);
-  server.post("/api/orders", jwt.verifyToken, restOrder.postOrders);
-  server.put("/api/orders", jwt.verifyToken, restOrder.putOrders);
-  server.delete("/api/orders", jwt.verifyToken, restOrder.deleteOrders);
+  server.get("/api/tables", jwt.verifyToken, restOrder.getOrders);
+  server.post("/api/tables", jwt.verifyToken, restOrder.postOrders);
+  server.put("/api/tables", jwt.verifyToken, restOrder.putOrders);
+  server.delete("/api/tables", jwt.verifyToken, restOrder.deleteOrders);
 
-  server.get("/api/orders/:id", jwt.verifyToken, restOrder.getOrder);
-  server.post("/api/orders/:id", jwt.verifyToken, restOrder.postOrder);
-  server.put("/api/orders/:id", jwt.verifyToken, restOrder.putOrder);
-  server.delete("/api/orders/:id", jwt.verifyToken, restOrder.deleteOrder);
+  server.get("/api/tables/:id", jwt.verifyToken, restOrder.getOrder);
+  server.post("/api/tables/:id", jwt.verifyToken, restOrder.postOrder);
+  server.put("/api/tables/:id", jwt.verifyToken, restOrder.putOrder);
+  server.delete("/api/tables/:id", jwt.verifyToken, restOrder.deleteOrder);
 }
 
 function prepareOrderDishPaths() {
@@ -245,6 +247,18 @@ function prepareOrderDrinkPaths() {
     jwt.verifyToken,
     restOrderDrink.deleteOrderDrink
   );
+}
+
+function prepareTablePaths() {
+  server.get("/api/tables", jwt.verifyToken, restTable.getTables);
+  server.post("/api/tables", jwt.verifyToken, restTable.postTables);
+  server.put("/api/tables", jwt.verifyToken, restTable.putTables);
+  server.delete("/api/tables", jwt.verifyToken, restTable.deleteTables);
+
+  server.get("/api/tables/:id", jwt.verifyToken, restTable.getTable);
+  server.post("/api/tables/:id", jwt.verifyToken, restTable.postTable);
+  server.put("/api/tables/:id", jwt.verifyToken, restTable.putTable);
+  server.delete("/api/tables/:id", jwt.verifyToken, restTable.deleteTable);
 }
 
 startServer();
