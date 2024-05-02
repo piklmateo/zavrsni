@@ -57,3 +57,39 @@
 .step__active {
   border: 5px solid var(--clr-primary);
 }
+
+.input__date {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.react-datepicker__header {
+  background-color: var(--clr-primary);
+  color: var(--clr-neutral);
+}
+
+.react-datepicker__current-month {
+  color: var(--clr-neutral);
+}
+
+.react-datepicker__day-keyboard-selected {
+  background-color: var(--clr-neutral);
+}
+
+.react-datepicker__day-name {
+  color: var(--clr-neutral);
+}
+
+.react-datepicker__day:hover {
+  background-color: var(--clr-primary);
+  color: var(--clr-neutral);
+}
+
+.react-datepicker__day--selected {
+  background-color: var(--clr-primary);
+}
+
+.react-datepicker__day--selected:hover {
+  background-color: var(--clr-primary);
+}

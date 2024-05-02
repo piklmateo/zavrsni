@@ -4,9 +4,12 @@ import LeftArrow from "../../assets/images/left-arrow.svg";
 import RightArrow from "../../assets/images/right-arrow.svg";
 import { today } from "../../helpers/dateTimeFormat.js";
 import { jwtDecode } from "jwt-decode";
-import "./ReservationForm.css";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserData, updateUser } from "../../state/slices/user/userSlice";
+import { fetchTables } from "../../state/slices/table/tableSlice.js";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import "./ReservationForm.css";
 
 const ReservationForm = () => {
   const navigate = useNavigate();
@@ -14,8 +17,11 @@ const ReservationForm = () => {
 
   const dispatch = useDispatch();
   const userList = useSelector((state) => state.user.user);
-  const status = useSelector((state) => state.user.status);
+  const userStatus = useSelector((state) => state.user.userStatus);
   const error = useSelector((state) => state.user.error);
+
+  const tableList = useSelector((state) => state.table.table);
+  const tableStatus = useSelector((state) => state.table.status);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -26,15 +32,16 @@ const ReservationForm = () => {
   const [reservationData, setReservationData] = useState({
     date: today,
     time: "12:00:00",
-    table_id: 1,
+    table_id: 2,
     user_id: null,
   });
 
   useEffect(() => {
-    if (status === "idle") {
+    if (userStatus === "idle" || tableStatus === "idle") {
       dispatch(fetchUserData());
+      dispatch(fetchTables());
     }
-  }, [status, dispatch]);
+  }, [userStatus, tableStatus, dispatch]);
 
   useEffect(() => {
     if (userList) {
@@ -46,20 +53,29 @@ const ReservationForm = () => {
     }
   }, [userList]);
 
-  if (status === "loading") {
+  if (userStatus === "loading") {
     return <div>Loading...</div>;
   }
 
-  if (status === "failed") {
+  if (userStatus === "failed") {
     return <div>Error: {error}</div>;
   }
 
-  const handleChange = (event, setStateFunction, stateKey) => {
-    const { value } = event.target;
-    setStateFunction((prevState) => ({
-      ...prevState,
-      [stateKey]: value,
-    }));
+  const handleChange = (eventOrDate, setStateFunction, stateKey) => {
+    // If it's a standard event object, extract the value
+    if (eventOrDate.target) {
+      const { value } = eventOrDate.target;
+      setStateFunction((prevState) => ({
+        ...prevState,
+        [stateKey]: value,
+      }));
+    } else {
+      // If it's a date object from DatePicker, directly set the state
+      setStateFunction((prevState) => ({
+        ...prevState,
+        [stateKey]: eventOrDate,
+      }));
+    }
   };
 
   const handleSubmit = async (event) => {
@@ -129,16 +145,13 @@ const ReservationForm = () => {
         <form className="form" onSubmit={handleSubmit}>
           {step === 1 && (
             <div className="input__date">
-              <label htmlFor="date">Date</label>
-              <input
-                type="date"
-                name="date"
-                id="date"
-                value={reservationData.date}
-                onChange={(event) =>
-                  handleChange(event, setReservationData, "date")
+              <DatePicker
+                selected={new Date(reservationData.date)}
+                onChange={(date) =>
+                  handleChange(date, setReservationData, "date")
                 }
-                required
+                minDate={today}
+                inline
               />
             </div>
           )}
@@ -175,14 +188,11 @@ const ReservationForm = () => {
                   }
                   required
                 >
-                  <option value={2}>Table 2 - 2 people</option>
-                  <option value={5}>Table 5 - 2 people</option>
-                  <option value={7}>Table 7 - 2 people</option>
-                  <option value={8}>Table 8 - 4 people</option>
-                  <option value={4}>Table 4 - 4 people</option>
-                  <option value={1}>Table 1 - 4 people</option>
-                  <option value={3}>Table 3 - 6 people</option>
-                  <option value={6}>Table 6 - 8 people</option>
+                  {tableList.map((table) => (
+                    <option key={table.id_table} value={table.id_table}>
+                      {table.quantity}
+                    </option>
+                  ))}
                 </select>
               </div>
             </>

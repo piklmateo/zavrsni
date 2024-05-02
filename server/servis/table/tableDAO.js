@@ -10,7 +10,7 @@ class TableDAO {
   async getAll() {
     try {
       let sql = `
-        SELECT * from "table";
+        SELECT * FROM "table" ORDER BY quantity ASC;
       `;
       const data = await this.db.query(sql, []);
       const rows = data.rows;

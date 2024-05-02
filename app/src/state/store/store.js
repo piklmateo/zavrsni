@@ -1,22 +1,24 @@
 // store.js
 import { configureStore } from "@reduxjs/toolkit";
-import reservationsSlice from "../slices/reservations/reservationsSlice.js";
-import categorySlice from "../slices/category/categorySlice.js";
-import userSlice from "../slices/user/userSlice.js";
-import dishSlice from "../slices/dish/dishSlice.js";
-import drinkSlice from "../slices/drink/drinkSlice.js";
-import orderSlice from "../slices/order/orderSlice.js";
-import orderListSlice from "../slices/order/orderListSlice.js";
+import reservationsReducer from "../slices/reservations/reservationsSlice.js";
+import categoryReducer from "../slices/category/categorySlice.js";
+import userReducer from "../slices/user/userSlice.js";
+import dishReducer from "../slices/dish/dishSlice.js";
+import drinkReducer from "../slices/drink/drinkSlice.js";
+import orderReducer from "../slices/order/orderSlice.js";
+import orderListReducer from "../slices/order/orderListSlice.js";
+import tableReducer from "../slices/table/tableSlice.js";
 
 const store = configureStore({
   reducer: {
-    reservations: reservationsSlice,
-    category: categorySlice,
-    user: userSlice,
-    dish: dishSlice,
-    drink: drinkSlice,
-    order: orderSlice,
-    orderList: orderListSlice,
+    reservations: reservationsReducer,
+    category: categoryReducer,
+    user: userReducer,
+    dish: dishReducer,
+    drink: drinkReducer,
+    order: orderReducer,
+    orderList: orderListReducer,
+    table: tableReducer,
   },
 });
 

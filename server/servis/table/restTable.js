@@ -1,4 +1,4 @@
-import TableDAO from "./TableDAO.js";
+import TableDAO from "./tableDAO.js";
 import env from "dotenv";
 
 env.config();
@@ -29,12 +29,12 @@ const restTable = {
     }
   },
 
-  deletetables: function (req, res) {
+  deleteTables: function (req, res) {
     res.type("application/json");
     res.status(501).send(JSON.stringify({ error: "Not implemented" }));
   },
 
-  puttables: function (req, res) {
+  putTables: function (req, res) {
     res.type("application/json");
     res.status(501).send(JSON.stringify({ error: "Not implemented" }));
   },
@@ -52,7 +52,7 @@ const restTable = {
     }
   },
 
-  postDrink: function (req, res) {
+  postTable: function (req, res) {
     res.type("application/json");
     res.status(405).send(JSON.stringify({ error: "Method Not Allowed" }));
   },
