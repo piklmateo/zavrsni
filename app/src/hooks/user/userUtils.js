@@ -22,7 +22,6 @@ export const updateUserProfile = async (event, formData, dispatch) => {
     });
 
     if (res.ok) {
-      // Update za store
       dispatch(updateUser(formData));
       console.log("User profile updated successfully");
     } else {

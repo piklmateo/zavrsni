@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchReservations } from "../../state/slices/reservations/reservationsSlice.js";
-import { formatDate, formatTime } from "../../helpers/dateTimeFormat.js";
+import { fetchReservations } from "../../../state/slices/reservations/reservationsSlice.js";
+import { formatDate, formatTime } from "../../../helpers/dateTimeFormat.js";
 import "./ReservationsTable.css";
 import { useNavigate } from "react-router";
 
 const ReservationsTable = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const reservationList = useSelector((state) => state.reservations.reservations);
+  const reservationList = useSelector(
+    (state) => state.reservations.reservations
+  );
   const status = useSelector((state) => state.reservations.status);
   const error = useSelector((state) => state.reservations.error);
 

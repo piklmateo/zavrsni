@@ -1,5 +1,5 @@
 import React from "react";
-import ReservationForm from "../components/ReservationForm/ReservationForm.jsx";
+import ReservationForm from "../components/ReservationComponents/ReservationForm/ReservationForm.jsx";
 
 const ReservationPage = () => {
   return (

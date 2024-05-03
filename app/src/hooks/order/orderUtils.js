@@ -4,7 +4,7 @@ export const insertOrder = async (orderData) => {
 
     if (!token) {
       console.log("You don't have a valid token");
-      return null; // Return null if token is not valid
+      return null;
     }
 
     const res = await fetch("http://localhost:12413/api/orders", {

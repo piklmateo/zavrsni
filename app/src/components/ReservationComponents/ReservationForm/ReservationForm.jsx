@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router";
-import LeftArrow from "../../assets/images/left-arrow.svg";
-import RightArrow from "../../assets/images/right-arrow.svg";
-import { today } from "../../helpers/dateTimeFormat.js";
-import { jwtDecode } from "jwt-decode";
+import ReservationSubmitButton from "../ReservationSubmitButton/ReservationSubmitButton.jsx";
+import LeftArrow from "../../../assets/images/left-arrow.svg";
+import RightArrow from "../../../assets/images/right-arrow.svg";
+import { today } from "../../../helpers/dateTimeFormat.js";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUserData, updateUser } from "../../state/slices/user/userSlice";
-import { fetchTables } from "../../state/slices/table/tableSlice.js";
+import { fetchUserData } from "../../../state/slices/user/userSlice.js";
+import { fetchTables } from "../../../state/slices/table/tableSlice.js";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./ReservationForm.css";
 
 const ReservationForm = () => {
-  const navigate = useNavigate();
   const [step, setStep] = useState(1);
 
   const dispatch = useDispatch();
@@ -62,7 +60,6 @@ const ReservationForm = () => {
   }
 
   const handleChange = (eventOrDate, setStateFunction, stateKey) => {
-    // If it's a standard event object, extract the value
     if (eventOrDate.target) {
       const { value } = eventOrDate.target;
       setStateFunction((prevState) => ({
@@ -70,60 +67,10 @@ const ReservationForm = () => {
         [stateKey]: value,
       }));
     } else {
-      // If it's a date object from DatePicker, directly set the state
       setStateFunction((prevState) => ({
         ...prevState,
         [stateKey]: eventOrDate,
       }));
-    }
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const token = sessionStorage.getItem("token");
-
-    let dataToSend;
-
-    if (token) {
-      try {
-        const decodedToken = jwtDecode(token);
-        const user_id = decodedToken.user.id_user;
-
-        dataToSend = {
-          ...reservationData,
-          user_id: user_id,
-        };
-      } catch (error) {
-        console.log("error catch: " + error);
-        return;
-      }
-    } else {
-      dataToSend = {
-        ...reservationData,
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-      };
-    }
-
-    try {
-      const res = await fetch("http://localhost:12413/api/reservations", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify(dataToSend),
-      });
-
-      if (res.ok) {
-        dispatch(updateUser(dataToSend));
-        navigate("/");
-        console.log("Successfull reservation!");
-      } else {
-        console.log("error res not ok");
-      }
-    } catch (error) {
-      console.log("error catch: " + error);
     }
   };
 
@@ -142,7 +89,7 @@ const ReservationForm = () => {
             className={`step__line ${step >= 3 ? "step__active" : ""}`}
           ></div>
         </div>
-        <form className="form" onSubmit={handleSubmit}>
+        <form className="form">
           {step === 1 && (
             <div className="input__date">
               <DatePicker
@@ -236,7 +183,10 @@ const ReservationForm = () => {
                 />
               </div>
               <div>
-                <button className="btn btn__reserve">Reserve</button>
+                <ReservationSubmitButton
+                  formData={formData}
+                  reservationData={reservationData}
+                />
               </div>
             </>
           )}
