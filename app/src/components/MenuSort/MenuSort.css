@@ -1,0 +1,6 @@
+.menu__sort {
+  border: 1px solid var(--clr-border);
+  font-family: var(--ff-primary);
+  padding: 0.2rem;
+  background-color: var(--clr-neutrar);
+}

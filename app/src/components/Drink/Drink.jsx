@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { fetchDrinks } from "../../state/slices/drink/drinkSlice";
 import { useDispatch, useSelector } from "react-redux";
 
-const Drink = ({ category }) => {
+const Drink = ({ category, sortOrder }) => {
   const dispatch = useDispatch();
   const drinkList = useSelector((state) => state.drink.drink);
   const status = useSelector((state) => state.drink.status);
@@ -26,9 +26,21 @@ const Drink = ({ category }) => {
     (drink) => drink.category_name === category
   );
 
+  const sortedDrinks = [...filteredDrinks].sort((a, b) => {
+    if (sortOrder === "price-asc") {
+      return a.price - b.price;
+    } else if (sortOrder === "price-desc") {
+      return b.price - a.price;
+    } else if (sortOrder === "name-asc") {
+      return a.name.localeCompare(b.name);
+    } else {
+      return b.name.localeCompare(a.name);
+    }
+  });
+
   return (
     <div className="menu__item__wrapper">
-      {filteredDrinks.map((drink, index) => (
+      {sortedDrinks.map((drink, index) => (
         <div className="menu__item" key={drink.id_drink || index}>
           <div className="menu__item__dish">
             <div className="menu__item__title">
