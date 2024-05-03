@@ -56,3 +56,10 @@
   flex-direction: column;
   gap: 2rem;
 }
+
+.add__menu__item__container {
+  max-width: 400px;
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-start;
+}

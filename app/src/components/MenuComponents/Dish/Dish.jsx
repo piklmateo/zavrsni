@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { fetchDrinks } from "../../state/slices/drink/drinkSlice";
+import React, { useEffect } from "react";
+import { fetchDishes } from "../../../state/slices/dish/dishSlice";
 import { useDispatch, useSelector } from "react-redux";
+import "./Dish.css";
 
-const Drink = ({ category, sortOrder }) => {
+const Dish = ({ category, sortOrder }) => {
   const dispatch = useDispatch();
-  const drinkList = useSelector((state) => state.drink.drink);
-  const status = useSelector((state) => state.drink.status);
-  const error = useSelector((state) => state.drink.error);
+  const dishList = useSelector((state) => state.dish.dish);
+  const status = useSelector((state) => state.dish.status);
+  const error = useSelector((state) => state.dish.error);
 
   useEffect(() => {
     if (status === "idle") {
-      dispatch(fetchDrinks());
+      dispatch(fetchDishes());
     }
   }, [status, dispatch]);
 
@@ -22,11 +23,11 @@ const Drink = ({ category, sortOrder }) => {
     return <div>Error: {error}</div>;
   }
 
-  const filteredDrinks = drinkList.filter(
-    (drink) => drink.category_name === category
+  const filteredDishes = dishList.filter(
+    (dish) => dish.category_name === category
   );
 
-  const sortedDrinks = [...filteredDrinks].sort((a, b) => {
+  const sortedDishes = [...filteredDishes].sort((a, b) => {
     if (sortOrder === "price-asc") {
       return a.price - b.price;
     } else if (sortOrder === "price-desc") {
@@ -40,17 +41,20 @@ const Drink = ({ category, sortOrder }) => {
 
   return (
     <div className="menu__item__wrapper">
-      {sortedDrinks.map((drink, index) => (
-        <div className="menu__item" key={drink.id_drink || index}>
+      {sortedDishes.map((dish, index) => (
+        <div className="menu__item" key={dish.id || index}>
           <div className="menu__item__dish">
             <div className="menu__item__title">
-              <p>{drink.name}</p>
+              <p>{dish.name}</p>
+            </div>
+            <div className="menu__item__description">
+              <p>{dish.ingridients}</p>
             </div>
           </div>
           <div className="menu__item__line"></div>
           <div className="menu__item__price">
-            <p>{drink.price} EUR</p>
-            <div className="menu__item__category">{drink.category_name}</div>
+            <p>{dish.price} EUR</p>
+            <div className="menu__item__category">{dish.category_name}</div>
           </div>
         </div>
       ))}
@@ -58,4 +62,4 @@ const Drink = ({ category, sortOrder }) => {
   );
 };
 
-export default Drink;
+export default Dish;

@@ -83,7 +83,10 @@ const Dish = () => {
             <label htmlFor="category">Category</label>
             <select name="category" id="category">
               {categoryList.map((category, index) => (
-                <option key={category.category_id || index} value={category.id_category}>
+                <option
+                  key={category.category_id || index}
+                  value={category.id_category}
+                >
                   {category.name}
                 </option>
               ))}
@@ -95,7 +98,7 @@ const Dish = () => {
               <button className="btn btn__add">Add</button>
             </div>
             <div className="full__width">
-              <Link to="/order">
+              <Link to="/menu">
                 <button className="btn btn__cancel">Cancel</button>
               </Link>
             </div>

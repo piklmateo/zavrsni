@@ -1,13 +1,11 @@
 // OrderDashboard.jsx
 import React, { useState } from "react";
-import MenuFilter from "../../MenuFilter/MenuFilter.jsx";
+import MenuFilter from "../../MenuComponents/MenuFilter/MenuFilter.jsx";
 import OrderMenu from "../OrderMenu/OrderMenu.jsx";
 import OrderModalButton from "../OrderModalButton/OrderModalButton.jsx";
 import OrderSubmitButton from "../OrderSubmitButton/OrderSubmitButton.jsx";
 import OrderModal from "../OrderModal/OrderModal.jsx";
 import useOrder from "../../../hooks/order/useOrder.js";
-import AddDrinkButton from "../AddDrinkButton/AddDrinkButton.jsx";
-import AddDishButton from "../AddDishButton/AddDishButton.jsx";
 import "./OrderDashboard.css";
 
 const OrderDashboard = () => {
@@ -46,10 +44,7 @@ const OrderDashboard = () => {
           <OrderModalButton openModal={openModal} />
         </div>
 
-        <div className="btn__submit__show">
-          <AddDishButton />
-          <AddDrinkButton />
-        </div>
+        <div className="btn__submit__show"></div>
       </div>
     </div>
   );
