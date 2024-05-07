@@ -18,6 +18,7 @@ import AddDrinkPage from "./pages/AddDrinkPage.jsx";
 import UserRoute from "./authorization/UserRoute.js";
 import OrderPage from "./pages/OrderPage.jsx";
 import OrderListPage from "./pages/OrderListPage.jsx";
+import ReservationsPageUser from "./pages/ReservationsPageUser.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -35,6 +36,7 @@ const router = createBrowserRouter(
         <Route path="/add-drink" element={<AddDrinkPage />} />
         <Route path="/order" element={<OrderPage />} />
         <Route path="/order-list" element={<OrderListPage />} />
+        <Route path="/reservations-user" element={<ReservationsPageUser />} />
       </Route>
     </Route>
   )

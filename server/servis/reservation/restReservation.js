@@ -16,6 +16,19 @@ const restReservation = {
     }
   },
 
+  getReservationsUser: async function (req, res) {
+    res.type("application/json");
+    try {
+      let id = req.params.id;
+      let rdao = new ReservationDAO();
+      const reservations = await rdao.getAllUser(id);
+      res.send(JSON.stringify(reservations));
+    } catch (error) {
+      console.error(error);
+      res.status(500).send(JSON.stringify({ error: "Internal Server Error" }));
+    }
+  },
+
   postReservations: async function (req, res) {
     res.type("application/json");
     try {

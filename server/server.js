@@ -90,6 +90,13 @@ function prepareReservationPaths() {
     jwt.verifyToken,
     restReservation.getReservations
   );
+
+  // server.get(
+  //   "/api/reservations-user/:id",
+  //   jwt.verifyToken,
+  //   restReservation.getReservationsUser
+  // );
+
   server.post(
     "/api/reservations/check",
     jwt.verifyToken,

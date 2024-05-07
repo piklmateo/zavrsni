@@ -22,7 +22,7 @@ const UserRoute = () => {
       "/order",
       "/order-list",
     ], // ADMIN
-    2: ["/menu", "/add-dish", "/add-drink", "/order", "/order-list"], // KUHAR
+    2: ["/menu", "/add-dish", "/add-drink", "/order-list"], // KUHAR
     3: [
       "/menu",
       "/reservations",
@@ -31,7 +31,7 @@ const UserRoute = () => {
       "/order",
       "/order-list",
     ], // KONOBAR
-    4: ["/profile"], // KORISNIK
+    4: ["/profile", "/reservations-user"], // KORISNIK
   };
 
   const currentRoute = window.location.pathname;

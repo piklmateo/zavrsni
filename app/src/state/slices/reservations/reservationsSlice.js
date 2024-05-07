@@ -6,31 +6,34 @@ const initialState = {
   error: null,
 };
 
-export const fetchReservations = createAsyncThunk("reservations/fetchReservations", async () => {
-  try {
-    const token = sessionStorage.getItem("token");
-    if (!token) {
-      console.log("You don't have a valid token");
-      return [];
-    }
+export const fetchReservations = createAsyncThunk(
+  "reservations/fetchReservations",
+  async () => {
+    try {
+      const token = sessionStorage.getItem("token");
+      if (!token) {
+        console.log("You don't have a valid token");
+        return [];
+      }
 
-    const res = await fetch("http://localhost:12413/api/reservations", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    });
-    if (!res.ok) {
-      throw new Error("Failed to fetch reservations");
+      const res = await fetch("http://localhost:12413/api/reservations", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      if (!res.ok) {
+        throw new Error("Failed to fetch reservations");
+      }
+      const data = res.json();
+      return data;
+    } catch (error) {
+      console.log("error: ", error);
+      throw error;
     }
-    const data = res.json();
-    return data;
-  } catch (error) {
-    console.log("error: ", error);
-    throw error;
   }
-});
+);
 
 const reservationsSlice = createSlice({
   name: "reservations",

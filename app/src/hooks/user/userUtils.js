@@ -23,6 +23,7 @@ export const updateUserProfile = async (event, formData, dispatch) => {
 
     if (res.ok) {
       dispatch(updateUser(formData));
+      window.location.href = "/profile";
       console.log("User profile updated successfully");
     } else {
       console.log("Failed to update user profile");

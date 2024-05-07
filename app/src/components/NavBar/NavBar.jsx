@@ -27,7 +27,7 @@ const NavBar = () => {
       "/order",
       "/order-list",
     ], // KONOBAR
-    4: ["/profile"], // KORISNIK
+    4: ["/profile", "/reservations-user"], // KORISNIK
   };
 
   useEffect(() => {
@@ -86,6 +86,14 @@ const NavBar = () => {
                       <li key={index} className="nav__list__item">
                         <Link className="nav__link" to={route}>
                           Profile
+                        </Link>
+                      </li>
+                    );
+                  } else if (route === "/reservations-user") {
+                    return (
+                      <li key={index} className="nav__list__item">
+                        <Link className="nav__link" to={route}>
+                          My Reservations
                         </Link>
                       </li>
                     );

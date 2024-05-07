@@ -49,7 +49,7 @@ const ReservationSubmitButton = ({ formData, reservationData }) => {
 
       if (res.ok) {
         dispatch(updateUser(dataToSend));
-        navigate("/");
+        window.location.href = "/";
         console.log("Successfull reservation!");
       } else {
         console.log("error res not ok");

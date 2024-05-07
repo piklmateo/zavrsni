@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-// import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import "./Menu.css";
 import Dish from "../Dish/Dish.jsx";
 import Drink from "../Drink/Drink.jsx";
@@ -12,6 +12,7 @@ const Menu = () => {
   const [selectedCategory, setSelectedCategory] = useState("Main course");
   const [sortOrder, setSortOrder] = useState("price-asc");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const token = sessionStorage.getItem("token");
@@ -28,6 +29,8 @@ const Menu = () => {
     setSortOrder(orderSort);
   };
 
+  const showMenuSort = location.pathname === "/menu";
+
   return (
     <>
       <div className="main__layout__container">
@@ -36,7 +39,7 @@ const Menu = () => {
             selectedCategory={selectedCategory}
             handleCategoryClick={handleCategoryClick}
           />
-          <MenuSort handleSortOrder={handleSortOrder} />
+          {showMenuSort && <MenuSort handleSortOrder={handleSortOrder} />}
           {selectedCategory === "Non-alcoholic beverages" ||
           selectedCategory === "White wine" ||
           selectedCategory === "Red wine" ||
@@ -45,7 +48,7 @@ const Menu = () => {
           ) : (
             <Dish category={selectedCategory} sortOrder={sortOrder} />
           )}
-          {isLoggedIn && (
+          {showMenuSort && isLoggedIn && (
             <div className="add__menu__item__container">
               <AddDishButton />
               <AddDrinkButton />

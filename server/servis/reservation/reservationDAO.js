@@ -33,6 +33,32 @@ class ReservationDAO {
     }
   }
 
+  async getAllUser(id_user) {
+    try {
+      let sql = `
+      SELECT
+      COALESCE(u.name, r.name) AS name,
+      COALESCE(u.email, r.email) AS email,
+      COALESCE(u.phone, r.phone) AS phone,
+      r.date,
+      r.time,
+      t.number AS table_number,
+      r.id_reservation
+      FROM reservation r
+      LEFT JOIN "user" u ON r.user_id = u.id_user
+      LEFT JOIN "table" t ON r.table_id = t.id_table
+      WHERE user_id=$1 ORDER BY r.date DESC;
+
+      `;
+      const data = await this.db.query(sql, [id_user]);
+      const rows = data.rows;
+      return rows;
+    } catch (error) {
+      console.error("Error while getting all reservations:", error);
+      throw error;
+    }
+  }
+
   async getOne(id_reservation) {
     try {
       let sql = `SELECT * FROM "reservation" WHERE id_reservation=$1;`;
