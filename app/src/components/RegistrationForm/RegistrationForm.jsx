@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router";
+// import { useNavigate } from "react-router";
 import "./RegistrationForm.css";
 
 const RegistrationForm = () => {
@@ -45,7 +45,14 @@ const RegistrationForm = () => {
         <form className="form" onSubmit={handleSubmit}>
           <div className="register__form__input register__form__name">
             <label htmlFor="name">Name</label>
-            <input type="text" name="name" id="name" placeholder="john" value={formData.name} onChange={handleChange} />
+            <input
+              type="text"
+              name="name"
+              id="name"
+              placeholder="john"
+              value={formData.name}
+              onChange={handleChange}
+            />
           </div>
           <div className="register__form__input register__form__surname">
             <label htmlFor="surname">Surname</label>
