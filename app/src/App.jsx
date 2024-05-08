@@ -36,7 +36,7 @@ const router = createBrowserRouter(
         <Route path="/add-drink" element={<AddDrinkPage />} />
         <Route path="/order" element={<OrderPage />} />
         <Route path="/order-list" element={<OrderListPage />} />
-        <Route path="/reservations-user" element={<ReservationsPageUser />} />
+        <Route path="/my-reservations" element={<ReservationsPageUser />} />
       </Route>
     </Route>
   )

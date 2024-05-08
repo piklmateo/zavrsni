@@ -31,7 +31,7 @@ const UserRoute = () => {
       "/order",
       "/order-list",
     ], // KONOBAR
-    4: ["/profile", "/reservations-user"], // KORISNIK
+    4: ["/profile", "/my-reservations"], // KORISNIK
   };
 
   const currentRoute = window.location.pathname;
