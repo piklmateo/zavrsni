@@ -8,12 +8,10 @@ import drinkReducer from "../slices/drink/drinkSlice.js";
 import orderReducer from "../slices/order/orderSlice.js";
 import orderListReducer from "../slices/order/orderListSlice.js";
 import tableReducer from "../slices/table/tableSlice.js";
-// import reservationsUserReducer from "../slices/reservationsUser/reservationsUserSlice.js";
 
 const store = configureStore({
   reducer: {
     reservations: reservationsReducer,
-    // reservationsUser: reservationsUserReducer,
     category: categoryReducer,
     user: userReducer,
     dish: dishReducer,
