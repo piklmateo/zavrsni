@@ -10,6 +10,13 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.order__card__info > div {
+  display: flex;
+  flex-direction: column;
 }
 
 .order__card__info p,
@@ -31,6 +38,45 @@
   display: flex;
   flex-direction: row;
   gap: 1rem;
+}
+
+.btn__order__pending {
+  background-color: var(--clr-primary);
+  color: var(--clr-neutral);
+  font-weight: var(--fw-900);
+  transition: 200ms ease-in-out;
+}
+
+.btn__order__pending:hover {
+  background-color: var(--clr-neutral);
+  border: 1px solid var(--clr-primary);
+  color: var(--clr-primary);
+}
+
+.btn__order__preparing {
+  background-color: lightsalmon;
+  color: var(--clr-neutral);
+  font-weight: var(--fw-900);
+  transition: 200ms ease-in-out;
+}
+
+.btn__order__preparing:hover {
+  background-color: var(--clr-neutral);
+  border: 1px solid lightsalmon;
+  color: lightsalmon;
+}
+
+.btn__order__done {
+  background-color: var(--clr-secondary);
+  color: var(--clr-neutral);
+  font-weight: var(--fw-900);
+  transition: 200ms ease-in-out;
+}
+
+.btn__order__done:hover {
+  background-color: var(--clr-neutral);
+  border: 1px solid var(--clr-secondary);
+  color: var(--clr-secondary);
 }
 
 @media (max-width: 550px) {

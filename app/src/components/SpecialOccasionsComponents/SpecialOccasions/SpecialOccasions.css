@@ -1,0 +1,29 @@
+.special__occasions__container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.calendar__container {
+  display: flex;
+  justify-content: center;
+}
+
+.form__container {
+  display: flex;
+  flex-direction: column;
+}
+
+.input__name,
+.input__phone,
+.input__email {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.4rem;
+  padding-block: 0.4rem;
+}
+
+input {
+  padding: 0.4rem;
+}

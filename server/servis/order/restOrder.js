@@ -52,6 +52,19 @@ const restOrder = {
     }
   },
 
+  getOrderStatus: async function (req, res) {
+    res.type("application/json");
+    try {
+      let odao = new OrderDAO();
+      let id = req.params.id_order;
+      const order = await odao.getOrderStatus(id);
+      res.send(JSON.stringify(order));
+    } catch (error) {
+      console.error(error);
+      res.status(500).send(JSON.stringify({ error: "Internal Server Error" }));
+    }
+  },
+
   postOrder: function (req, res) {
     res.type("application/json");
     res.status(405).send(JSON.stringify({ error: "Method Not Allowed" }));
@@ -81,6 +94,35 @@ const restOrder = {
     } catch (error) {
       console.log("error: " + error);
       res.status(500);
+    }
+  },
+
+  // putOrderStatus: async function (req, res) {
+  //   try {
+  //     let odao = new OrderDAO();
+  //     let id = req.params.id_order;
+  //     const data = req.body;
+  //     const order = await odao.updateOrderStatus(id, data);
+  //     res.send(JSON.stringify(order));
+  //     res.status(201);
+  //   } catch (error) {
+  //     console.log("error: " + error);
+  //     res.status(500);
+  //   }
+  // },
+
+  putOrderStatus: async function (req, res) {
+    try {
+      let odao = new OrderDAO();
+      let id = req.params.id_order;
+      const status = req.body.status;
+      const order = await odao.updateOrderStatus(id, status);
+      res.send(JSON.stringify(order));
+      res.status(201);
+    } catch (error) {
+      console.log("error: " + error);
+      res.status(500);
+      lightsalmon;
     }
   },
 };

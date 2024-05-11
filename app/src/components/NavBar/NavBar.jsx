@@ -70,6 +70,11 @@ const NavBar = () => {
                   Reservation
                 </Link>
               </li>
+              <li className="nav__list__item">
+                <Link className="nav__link" to="/special-occasions">
+                  Special occasions
+                </Link>
+              </li>
 
               {isLoggedIn &&
                 allowedRoutes.map((route, index) => {

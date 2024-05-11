@@ -19,6 +19,7 @@ import UserRoute from "./authorization/UserRoute.js";
 import OrderPage from "./pages/OrderPage.jsx";
 import OrderListPage from "./pages/OrderListPage.jsx";
 import ReservationsPageUser from "./pages/ReservationsPageUser.jsx";
+import SpecialOccasionsPage from "./pages/SpecialOccasionsPage.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -28,6 +29,7 @@ const router = createBrowserRouter(
       <Route path="/login" element={<LoginPage />} />
       <Route path="/registration" element={<RegistrationPage />} />
       <Route path="/reservation" element={<ReservationPage />} />
+      <Route path="/special-occasions" element={<SpecialOccasionsPage />} />
       <Route path="*" element={<HomePage />} />
       <Route element={<UserRoute />}>
         <Route path="/profile" element={<ProfilePage />} />

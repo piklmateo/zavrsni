@@ -171,8 +171,21 @@ function prepareOrderPaths() {
   server.delete("/api/orders", jwt.verifyToken, restOrder.deleteOrders);
 
   server.get("/api/orders/:id", jwt.verifyToken, restOrder.getOrder);
+  server.get(
+    "/api/orders/status/:id",
+    jwt.verifyToken,
+    restOrder.getOrderStatus
+  );
   server.post("/api/orders/:id", jwt.verifyToken, restOrder.postOrder);
+
+  server.put(
+    "/api/orders/status/:id",
+    jwt.verifyToken,
+    restOrder.putOrderStatus
+  );
+
   server.put("/api/orders/:id", jwt.verifyToken, restOrder.putOrder);
+
   server.delete("/api/orders/:id", jwt.verifyToken, restOrder.deleteOrder);
 }
 

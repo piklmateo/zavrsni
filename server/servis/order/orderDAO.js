@@ -12,6 +12,7 @@ class OrderDAO {
       let sql = `SELECT 
       o.id_order,
       o.date,
+	  o.status,
       od.dish_id,
       d.name AS dish_name,
       od.quantity AS dish_quantity,
@@ -28,6 +29,7 @@ class OrderDAO {
       SELECT 
           o.id_order,
           o.date,
+		  o.status,
           NULL AS dish_id,
           NULL AS dish_name,
           NULL AS dish_quantity,
@@ -41,7 +43,7 @@ class OrderDAO {
       LEFT JOIN 
           drink dr ON odr.drink_id = dr.id_drink
       ORDER BY 
-          id_order;  
+          id_order  
   `;
       const data = await this.db.query(sql, []);
       const rows = data.rows;
@@ -64,10 +66,22 @@ class OrderDAO {
     }
   }
 
+  async getOrderStatus(id_order) {
+    try {
+      let sql = `SELECT "status" FROM "order" WHERE id_order=$1;`;
+      const data = await this.db.query(sql, [id_order]);
+      const rows = data.rows;
+      return rows.length === 1 ? rows[0] : null;
+    } catch (error) {
+      console.error("Error while getting order by id:", error);
+      throw error;
+    }
+  }
+
   async insert(order) {
     try {
-      let sql = `INSERT INTO "order" ("date", "bill", "table_id") VALUES ($1, $2, $3) RETURNING id_order`;
-      let data = [order.date, order.bill, order.table_id || 1];
+      let sql = `INSERT INTO "order" ("date", "bill", "table_id", "status") VALUES ($1, $2, $3, $4) RETURNING id_order`;
+      let data = [order.date, order.bill, order.table_id || 1, "pending"];
       const result = await this.db.query(sql, data);
       return result.rows[0].id_order;
     } catch (error) {
@@ -89,7 +103,7 @@ class OrderDAO {
 
   async update(id_order, order) {
     try {
-      let sql = `UPDATE "order" SET date=$1, bill=$2, table_id=$3, reservation_id=$4 WHERE id_order=$6`;
+      let sql = `UPDATE "order" SET date=$1, bill=$2, table_id=$3, status=$4 WHERE id_order=$6`;
       let data = [
         order.date,
         order.bill,
@@ -97,6 +111,18 @@ class OrderDAO {
         order.reservation_id,
         id_order,
       ];
+      await this.db.query(sql, data);
+      return true;
+    } catch (error) {
+      console.error("Error while updating order:", error);
+      throw error;
+    }
+  }
+
+  async updateOrderStatus(id_order, status) {
+    try {
+      let sql = `UPDATE "order" SET "status"=$1 WHERE "id_order"=$2`;
+      let data = [status, id_order];
       await this.db.query(sql, data);
       return true;
     } catch (error) {
