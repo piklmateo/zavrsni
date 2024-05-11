@@ -2,13 +2,11 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../../../state/slices/user/userSlice";
-import { useNavigate } from "react-router";
 import { jwtDecode } from "jwt-decode";
 import "./ReservationSubmitButton.css";
 
 const ReservationSubmitButton = ({ formData, reservationData }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -49,7 +47,7 @@ const ReservationSubmitButton = ({ formData, reservationData }) => {
 
       if (res.ok) {
         dispatch(updateUser(dataToSend));
-        window.location.href = "/";
+        window.location.reload();
         console.log("Successfull reservation!");
       } else {
         console.log("error res not ok");

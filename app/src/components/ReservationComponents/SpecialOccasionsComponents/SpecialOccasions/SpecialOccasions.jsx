@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import DatePicker from "react-datepicker";
-import "./SpecialOccasions.css";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUserData } from "../../../state/slices/user/userSlice.js";
-import { today } from "../../../helpers/dateTimeFormat.js";
-import SpecialOcassionsButton from "../SpecialOccasionsButton/SpecialOcassionsButton.jsx";
+import { fetchUserData } from "../../../../state/slices/user/userSlice.js";
+import { today } from "../../../../helpers/dateTimeFormat.js";
+// import SpecialOcassionsButton from "../SpecialOccasionsButton/SpecialOcassionsButton.jsx";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import "./SpecialOccasions.css";
+import ReservationSubmitButton from "../../ReservationSubmitButton/ReservationSubmitButton.jsx";
 
 const SpecialOccasions = () => {
   const dispatch = useDispatch();
@@ -23,6 +25,7 @@ const SpecialOccasions = () => {
     time: "12:00:00",
     table_id: 2,
     user_id: null,
+    whole_day: "yes",
   });
 
   useEffect(() => {
@@ -64,16 +67,31 @@ const SpecialOccasions = () => {
     }
   };
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      console.log(reservationData);
+    } catch (error) {
+      console.log("error: ", error);
+      throw error;
+    }
+  };
+
   return (
     <>
       <div className="main__layout__container">
         <h1 className="text__center mbl-2">Special occasions</h1>
         <div className="special__occasions__container">
           <div className="calendar__container">
-            <DatePicker selected={new Date()} inline />
+            <DatePicker
+              selected={new Date(reservationData.date)}
+              onChange={(date) => handleChange(date, setReservationData, "date")}
+              minDate={today}
+              inline
+            />
           </div>
           <div className="form__container">
-            <form method="post">
+            <form onSubmit={handleSubmit}>
               <div className="input__name">
                 <label htmlFor="name">Name</label>
                 <input
@@ -92,9 +110,7 @@ const SpecialOccasions = () => {
                   name="phone"
                   id="phone"
                   value={formData.phone}
-                  onChange={(event) =>
-                    handleChange(event, setFormData, "phone")
-                  }
+                  onChange={(event) => handleChange(event, setFormData, "phone")}
                 />
               </div>
               <div className="input__email">
@@ -104,13 +120,11 @@ const SpecialOccasions = () => {
                   name="email"
                   id="email"
                   value={formData.email}
-                  onChange={(event) =>
-                    handleChange(event, setFormData, "email")
-                  }
+                  onChange={(event) => handleChange(event, setFormData, "email")}
                   required
                 />
               </div>
-              <SpecialOcassionsButton />
+              <ReservationSubmitButton formData={formData} reservationData={reservationData} />
             </form>
           </div>
         </div>

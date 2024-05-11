@@ -77,10 +77,12 @@ function prepareUserPaths() {
   server.delete("/api/users/:id_user", jwt.verifyToken, restUser.deleteUser);
 
   server.get("/api/users/reservations/:id", jwt.verifyToken, restReservation.getReservationsUser);
+  server.get("/api/users/reservations/special/:id", jwt.verifyToken, restReservation.getSpecialReservationsUser);
 }
 
 function prepareReservationPaths() {
   server.get("/api/reservations", jwt.verifyToken, restReservation.getReservations);
+  server.get("/api/reservations/special", jwt.verifyToken, restReservation.getReservationsWholeDay);
 
   server.post("/api/reservations/check", jwt.verifyToken, restReservation.checkAvailability);
   server.post("/api/reservations", restReservation.postReservations);

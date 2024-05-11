@@ -16,12 +16,37 @@ const restReservation = {
     }
   },
 
+  getReservationsWholeDay: async function (req, res) {
+    res.type("application/json");
+    try {
+      let rdao = new ReservationDAO();
+      const reservations = await rdao.getAllWholeDay();
+      res.send(JSON.stringify(reservations));
+    } catch (error) {
+      console.error(error);
+      res.status(500).send(JSON.stringify({ error: "Internal Server Error" }));
+    }
+  },
+
   getReservationsUser: async function (req, res) {
     res.type("application/json");
     try {
       let id = req.params.id;
       let rdao = new ReservationDAO();
       const reservations = await rdao.getAllUser(id);
+      res.send(JSON.stringify(reservations));
+    } catch (error) {
+      console.error(error);
+      res.status(500).send(JSON.stringify({ error: "Internal Server Error" }));
+    }
+  },
+
+  getSpecialReservationsUser: async function (req, res) {
+    res.type("application/json");
+    try {
+      let id = req.params.id;
+      let rdao = new ReservationDAO();
+      const reservations = await rdao.getAllUserSpecial(id);
       res.send(JSON.stringify(reservations));
     } catch (error) {
       console.error(error);

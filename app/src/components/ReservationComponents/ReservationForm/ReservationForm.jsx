@@ -32,6 +32,7 @@ const ReservationForm = () => {
     time: "12:00:00",
     table_id: 2,
     user_id: null,
+    whole_day: "no",
   });
 
   useEffect(() => {
@@ -79,24 +80,16 @@ const ReservationForm = () => {
       <div className="reservation__form__wrapper">
         <h1>Reservation</h1>
         <div className="step__indicator">
-          <div
-            className={`step__line ${step >= 1 ? "step__active" : ""}`}
-          ></div>
-          <div
-            className={`step__line ${step >= 2 ? "step__active" : ""}`}
-          ></div>
-          <div
-            className={`step__line ${step >= 3 ? "step__active" : ""}`}
-          ></div>
+          <div className={`step__line ${step >= 1 ? "step__active" : ""}`}></div>
+          <div className={`step__line ${step >= 2 ? "step__active" : ""}`}></div>
+          <div className={`step__line ${step >= 3 ? "step__active" : ""}`}></div>
         </div>
         <form className="form">
           {step === 1 && (
             <div className="input__date">
               <DatePicker
                 selected={new Date(reservationData.date)}
-                onChange={(date) =>
-                  handleChange(date, setReservationData, "date")
-                }
+                onChange={(date) => handleChange(date, setReservationData, "date")}
                 minDate={today}
                 inline
               />
@@ -110,9 +103,7 @@ const ReservationForm = () => {
                   name="time"
                   id="time"
                   value={reservationData.time}
-                  onChange={(event) =>
-                    handleChange(event, setReservationData, "time")
-                  }
+                  onChange={(event) => handleChange(event, setReservationData, "time")}
                   required
                 >
                   <option value="12:00:00">12 PM</option>
@@ -130,9 +121,7 @@ const ReservationForm = () => {
                   name="people"
                   id="people"
                   value={reservationData.table_id}
-                  onChange={(event) =>
-                    handleChange(event, setReservationData, "table_id")
-                  }
+                  onChange={(event) => handleChange(event, setReservationData, "table_id")}
                   required
                 >
                   {tableList.map((table) => (
@@ -164,9 +153,7 @@ const ReservationForm = () => {
                   name="phone"
                   id="phone"
                   value={formData.phone}
-                  onChange={(event) =>
-                    handleChange(event, setFormData, "phone")
-                  }
+                  onChange={(event) => handleChange(event, setFormData, "phone")}
                 />
               </div>
               <div className="input__email">
@@ -176,17 +163,12 @@ const ReservationForm = () => {
                   name="email"
                   id="email"
                   value={formData.email}
-                  onChange={(event) =>
-                    handleChange(event, setFormData, "email")
-                  }
+                  onChange={(event) => handleChange(event, setFormData, "email")}
                   required
                 />
               </div>
               <div>
-                <ReservationSubmitButton
-                  formData={formData}
-                  reservationData={reservationData}
-                />
+                <ReservationSubmitButton formData={formData} reservationData={reservationData} />
               </div>
             </>
           )}
@@ -194,20 +176,14 @@ const ReservationForm = () => {
         <div className="navigation__buttons">
           {step !== 1 && (
             <div>
-              <button
-                className="navigation__btn"
-                onClick={() => setStep(step - 1)}
-              >
+              <button className="navigation__btn" onClick={() => setStep(step - 1)}>
                 <img alt="arrow-back" src={LeftArrow} width={40} height={40} />
               </button>
             </div>
           )}
           {step !== 3 && (
             <div>
-              <button
-                className="navigation__btn"
-                onClick={() => setStep(step + 1)}
-              >
+              <button className="navigation__btn" onClick={() => setStep(step + 1)}>
                 <img alt="arrow-next" src={RightArrow} width={40} height={40} />
               </button>
             </div>

@@ -21,6 +21,34 @@ class ReservationDAO {
       FROM reservation r
       LEFT JOIN "user" u ON r.user_id = u.id_user
       LEFT JOIN "table" t ON r.table_id = t.id_table
+      WHERE r.whole_day='no'
+      ORDER BY r.date DESC;
+
+      `;
+      const data = await this.db.query(sql, []);
+      const rows = data.rows;
+      return rows;
+    } catch (error) {
+      console.error("Error while getting all reservations:", error);
+      throw error;
+    }
+  }
+
+  async getAllWholeDay() {
+    try {
+      let sql = `
+      SELECT
+      COALESCE(u.name, r.name) AS name,
+      COALESCE(u.email, r.email) AS email,
+      COALESCE(u.phone, r.phone) AS phone,
+      r.date,
+      r.time,
+      t.number AS table_number,
+      r.id_reservation
+      FROM reservation r
+      LEFT JOIN "user" u ON r.user_id = u.id_user
+      LEFT JOIN "table" t ON r.table_id = t.id_table
+      WHERE r.whole_day='yes'
       ORDER BY r.date DESC;
 
       `;
@@ -47,8 +75,34 @@ class ReservationDAO {
       FROM reservation r
       LEFT JOIN "user" u ON r.user_id = u.id_user
       LEFT JOIN "table" t ON r.table_id = t.id_table
-      WHERE user_id=$1 ORDER BY r.date DESC;
+      WHERE user_id=$1 AND whole_day='no' 
+      ORDER BY r.date DESC;
+      `;
+      const data = await this.db.query(sql, [id_user]);
+      const rows = data.rows;
+      return rows;
+    } catch (error) {
+      console.error("Error while getting all reservations:", error);
+      throw error;
+    }
+  }
 
+  async getAllUserSpecial(id_user) {
+    try {
+      let sql = `
+      SELECT
+      COALESCE(u.name, r.name) AS name,
+      COALESCE(u.email, r.email) AS email,
+      COALESCE(u.phone, r.phone) AS phone,
+      r.date,
+      r.time,
+      t.number AS table_number,
+      r.id_reservation
+      FROM reservation r
+      LEFT JOIN "user" u ON r.user_id = u.id_user
+      LEFT JOIN "table" t ON r.table_id = t.id_table
+      WHERE user_id=$1 AND whole_day='yes' 
+      ORDER BY r.date DESC;
       `;
       const data = await this.db.query(sql, [id_user]);
       const rows = data.rows;
@@ -73,7 +127,7 @@ class ReservationDAO {
 
   async insert(reservation) {
     try {
-      let sql = `INSERT INTO "reservation" ("date", "time", "email", user_id, table_id, "name", "phone") VALUES ($1,$2,$3,$4,$5,$6,$7)`;
+      let sql = `INSERT INTO "reservation" ("date", "time", "email", user_id, table_id, "name", "phone", "whole_day") VALUES ($1,$2,$3,$4,$5,$6,$7,$8)`;
       let data = [
         reservation.date,
         reservation.time,
@@ -82,6 +136,7 @@ class ReservationDAO {
         reservation.table_id,
         reservation.name,
         reservation.phone,
+        reservation.whole_day,
       ];
       await this.db.query(sql, data);
       return true;
