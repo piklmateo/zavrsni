@@ -23,9 +23,7 @@ const Dish = ({ category, sortOrder }) => {
     return <div>Error: {error}</div>;
   }
 
-  const filteredDishes = dishList.filter(
-    (dish) => dish.category_name === category
-  );
+  const filteredDishes = dishList.filter((dish) => dish.category_name === category);
 
   const sortedDishes = [...filteredDishes].sort((a, b) => {
     if (sortOrder === "price-asc") {

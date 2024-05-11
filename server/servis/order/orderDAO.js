@@ -12,7 +12,7 @@ class OrderDAO {
       let sql = `SELECT 
       o.id_order,
       o.date,
-	  o.status,
+      o.status,
       od.dish_id,
       d.name AS dish_name,
       od.quantity AS dish_quantity,
@@ -25,11 +25,13 @@ class OrderDAO {
           order_dish od ON o.id_order = od.order_id
       LEFT JOIN 
           dish d ON od.dish_id = d.id_dish
+      WHERE 
+          o.status IN ('pending', 'preparing', 'done')
       UNION
       SELECT 
           o.id_order,
           o.date,
-		  o.status,
+          o.status,
           NULL AS dish_id,
           NULL AS dish_name,
           NULL AS dish_quantity,
@@ -42,8 +44,11 @@ class OrderDAO {
           order_drink odr ON o.id_order = odr.order_id
       LEFT JOIN 
           drink dr ON odr.drink_id = dr.id_drink
+      WHERE 
+          o.status IN ('pending', 'preparing', 'done')
       ORDER BY 
-          id_order  
+      id_order
+
   `;
       const data = await this.db.query(sql, []);
       const rows = data.rows;
@@ -104,13 +109,7 @@ class OrderDAO {
   async update(id_order, order) {
     try {
       let sql = `UPDATE "order" SET date=$1, bill=$2, table_id=$3, status=$4 WHERE id_order=$6`;
-      let data = [
-        order.date,
-        order.bill,
-        order.table_id,
-        order.reservation_id,
-        id_order,
-      ];
+      let data = [order.date, order.bill, order.table_id, order.reservation_id, id_order];
       await this.db.query(sql, data);
       return true;
     } catch (error) {

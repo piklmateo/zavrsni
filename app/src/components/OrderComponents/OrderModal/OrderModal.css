@@ -19,6 +19,7 @@
   font-size: var(--fs-smaller);
   font-family: var(--ff-primary);
   font-weight: var(--fw-200);
+  text-align: right;
 }
 
 .order__modal__bill {

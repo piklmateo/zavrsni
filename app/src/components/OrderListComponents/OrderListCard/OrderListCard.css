@@ -41,42 +41,45 @@
 }
 
 .btn__order__pending {
-  background-color: var(--clr-primary);
+  background-color: var(--clr-pending);
   color: var(--clr-neutral);
-  font-weight: var(--fw-900);
-  transition: 200ms ease-in-out;
 }
 
 .btn__order__pending:hover {
   background-color: var(--clr-neutral);
-  border: 1px solid var(--clr-primary);
-  color: var(--clr-primary);
+  border: 1px solid var(--clr-pending);
+  color: var(--clr-pending);
 }
 
 .btn__order__preparing {
-  background-color: lightsalmon;
+  background-color: var(--clr-preparing);
   color: var(--clr-neutral);
-  font-weight: var(--fw-900);
-  transition: 200ms ease-in-out;
 }
 
 .btn__order__preparing:hover {
   background-color: var(--clr-neutral);
-  border: 1px solid lightsalmon;
-  color: lightsalmon;
+  border: 1px solid var(--clr-preparing);
+  color: var(--clr-preparing);
 }
 
 .btn__order__done {
-  background-color: var(--clr-secondary);
+  background-color: var(--clr-done);
   color: var(--clr-neutral);
-  font-weight: var(--fw-900);
-  transition: 200ms ease-in-out;
 }
 
 .btn__order__done:hover {
   background-color: var(--clr-neutral);
-  border: 1px solid var(--clr-secondary);
-  color: var(--clr-secondary);
+  border: 1px solid var(--clr-done);
+  color: var(--clr-done);
+}
+
+.btn__order__preparing,
+.btn__order__pending,
+.btn__order__done {
+  font-weight: var(--fw-900);
+  transition: 200ms ease-in-out;
+  min-width: 88px;
+  cursor: pointer;
 }
 
 @media (max-width: 550px) {

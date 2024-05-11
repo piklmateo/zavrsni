@@ -114,15 +114,15 @@ const restOrder = {
   putOrderStatus: async function (req, res) {
     try {
       let odao = new OrderDAO();
-      let id = req.params.id_order;
+      let id_order = req.params.id_order;
       const status = req.body.status;
-      const order = await odao.updateOrderStatus(id, status);
-      res.send(JSON.stringify(order));
-      res.status(201);
+      console.log("Request body:", req.body);
+      console.log("status patch: " + status);
+      const order = await odao.updateOrderStatus(id_order, status);
+      res.status(201).send(JSON.stringify(order));
     } catch (error) {
-      console.log("error: " + error);
-      res.status(500);
-      lightsalmon;
+      console.error("Error: " + error);
+      res.status(500).send({ error: "Internal Server Error" });
     }
   },
 };

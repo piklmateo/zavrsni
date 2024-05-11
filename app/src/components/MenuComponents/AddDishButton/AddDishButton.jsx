@@ -6,7 +6,7 @@ const AddDishButton = () => {
   const navigate = useNavigate();
 
   const navigateTo = () => {
-    navigate("/add-drink");
+    navigate("/add-dish");
   };
   return (
     <>

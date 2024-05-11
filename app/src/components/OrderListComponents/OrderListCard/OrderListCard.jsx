@@ -13,6 +13,7 @@ const OrderListCard = ({ orders }) => {
 
       if (!token) {
         console.log("You don't have a valid token");
+        return;
       }
 
       let newStatus;
@@ -20,25 +21,28 @@ const OrderListCard = ({ orders }) => {
         newStatus = "preparing";
       } else if (orderStatus === "preparing") {
         newStatus = "done";
+      } else if (orderStatus === "done") {
+        newStatus = "served";
       }
 
-      setOrderStatus(newStatus);
+      console.log("novi status: " + newStatus);
 
-      const res = await fetch(
-        "http://localhost:12413/api/orders/status/" + id_order,
-        {
-          method: "PUT",
-          headers: {
-            "Content-type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-          body: JSON.stringify({ status: newStatus }),
-        }
-      );
+      const res = await fetch(`http://localhost:12413/api/orders/status/${id_order}`, {
+        method: "PATCH",
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ status: newStatus }),
+      });
 
       if (!res.ok) {
         console.log("Unable to update order status");
+        return;
       }
+
+      setOrderStatus(newStatus);
+      window.location.reload();
     } catch (error) {
       console.log("error:", error);
       throw error;
