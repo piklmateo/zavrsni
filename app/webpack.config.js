@@ -10,7 +10,7 @@ console.log("DEV: " + dev);
 
 module.exports = {
   mode: dev ? "development" : "production",
-  entry: "./src/main.jsx",
+  entry: "./src/main.tsx",
   output: {
     path: path.resolve(__dirname, "dist"),
     publicPath: "/",
@@ -31,22 +31,9 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(js|jsx|ts|tsx)$/,
+        test: /\.tsx?$/,
+        use: "ts-loader",
         exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
-          options: {
-            presets: [
-              "@babel/preset-env",
-              [
-                "@babel/preset-react",
-                {
-                  runtime: "automatic",
-                },
-              ],
-            ],
-          },
-        },
       },
       {
         test: /\.s?css$/,
@@ -58,9 +45,12 @@ module.exports = {
       },
     ],
   },
-  devtool: dev ? "inline-source-map" : "source-map", //staviti false na kraju
+  resolve: {
+    extensions: [".tsx", ".ts", ".js", ".jsx"],
+  },
+  devtool: dev ? "inline-source-map" : "source-map",
   devServer: {
-    historyApiFallback: true, //fix za router
+    historyApiFallback: true,
     hot: true,
     open: true,
   },

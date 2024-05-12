@@ -48,7 +48,6 @@ class OrderDAO {
           o.status IN ('pending', 'preparing', 'done')
       ORDER BY 
       id_order
-
   `;
       const data = await this.db.query(sql, []);
       const rows = data.rows;
