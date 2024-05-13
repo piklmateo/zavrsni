@@ -23,5 +23,25 @@ export const formatDateTime = (dateTimeString: string) => {
   return `${day}/${month}/${year} - ${hours}:${minutes}`;
 };
 
+export const getTwoMonthsFromToday = () => {
+  const today = new Date();
+  let year = today.getFullYear();
+  let month = today.getMonth() + 4;
+  let day = today.getDate();
+
+  if (month > 12) {
+    month -= 12;
+    year += 1;
+  }
+
+  const daysInMonth = new Date(year, month, 0).getDate();
+  if (day > daysInMonth) {
+    day = daysInMonth;
+  }
+
+  return new Date(year, month - 1, day);
+};
+
+export const maxDate = getTwoMonthsFromToday();
 export const today = new Date().toISOString().split("T")[0];
 export const todayTimestamp = new Date().toLocaleString();

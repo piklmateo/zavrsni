@@ -47,6 +47,7 @@ export const fetchOrders = createAsyncThunk("orderList/fetchOrders", async () =>
     return data;
   } catch (error) {
     console.log("error: ", error);
+    throw error;
   }
 });
 

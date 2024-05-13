@@ -57,6 +57,7 @@ export const fetchUserData = createAsyncThunk("user/fetchUserData", async () => 
     return data;
   } catch (error) {
     console.log("error: ", error);
+    throw error;
   }
 });
 
@@ -75,7 +76,7 @@ const userSlice = createSlice({
       })
       .addCase(fetchUserData.fulfilled, (state, action) => {
         state.status = "succeded";
-        state.user = action.payload;
+        state.user = [action.payload];
       })
       .addCase(fetchUserData.rejected, (state, action) => {
         state.status = "failed";

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import ReservationSubmitButton from "../ReservationSubmitButton/ReservationSubmitButton";
 import LeftArrow from "../../../assets/images/left-arrow.svg";
 import RightArrow from "../../../assets/images/right-arrow.svg";
-import { today } from "../../../helpers/dateTimeFormat";
+import { maxDate, today } from "../../../helpers/dateTimeFormat";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserData } from "../../../state/slices/user/userSlice";
 import { fetchTables } from "../../../state/slices/table/tableSlice";
@@ -15,7 +15,6 @@ import { AppDispatch, RootState } from "../../../state/store/store";
 
 const ReservationForm = () => {
   const [step, setStep] = useState(1);
-
   const dispatch = useDispatch<AppDispatch>();
   const userList = useSelector((state: RootState) => state.user.user[0]);
   const userStatus = useSelector((state: RootState) => state.user.status);
@@ -23,6 +22,8 @@ const ReservationForm = () => {
 
   const tableList = useSelector((state: RootState) => state.table.table);
   const tableStatus = useSelector((state: RootState) => state.table.status);
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -39,6 +40,10 @@ const ReservationForm = () => {
   });
 
   useEffect(() => {
+    const token = sessionStorage.getItem("token");
+    if (token) {
+      setIsLoggedIn(true);
+    }
     if (userStatus === "idle" || tableStatus === "idle") {
       dispatch(fetchUserData());
       dispatch(fetchTables());
@@ -98,6 +103,7 @@ const ReservationForm = () => {
                 selected={new Date(reservationData.date)}
                 onChange={handleDateChange}
                 minDate={today}
+                maxDate={maxDate}
                 inline
               />
             </div>
@@ -151,6 +157,7 @@ const ReservationForm = () => {
                   value={formData.name}
                   onChange={(event) => handleInputChange(event, setFormData, "name")}
                   required
+                  {...(isLoggedIn && { disabled: true })}
                 />
               </div>
               <div className="input__phone">
@@ -161,6 +168,7 @@ const ReservationForm = () => {
                   id="phone"
                   value={formData.phone}
                   onChange={(event) => handleInputChange(event, setFormData, "phone")}
+                  {...(isLoggedIn && { disabled: true })}
                 />
               </div>
               <div className="input__email">
@@ -172,6 +180,7 @@ const ReservationForm = () => {
                   value={formData.email}
                   onChange={(event) => handleInputChange(event, setFormData, "email")}
                   required
+                  {...(isLoggedIn && { disabled: true })}
                 />
               </div>
               <div>

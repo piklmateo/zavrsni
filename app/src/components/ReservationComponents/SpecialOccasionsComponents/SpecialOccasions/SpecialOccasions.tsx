@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserData } from "../../../../state/slices/user/userSlice";
-import { today } from "../../../../helpers/dateTimeFormat";
+import { maxDate, today } from "../../../../helpers/dateTimeFormat";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import "./SpecialOccasions.css";
 import ReservationSubmitButton from "../../ReservationSubmitButton/ReservationSubmitButton";
 import { AppDispatch, RootState } from "../../../../state/store/store";
+import "./SpecialOccasions.css";
 
 const SpecialOccasions = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -52,23 +52,23 @@ const SpecialOccasions = () => {
     return <div>Error: {error}</div>;
   }
 
-  const handleChange = (
-    eventOrDate: React.ChangeEvent<HTMLInputElement> | Date,
-    setStateFunction: React.Dispatch<React.SetStateAction<any>>,
+  const handleDateChange = (date: Date) => {
+    setReservationData((prevState: any) => ({
+      ...prevState,
+      date: date,
+    }));
+  };
+
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>,
+    stateSetter: React.Dispatch<React.SetStateAction<any>>,
     stateKey: string
   ) => {
-    if ("target" in eventOrDate) {
-      const { value } = eventOrDate.target;
-      setStateFunction((prevState: any) => ({
-        ...prevState,
-        [stateKey]: value,
-      }));
-    } else {
-      setStateFunction((prevState: any) => ({
-        ...prevState,
-        [stateKey]: eventOrDate,
-      }));
-    }
+    const { value } = event.target;
+    stateSetter((prevState: any) => ({
+      ...prevState,
+      [stateKey]: value,
+    }));
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -86,8 +86,24 @@ const SpecialOccasions = () => {
       <div className="main__layout__container">
         <h1 className="text__center mbl-2">Special occasions</h1>
         <div className="special__occasions__container">
-          <div className="calendar__container">
-            <DatePicker selected={new Date(reservationData.date)} onChange={handleChange} minDate={today} inline />
+          <div className="calendar__heading__container">
+            <div className="calendar__heading">
+              <h2>To book the restaurant</h2>
+              <h2>
+                for your <span className="emphasized">special</span> occasion
+              </h2>
+              <p>Choose the date</p>
+              <p>and enter your contact info.</p>
+            </div>
+            <div className="calendar__container">
+              <DatePicker
+                selected={new Date(reservationData.date)}
+                onChange={handleDateChange}
+                minDate={today}
+                maxDate={maxDate}
+                inline
+              />
+            </div>
           </div>
           <div className="form__container">
             <form onSubmit={handleSubmit}>
@@ -98,7 +114,7 @@ const SpecialOccasions = () => {
                   name="name"
                   id="name"
                   value={formData.name}
-                  onChange={(event) => handleChange(event, setFormData, "name")}
+                  onChange={(event) => handleInputChange(event, setFormData, "name")}
                   required
                 />
               </div>
@@ -109,7 +125,7 @@ const SpecialOccasions = () => {
                   name="phone"
                   id="phone"
                   value={formData.phone}
-                  onChange={(event) => handleChange(event, setFormData, "phone")}
+                  onChange={(event) => handleInputChange(event, setFormData, "phone")}
                 />
               </div>
               <div className="input__email">
@@ -119,7 +135,7 @@ const SpecialOccasions = () => {
                   name="email"
                   id="email"
                   value={formData.email}
-                  onChange={(event) => handleChange(event, setFormData, "email")}
+                  onChange={(event) => handleInputChange(event, setFormData, "email")}
                   required
                 />
               </div>

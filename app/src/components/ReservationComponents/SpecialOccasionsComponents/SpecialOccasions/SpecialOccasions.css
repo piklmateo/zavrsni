@@ -1,13 +1,28 @@
 .special__occasions__container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(1, 1fr);
   gap: 2rem;
   margin-top: 2rem;
+  /* border: 1px solid green; */
+  padding-inline: 10rem;
+  width: 100%;
+}
+
+.calendar__heading__container {
+  display: flex;
+  justify-content: space-between;
 }
 
 .calendar__container {
   display: flex;
-  justify-content: center;
+  justify-content: end;
+}
+
+.emphasized {
+  font-family: var(--ff-primary);
+  font-weight: var(--fw-900);
+  font-size: 24px;
+  color: var(--clr-primary);
 }
 
 .form__container {
@@ -26,4 +41,13 @@
 
 input {
   padding: 0.4rem;
+}
+
+@media (max-width: 900px) {
+  .calendar__heading__container {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    flex-direction: column;
+  }
 }

@@ -37,6 +37,7 @@ export const fetchDrinks = createAsyncThunk("drink/fetchDrinkData", async () => 
     return data;
   } catch (error) {
     console.log("Error: ", error);
+    throw error;
   }
 });
 

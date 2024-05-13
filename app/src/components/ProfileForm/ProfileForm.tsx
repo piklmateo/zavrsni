@@ -1,40 +1,45 @@
-// ProfileForm.js
 import React, { useState, useEffect } from "react";
 import "./ProfileForm.css";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUserData } from "../../state/slices/user/userSlice";
+import { User, fetchUserData } from "../../state/slices/user/userSlice";
 import { updateUserProfile } from "../../hooks/user/userUtils";
 import { AppDispatch, RootState } from "../../state/store/store";
 
 const ProfileForm = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const userList = useSelector((state: RootState) => state.user.user[0]);
+  const userList = useSelector((state: RootState) => state.user.user);
   const status = useSelector((state: RootState) => state.user.status);
   const error = useSelector((state: RootState) => state.user.error);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<User>({
+    id_user: 0,
     name: "",
     surname: "",
     phone: "",
     email: "",
     username: "",
+    password: "",
+    role_id: 0,
   });
 
   useEffect(() => {
     if (status === "idle") {
+      console.log("Fetching user data...");
       dispatch(fetchUserData());
-      console.log(userList);
     }
   }, [status, dispatch]);
 
   useEffect(() => {
-    setFormData({
-      name: userList.name || "",
-      surname: userList.surname || "",
-      phone: userList.phone || "",
-      email: userList.email || "",
-      username: userList.username || "",
-    });
+    if (userList && userList.length > 0) {
+      console.log("Fetched user data:", userList[0]);
+      const userData = userList[0];
+      setFormData({
+        ...userData,
+      });
+    }
   }, [userList]);
+
+  console.log("Status:", status);
+  console.log("Form data:", formData);
 
   if (status === "loading") {
     return <div>Loading...</div>;
@@ -46,11 +51,11 @@ const ProfileForm = () => {
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement>,
-    setStateFunction: React.Dispatch<React.SetStateAction<any>>,
-    stateKey: string
+    setStateFunction: React.Dispatch<React.SetStateAction<User>>,
+    stateKey: keyof User
   ) => {
     const { value } = event.target;
-    setStateFunction((prevState: any) => ({
+    setStateFunction((prevState) => ({
       ...prevState,
       [stateKey]: value,
     }));

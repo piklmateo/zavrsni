@@ -21,6 +21,7 @@ const OrderList = () => {
   const dispatch = useDispatch<AppDispatch>();
   const orderList = useSelector((state: RootState) => state.orderList.orderList);
   const orderStatus = useSelector((state: RootState) => state.orderList.status);
+  const error = useSelector((state: RootState) => state.orderList.error);
 
   useEffect(() => {
     if (orderStatus === "idle") {
@@ -30,6 +31,10 @@ const OrderList = () => {
 
   if (orderStatus === "loading") {
     return <div>Loading...</div>;
+  }
+
+  if (orderStatus === "failed") {
+    return <div>Error: {error}</div>;
   }
 
   const ordersById: { [key: number]: Order[] } = {};

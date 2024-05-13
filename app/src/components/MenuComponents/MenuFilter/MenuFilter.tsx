@@ -69,6 +69,16 @@ const MenuFilter = ({ selectedCategory, handleCategoryClick }: FilterProps) => {
             Non-alcoholic beverages
           </button>
         </li>
+        <li>
+          <button
+            className={`menu__navigation__button ${
+              selectedCategory === "Alcoholic beverages" ? "menu__navigation__button-active" : ""
+            }`}
+            onClick={() => handleCategoryClick("Alcoholic beverages")}
+          >
+            Alcoholic beverages
+          </button>
+        </li>
 
         <li>
           <button

@@ -35,6 +35,7 @@ export const fetchTables = createAsyncThunk("table/fetchTables", async () => {
     return data;
   } catch (error) {
     console.log("error: ", error);
+    throw error;
   }
 });
 
