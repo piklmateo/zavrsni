@@ -12,6 +12,7 @@ interface Reservation {
   phone: string;
   whole_day: string;
   table_number: number;
+  time_slot: string;
 }
 
 interface ReservationState {
@@ -21,6 +22,7 @@ interface ReservationState {
   userReservations: Reservation[];
   userSpecialReservations: Reservation[];
   bookedDates: Reservation[];
+  bookedTime: Reservation[];
   status: "idle" | "loading" | "succeded" | "failed";
   error: string | null | undefined;
 }
@@ -32,6 +34,7 @@ const initialState: ReservationState = {
   userReservations: [],
   userSpecialReservations: [],
   bookedDates: [],
+  bookedTime: [],
   status: "idle",
   error: null,
 };
@@ -124,7 +127,26 @@ export const fetchReservationsWholeDay = createAsyncThunk("reservations/fetchRes
 
 export const fetchBookedDates = createAsyncThunk("reservations/fetchBookedDates", async () => {
   try {
-    const res = await fetch("http://localhost:12413/api/reservations/booked", {
+    const res = await fetch("http://localhost:12413/api/reservations/bookedDate", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (!res.ok) {
+      throw new Error("Failed to fetch reservations");
+    }
+    const data = res.json();
+    return data;
+  } catch (error) {
+    console.log("error: ", error);
+    throw error;
+  }
+});
+
+export const fetchBookedTime = createAsyncThunk("reservations/fetchBookedTime", async (date: string) => {
+  try {
+    const res = await fetch(`http://localhost:12413/api/reservations/bookedTime/${date}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -251,6 +273,17 @@ const reservationsSlice = createSlice({
         state.bookedDates = action.payload;
       })
       .addCase(fetchBookedDates.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      })
+      .addCase(fetchBookedTime.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchBookedTime.fulfilled, (state, action) => {
+        state.status = "succeded";
+        state.bookedTime = action.payload;
+      })
+      .addCase(fetchBookedTime.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
       })

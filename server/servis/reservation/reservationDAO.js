@@ -125,6 +125,38 @@ class ReservationDAO {
     }
   }
 
+  async getBookedTimeSlots(date) {
+    try {
+      let sql = `
+      WITH available_slots AS (
+          SELECT '12:00:00'::time AS time_slot UNION
+          SELECT '13:30:00'::time AS time_slot UNION
+          SELECT '15:00:00'::time AS time_slot UNION
+          SELECT '16:30:00'::time AS time_slot UNION
+          SELECT '18:00:00'::time AS time_slot UNION
+          SELECT '19:30:00'::time AS time_slot UNION
+          SELECT '21:00:00'::time AS time_slot 
+      ),
+      occupied_slots AS (
+          SELECT "time" AS time_slot, COUNT(*) AS occupied_tables
+          FROM reservation
+          WHERE date("date") = $1
+          GROUP BY "time"
+      )
+      SELECT available_slots.time_slot
+      FROM available_slots
+      JOIN occupied_slots ON available_slots.time_slot = occupied_slots.time_slot
+      WHERE occupied_tables = (SELECT COUNT(*) FROM "table");
+      `;
+      const data = await this.db.query(sql, [date]);
+      const rows = data.rows;
+      return rows;
+    } catch (error) {
+      console.error("Error while getting all reservations:", error);
+      throw error;
+    }
+  }
+
   async getAllUser(id_user) {
     try {
       let sql = `

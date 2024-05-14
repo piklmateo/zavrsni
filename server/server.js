@@ -84,7 +84,8 @@ function prepareReservationPaths() {
   server.get("/api/reservations", jwt.verifyToken, restReservation.getReservations);
   server.get("/api/reservations/standard", jwt.verifyToken, restReservation.getReservationsNoWholeDay);
   server.get("/api/reservations/special", jwt.verifyToken, restReservation.getReservationsWholeDay);
-  server.get("/api/reservations/booked", restReservation.getBookedDates);
+  server.get("/api/reservations/bookedDate", restReservation.getBookedDates);
+  server.get("/api/reservations/bookedTime/:date", restReservation.getBookedTimeSlots);
 
   server.post("/api/reservations", restReservation.postReservations);
   server.put("/api/reservations", jwt.verifyToken, restReservation.putReservations);

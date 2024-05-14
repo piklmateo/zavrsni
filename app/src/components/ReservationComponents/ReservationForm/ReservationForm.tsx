@@ -14,6 +14,7 @@ import "./ReservationForm.css";
 import { AppDispatch, RootState } from "../../../state/store/store";
 import reservationsSlice, {
   fetchBookedDates,
+  fetchBookedTime,
   fetchReservations,
 } from "../../../state/slices/reservations/reservationsSlice";
 
@@ -32,7 +33,12 @@ const ReservationForm = () => {
   const bookedDatesStatus = useSelector((state: RootState) => state.reservations.status);
   const bookedDatesError = useSelector((state: RootState) => state.reservations.error);
 
+  const bookedTimeList = useSelector((state: RootState) => state.reservations.bookedTime);
+  const bookedTimeStatus = useSelector((state: RootState) => state.reservations.status);
+  const bookedTimeError = useSelector((state: RootState) => state.reservations.error);
+
   const [blockedDatesState, setBlockedDatesState] = useState([]);
+  const [blockedTimesState, setBlockedTimesState] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -77,7 +83,18 @@ const ReservationForm = () => {
       const blockedDatesArray = bookedDatesList.map((reservation) => new Date(reservation.date));
       setBlockedDatesState(blockedDatesArray);
     }
-  }, [bookedDatesList]);
+
+    if (bookedTimeList.length > 0) {
+      const blockedTimesArray = bookedTimeList.map((reservation) => {
+        console.log("Time:", reservation.time_slot);
+        return reservation.time_slot;
+      });
+      setBlockedTimesState(blockedTimesArray);
+      console.log("vremena:", JSON.stringify(blockedTimesArray));
+    } else {
+      setBlockedTimesState(bookedDatesList);
+    }
+  }, [bookedDatesList, bookedTimeList]);
 
   if (userStatus === "loading" || tableStatus === "loading" || bookedDatesStatus === "loading") {
     return <div>Loading...</div>;
@@ -92,6 +109,10 @@ const ReservationForm = () => {
       ...prevState,
       date: date,
     }));
+
+    const formattedDate = date.toISOString().split("T")[0];
+    console.log("formatirani dejt: " + formattedDate);
+    dispatch(fetchBookedTime(formattedDate));
   };
 
   const handleInputChange = (
@@ -139,13 +160,17 @@ const ReservationForm = () => {
                   onChange={(event) => handleInputChange(event, setReservationData, "time")}
                   required
                 >
-                  <option value="12:00:00">12 PM</option>
-                  <option value="13:30:00">13:30 PM</option>
-                  <option value="15:00:00">15 PM</option>
-                  <option value="16:30:00">16:30 PM</option>
-                  <option value="18:00:00">18 PM</option>
-                  <option value="19:30:00">19:30 PM</option>
-                  <option value="21:00:00">21 PM</option>
+                  {["12:00:00", "13:30:00", "15:00:00", "16:30:00", "18:00:00", "19:30:00", "21:00:00"]
+                    .filter((time) => !blockedTimesState.includes(time))
+                    .map((time) => {
+                      const [hour, minute] = time.split(":");
+                      const formattedTime = `${hour}:${minute}`;
+                      return (
+                        <option key={time} value={time}>
+                          {formattedTime}
+                        </option>
+                      );
+                    })}
                 </select>
               </div>
               <div className="select__people">
