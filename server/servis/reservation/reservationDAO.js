@@ -17,6 +17,32 @@ class ReservationDAO {
       r.date,
       r.time,
       t.number AS table_number,
+      r.id_reservation,
+      r.whole_day
+      FROM reservation r
+      LEFT JOIN "user" u ON r.user_id = u.id_user
+      LEFT JOIN "table" t ON r.table_id = t.id_table
+      ORDER BY r.date DESC;
+      `;
+      const data = await this.db.query(sql, []);
+      const rows = data.rows;
+      return rows;
+    } catch (error) {
+      console.error("Error while getting all reservations:", error);
+      throw error;
+    }
+  }
+
+  async getAllNoWholeDay() {
+    try {
+      let sql = `
+      SELECT
+      COALESCE(u.name, r.name) AS name,
+      COALESCE(u.email, r.email) AS email,
+      COALESCE(u.phone, r.phone) AS phone,
+      r.date,
+      r.time,
+      t.number AS table_number,
       r.id_reservation
       FROM reservation r
       LEFT JOIN "user" u ON r.user_id = u.id_user
@@ -51,6 +77,44 @@ class ReservationDAO {
       WHERE r.whole_day='yes'
       ORDER BY r.date DESC;
 
+      `;
+      const data = await this.db.query(sql, []);
+      const rows = data.rows;
+      return rows;
+    } catch (error) {
+      console.error("Error while getting all reservations:", error);
+      throw error;
+    }
+  }
+
+  async getBookedDates() {
+    try {
+      let sql = `
+      WITH time_slots AS (
+        SELECT '12:00:00'::time AS time_slot UNION
+        SELECT '13:30:00'::time AS time_slot UNION
+        SELECT '15:00:00'::time AS time_slot UNION
+        SELECT '16:30:00'::time AS time_slot UNION
+        SELECT '18:00:00'::time AS time_slot UNION
+        SELECT '19:30:00'::time AS time_slot UNION
+        SELECT '21:00:00'::time AS time_slot 
+        )
+        SELECT r1.date
+        FROM reservation r1
+        LEFT JOIN (
+            SELECT date, time, COUNT(DISTINCT table_id) AS total_tables
+            FROM reservation
+            GROUP BY date, time
+        ) r2 ON r1.date = r2.date AND r2.time IN (
+            SELECT time_slot FROM time_slots
+        )
+        LEFT JOIN (
+            SELECT COUNT(DISTINCT id_table) AS total_tables
+            FROM "table"
+        ) t ON r2.total_tables = t.total_tables
+        GROUP BY r1.date, r1.whole_day
+        HAVING COUNT(DISTINCT r2.time) = (SELECT COUNT(*) FROM time_slots)
+            OR r1.whole_day = 'yes';
       `;
       const data = await this.db.query(sql, []);
       const rows = data.rows;
@@ -173,17 +237,6 @@ class ReservationDAO {
       return true;
     } catch (error) {
       console.error("Error while updating Reservation:", error);
-      throw error;
-    }
-  }
-
-  async checkAvailability(date, time) {
-    try {
-      let sql = `SELECT * FROM "reservation" WHERE date=$1 AND time=$2;`;
-      const data = await this.db.query(sql, [date, time]);
-      return data.rows.length === 0;
-    } catch (error) {
-      console.error("Error while checking availability:", error);
       throw error;
     }
   }

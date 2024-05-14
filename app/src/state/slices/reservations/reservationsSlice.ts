@@ -16,18 +16,22 @@ interface Reservation {
 
 interface ReservationState {
   reservations: Reservation[];
+  reservationsStandard: Reservation[];
   specialReservations: Reservation[];
   userReservations: Reservation[];
   userSpecialReservations: Reservation[];
+  bookedDates: Reservation[];
   status: "idle" | "loading" | "succeded" | "failed";
   error: string | null | undefined;
 }
 
 const initialState: ReservationState = {
   reservations: [],
+  reservationsStandard: [],
   specialReservations: [],
   userReservations: [],
   userSpecialReservations: [],
+  bookedDates: [],
   status: "idle",
   error: null,
 };
@@ -66,6 +70,32 @@ export const fetchReservations = createAsyncThunk("reservations/fetchReservation
   }
 });
 
+export const fetchReservationsStandard = createAsyncThunk("reservations/fetchReservationsStandard", async () => {
+  try {
+    const token = sessionStorage.getItem("token");
+    if (!token) {
+      console.log("You don't have a valid token");
+      return [];
+    }
+
+    const res = await fetch("http://localhost:12413/api/reservations/standard", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
+    if (!res.ok) {
+      throw new Error("Failed to fetch reservations");
+    }
+    const data = res.json();
+    return data;
+  } catch (error) {
+    console.log("error: ", error);
+    throw error;
+  }
+});
+
 export const fetchReservationsWholeDay = createAsyncThunk("reservations/fetchReservationsWholeDay", async () => {
   try {
     const token = sessionStorage.getItem("token");
@@ -79,6 +109,25 @@ export const fetchReservationsWholeDay = createAsyncThunk("reservations/fetchRes
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
+      },
+    });
+    if (!res.ok) {
+      throw new Error("Failed to fetch reservations");
+    }
+    const data = res.json();
+    return data;
+  } catch (error) {
+    console.log("error: ", error);
+    throw error;
+  }
+});
+
+export const fetchBookedDates = createAsyncThunk("reservations/fetchBookedDates", async () => {
+  try {
+    const res = await fetch("http://localhost:12413/api/reservations/booked", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
       },
     });
     if (!res.ok) {
@@ -172,6 +221,17 @@ const reservationsSlice = createSlice({
         state.status = "failed";
         state.error = action.error.message;
       })
+      .addCase(fetchReservationsStandard.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchReservationsStandard.fulfilled, (state, action) => {
+        state.status = "succeded";
+        state.reservationsStandard = action.payload;
+      })
+      .addCase(fetchReservationsStandard.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      })
       .addCase(fetchReservationsWholeDay.pending, (state) => {
         state.status = "loading";
       })
@@ -180,6 +240,17 @@ const reservationsSlice = createSlice({
         state.specialReservations = action.payload;
       })
       .addCase(fetchReservationsWholeDay.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      })
+      .addCase(fetchBookedDates.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchBookedDates.fulfilled, (state, action) => {
+        state.status = "succeded";
+        state.bookedDates = action.payload;
+      })
+      .addCase(fetchBookedDates.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
       })

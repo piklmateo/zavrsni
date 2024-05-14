@@ -16,11 +16,35 @@ const restReservation = {
     }
   },
 
+  getReservationsNoWholeDay: async function (req, res) {
+    res.type("application/json");
+    try {
+      let rdao = new ReservationDAO();
+      const reservations = await rdao.getAllNoWholeDay();
+      res.send(JSON.stringify(reservations));
+    } catch (error) {
+      console.error(error);
+      res.status(500).send(JSON.stringify({ error: "Internal Server Error" }));
+    }
+  },
+
   getReservationsWholeDay: async function (req, res) {
     res.type("application/json");
     try {
       let rdao = new ReservationDAO();
       const reservations = await rdao.getAllWholeDay();
+      res.send(JSON.stringify(reservations));
+    } catch (error) {
+      console.error(error);
+      res.status(500).send(JSON.stringify({ error: "Internal Server Error" }));
+    }
+  },
+
+  getBookedDates: async function (req, res) {
+    res.type("application/json");
+    try {
+      let rdao = new ReservationDAO();
+      const reservations = await rdao.getBookedDates();
       res.send(JSON.stringify(reservations));
     } catch (error) {
       console.error(error);
@@ -119,19 +143,6 @@ const restReservation = {
     } catch (error) {
       console.log("error: " + error);
       res.status(500);
-    }
-  },
-
-  checkAvailability: async function (req, res) {
-    res.type("application/json");
-    try {
-      const { date, time } = req.body; // Extract date and time from request body
-      let rdao = new ReservationDAO();
-      const isAvailable = await rdao.checkAvailability(date, time); // Pass date and time to checkAvailability method
-      res.send(JSON.stringify({ available: isAvailable }));
-    } catch (error) {
-      console.error("Error while checking availability:", error);
-      res.status(500).send(JSON.stringify({ error: "Internal Server Error" }));
     }
   },
 };

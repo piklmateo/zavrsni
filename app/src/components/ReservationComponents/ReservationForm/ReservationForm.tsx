@@ -12,17 +12,27 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./ReservationForm.css";
 import { AppDispatch, RootState } from "../../../state/store/store";
+import reservationsSlice, {
+  fetchBookedDates,
+  fetchReservations,
+} from "../../../state/slices/reservations/reservationsSlice";
 
 const ReservationForm = () => {
   const [step, setStep] = useState(1);
   const dispatch = useDispatch<AppDispatch>();
   const userList = useSelector((state: RootState) => state.user.user[0]);
   const userStatus = useSelector((state: RootState) => state.user.status);
-  const error = useSelector((state: RootState) => state.user.error);
+  const userError = useSelector((state: RootState) => state.user.error);
 
   const tableList = useSelector((state: RootState) => state.table.table);
   const tableStatus = useSelector((state: RootState) => state.table.status);
+  const tableError = useSelector((state: RootState) => state.table.error);
 
+  const bookedDatesList = useSelector((state: RootState) => state.reservations.bookedDates);
+  const bookedDatesStatus = useSelector((state: RootState) => state.reservations.status);
+  const bookedDatesError = useSelector((state: RootState) => state.reservations.error);
+
+  const [blockedDatesState, setBlockedDatesState] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -44,11 +54,13 @@ const ReservationForm = () => {
     if (token) {
       setIsLoggedIn(true);
     }
-    if (userStatus === "idle" || tableStatus === "idle") {
+    if (userStatus === "idle" || tableStatus === "idle" || bookedDatesStatus === "idle") {
       dispatch(fetchUserData());
       dispatch(fetchTables());
+      dispatch(fetchReservations());
+      dispatch(fetchBookedDates());
     }
-  }, [userStatus, tableStatus, dispatch]);
+  }, [userStatus, tableStatus, bookedDatesStatus, dispatch]);
 
   useEffect(() => {
     if (userList) {
@@ -60,12 +72,19 @@ const ReservationForm = () => {
     }
   }, [userList]);
 
-  if (userStatus === "loading") {
+  useEffect(() => {
+    if (bookedDatesList.length > 0) {
+      const blockedDatesArray = bookedDatesList.map((reservation) => new Date(reservation.date));
+      setBlockedDatesState(blockedDatesArray);
+    }
+  }, [bookedDatesList]);
+
+  if (userStatus === "loading" || tableStatus === "loading" || bookedDatesStatus === "loading") {
     return <div>Loading...</div>;
   }
 
-  if (userStatus === "failed") {
-    return <div>Error: {error}</div>;
+  if (userStatus === "failed" || tableStatus === "failed" || bookedDatesStatus === "failed") {
+    return <div>Error: {userError || tableError || bookedDatesError}</div>;
   }
 
   const handleDateChange = (date: Date) => {
@@ -104,6 +123,7 @@ const ReservationForm = () => {
                 onChange={handleDateChange}
                 minDate={today}
                 maxDate={maxDate}
+                excludeDates={blockedDatesState}
                 inline
               />
             </div>

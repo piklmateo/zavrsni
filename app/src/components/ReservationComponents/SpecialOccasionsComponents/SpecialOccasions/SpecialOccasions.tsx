@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserData } from "../../../../state/slices/user/userSlice";
+import { fetchBookedDates } from "../../../../state/slices/reservations/reservationsSlice";
 import { maxDate, today } from "../../../../helpers/dateTimeFormat";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -13,6 +14,12 @@ const SpecialOccasions = () => {
   const userList = useSelector((state: RootState) => state.user.user[0]);
   const status = useSelector((state: RootState) => state.user.status);
   const error = useSelector((state: RootState) => state.user.error);
+
+  const bookedDatesList = useSelector((state: RootState) => state.reservations.bookedDates);
+  const bookedDatesStatus = useSelector((state: RootState) => state.reservations.status);
+  const bookedDatesError = useSelector((state: RootState) => state.reservations.error);
+
+  const [blockedDates, setBlockedDates] = useState([]);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -31,6 +38,7 @@ const SpecialOccasions = () => {
   useEffect(() => {
     if (status === "idle") {
       dispatch(fetchUserData());
+      dispatch(fetchBookedDates());
     }
   }, [status, dispatch]);
 
@@ -44,12 +52,19 @@ const SpecialOccasions = () => {
     }
   }, [userList]);
 
-  if (status === "loading") {
+  useEffect(() => {
+    if (bookedDatesList.length > 0) {
+      const blockedDatesArray = bookedDatesList.map((reservation) => new Date(reservation.date));
+      setBlockedDates(blockedDatesArray);
+    }
+  }, [bookedDatesList]);
+
+  if (status === "loading" || bookedDatesStatus === "loading") {
     return <div>Loading...</div>;
   }
 
-  if (status === "failed") {
-    return <div>Error: {error}</div>;
+  if (status === "failed" || bookedDatesError === "failed") {
+    return <div>Error: {error || bookedDatesError}</div>;
   }
 
   const handleDateChange = (date: Date) => {
@@ -69,16 +84,6 @@ const SpecialOccasions = () => {
       ...prevState,
       [stateKey]: value,
     }));
-  };
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    try {
-      console.log(reservationData);
-    } catch (error) {
-      console.log("error: ", error);
-      throw error;
-    }
   };
 
   return (
@@ -101,12 +106,13 @@ const SpecialOccasions = () => {
                 onChange={handleDateChange}
                 minDate={today}
                 maxDate={maxDate}
+                excludeDates={blockedDates}
                 inline
               />
             </div>
           </div>
           <div className="form__container">
-            <form onSubmit={handleSubmit}>
+            <form>
               <div className="input__name">
                 <label htmlFor="name">Name</label>
                 <input
