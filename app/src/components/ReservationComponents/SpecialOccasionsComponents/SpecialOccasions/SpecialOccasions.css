@@ -43,6 +43,10 @@ input {
   padding: 0.4rem;
 }
 
+.calendar__heading p {
+  font-weight: var(--fw-500);
+}
+
 @media (max-width: 900px) {
   .calendar__heading__container {
     display: flex;

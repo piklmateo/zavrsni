@@ -311,6 +311,17 @@ const reservationsSlice = createSlice({
         state.status = "failed";
         state.error = action.error.message;
       })
+      .addCase(fetchBookedTables.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchBookedTables.fulfilled, (state, action) => {
+        state.status = "succeded";
+        state.bookedTable = action.payload;
+      })
+      .addCase(fetchBookedTables.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      })
       .addCase(fetchUserReservations.pending, (state) => {
         state.status = "loading";
       })

@@ -86,3 +86,68 @@
 .react-datepicker__day--selected:hover {
   background-color: var(--clr-primary);
 }
+
+.react-datepicker__day--today {
+  background-color: #ce6676;
+  color: var(--clr-neutral);
+}
+
+.reservation__select__container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  place-items: center;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.btn__reservation__select {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 4rem;
+  height: 4rem;
+  padding: 1rem;
+  border-radius: 50%;
+  border: 1px solid var(--clr-primary);
+  background-color: var(--clr-neutral);
+  color: var(--clr-primary);
+  font-weight: var(--fw-900);
+
+  cursor: pointer;
+  transition: 200ms ease-in-out;
+}
+
+.btn__reservation__select-active {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 4rem;
+  height: 4rem;
+  padding: 1rem;
+  border-radius: 50%;
+  border: none;
+  background-color: var(--clr-primary);
+  color: var(--clr-neutral);
+  font-weight: var(--fw-900);
+
+  cursor: pointer;
+  transition: 200ms ease-in-out;
+}
+
+.btn__reservation__select-active:hover {
+  background-color: var(--clr-neutral);
+  color: var(--clr-primary);
+  border: 1px solid var(--clr-primary);
+}
+
+.btn__reservation__select:hover {
+  background-color: var(--clr-primary);
+  color: var(--clr-neutral);
+  border: none;
+}
+
+.reservation__select-people {
+  margin-top: 1rem;
+}

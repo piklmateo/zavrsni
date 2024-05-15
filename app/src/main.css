@@ -112,7 +112,7 @@ footer {
 
 .btn {
   width: 100%;
-  border: none;
+  border: hidden;
   padding: 0.5rem;
 }
 
@@ -166,4 +166,8 @@ span {
   font-family: var(--ff-secondary);
   font-weight: var(--fw-medium);
   font-size: var(--fs-regular);
+}
+
+.loader__container {
+  padding: 2rem;
 }

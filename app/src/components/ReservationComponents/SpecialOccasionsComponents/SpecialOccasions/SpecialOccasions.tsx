@@ -93,16 +93,15 @@ const SpecialOccasions = () => {
         <div className="special__occasions__container">
           <div className="calendar__heading__container">
             <div className="calendar__heading">
-              <h2>To book the restaurant</h2>
+              <h2>To reserve the restaurant</h2>
               <h2>
                 for your <span className="emphasized">special</span> occasion
               </h2>
-              <p>Choose the date</p>
-              <p>and enter your contact info.</p>
+              <p>Simply select an available date</p>
+              <p>and provide your contact information</p>
             </div>
             <div className="calendar__container">
               <DatePicker
-                selected={new Date(reservationData.date)}
                 onChange={handleDateChange}
                 minDate={today}
                 maxDate={maxDate}

@@ -1,5 +1,3 @@
-//MOZDA HANDLECHANGE PUCA
-
 import React, { useState, useEffect } from "react";
 import ReservationSubmitButton from "../ReservationSubmitButton/ReservationSubmitButton";
 import LeftArrow from "../../../assets/images/left-arrow.svg";
@@ -18,6 +16,7 @@ import {
   fetchBookedTime,
   fetchReservations,
 } from "../../../state/slices/reservations/reservationsSlice";
+import ClockLoader from "react-spinners/ClockLoader";
 
 const ReservationForm = () => {
   const [step, setStep] = useState(1);
@@ -44,6 +43,9 @@ const ReservationForm = () => {
 
   const [blockedDatesState, setBlockedDatesState] = useState([]);
   const [blockedTimesState, setBlockedTimesState] = useState([]);
+  const [blockedTablesState, setBlockedTablesState] = useState([]);
+  const [isTimePickedState, setIsTimePickedState] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -90,33 +92,44 @@ const ReservationForm = () => {
     }
 
     if (bookedTimeList.length > 0) {
-      const blockedTimesArray = bookedTimeList.map((reservation) => {
-        console.log("Time:", reservation.time_slot);
-        return reservation.time_slot;
-      });
+      const blockedTimesArray = bookedTimeList.map((reservation) => reservation.time_slot);
       setBlockedTimesState(blockedTimesArray);
-      console.log("vremena:", JSON.stringify(blockedTimesArray));
+      console.log("Blocked times:", JSON.stringify(blockedTimesArray));
     } else {
       setBlockedTimesState(bookedDatesList);
     }
-  }, [bookedDatesList, bookedTimeList]);
 
-  if (
-    userStatus === "loading" ||
-    tableStatus === "loading" ||
-    bookedDatesStatus === "loading" ||
-    bookedTimeStatus === "loading"
-  ) {
-    return <div>Loading...</div>;
-  }
+    if (bookedTableList.length > 0) {
+      const blockedTablesArray = bookedTableList.map((reservation) => reservation.table_id);
+      setBlockedTablesState(blockedTablesArray);
+      console.log("Blocked tables:", JSON.stringify(blockedTablesArray));
+    } else {
+      setBlockedTablesState(bookedTableList);
+    }
+  }, [bookedDatesList, bookedTimeList, bookedTableList]);
+
+  useEffect(() => {
+    if (
+      userStatus === "loading" ||
+      tableStatus === "loading" ||
+      bookedDatesStatus === "loading" ||
+      bookedTimeStatus === "loading" ||
+      bookedTableStatus === "loading"
+    ) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
+  }, [userStatus, tableStatus, bookedDatesStatus, bookedTimeStatus, bookedTableStatus]);
 
   if (
     userStatus === "failed" ||
     tableStatus === "failed" ||
     bookedDatesStatus === "failed" ||
-    bookedTimeStatus === "failed"
+    bookedTimeStatus === "failed" ||
+    bookedTableStatus === "failed"
   ) {
-    return <div>Error: {userError || tableError || bookedDatesError || bookedTimeError}</div>;
+    return <div>Error: {userError || tableError || bookedDatesError || bookedTimeError || bookedTableError}</div>;
   }
 
   const handleDateChange = (date: Date) => {
@@ -126,149 +139,179 @@ const ReservationForm = () => {
     }));
 
     const formattedDate = date.toISOString().split("T")[0];
-    console.log("formatirani dejt: " + formattedDate);
     dispatch(fetchBookedTime(formattedDate));
+    setStep(2);
   };
 
-  const handleInputChange = (
-    event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>,
-    stateSetter: React.Dispatch<React.SetStateAction<any>>,
-    stateKey: string
-  ) => {
-    const { value } = event.target;
-    stateSetter((prevState: any) => ({
+  const handleTimeChange = (event: React.MouseEvent<HTMLButtonElement>, time: string) => {
+    event.preventDefault();
+    setReservationData((prevState: any) => ({
+      ...prevState,
+      time: time,
+    }));
+
+    const date = new Date(reservationData.date);
+    const formattedDate = date.toISOString().split("T")[0];
+    dispatch(fetchBookedTables({ date: formattedDate, time: time }));
+    setIsTimePickedState(true);
+  };
+
+  const handleTableChange = (event: React.MouseEvent<HTMLButtonElement>, table_id: string) => {
+    event.preventDefault();
+    setReservationData((prevState: any) => ({
+      ...prevState,
+      table_id: table_id,
+    }));
+    setStep(3);
+  };
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, stateKey: string) => {
+    event.preventDefault();
+    const value = event.target.value;
+
+    setFormData((prevState: any) => ({
       ...prevState,
       [stateKey]: value,
     }));
-    const date = new Date(reservationData.date);
-    const formattedDate = date.toISOString().split("T")[0];
-    dispatch(fetchBookedTables({ date: formattedDate, time: value }));
-    console.log("booked tables: " + bookedTableList);
   };
 
   return (
     <div className="main__layout__container">
       <div className="reservation__form__wrapper">
-        <h1>Reservation</h1>
-        <div className="step__indicator">
-          <div className={`step__line ${step >= 1 ? "step__active" : ""}`}></div>
-          <div className={`step__line ${step >= 2 ? "step__active" : ""}`}></div>
-          <div className={`step__line ${step >= 3 ? "step__active" : ""}`}></div>
-        </div>
-        <form className="form">
-          {step === 1 && (
-            <div className="input__date">
-              <DatePicker
-                selected={new Date(reservationData.date)}
-                onChange={handleDateChange}
-                minDate={today}
-                maxDate={maxDate}
-                excludeDates={blockedDatesState}
-                inline
-              />
+        {isLoading ? (
+          <div className="loader__container">
+            <ClockLoader color="var(--clr-primary)" size={100} />
+          </div>
+        ) : (
+          <>
+            <h1>Reservation</h1>
+            <div className="step__indicator">
+              <div className={`step__line ${step >= 1 ? "step__active" : ""}`}></div>
+              <div className={`step__line ${step >= 2 ? "step__active" : ""}`}></div>
+              <div className={`step__line ${step >= 3 ? "step__active" : ""}`}></div>
             </div>
-          )}
-          {step === 2 && (
-            <>
-              <div className="select__time">
-                <label htmlFor="time">Time</label>
-                <select
-                  name="time"
-                  id="time"
-                  value={reservationData.time}
-                  onChange={(event) => handleInputChange(event, setReservationData, "time")}
-                  required
-                >
-                  {["12:00:00", "13:30:00", "15:00:00", "16:30:00", "18:00:00", "19:30:00", "21:00:00"]
-                    .filter((time) => !blockedTimesState.includes(time))
-                    .map((time) => {
-                      const [hour, minute] = time.split(":");
-                      const formattedTime = `${hour}:${minute}`;
-                      return (
-                        <option key={time} value={time}>
-                          {formattedTime}
-                        </option>
-                      );
-                    })}
-                </select>
-              </div>
-              <div className="select__people">
-                <label htmlFor="people">People</label>
-                <select
-                  name="people"
-                  id="people"
-                  value={reservationData.table_id}
-                  onChange={(event) => handleInputChange(event, setReservationData, "table_id")}
-                  required
-                >
-                  {tableList.map((table) => (
-                    <option key={table.id_table} value={table.id_table}>
-                      {table.quantity}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </>
-          )}
-          {step === 3 && (
-            <>
-              <div className="input__name">
-                <label htmlFor="name">Name</label>
-                <input
-                  type="text"
-                  name="name"
-                  id="name"
-                  value={formData.name}
-                  onChange={(event) => handleInputChange(event, setFormData, "name")}
-                  required
-                  {...(isLoggedIn && { disabled: true })}
-                />
-              </div>
-              <div className="input__phone">
-                <label htmlFor="phone">Phone(optional)</label>
-                <input
-                  type="tel"
-                  name="phone"
-                  id="phone"
-                  value={formData.phone}
-                  onChange={(event) => handleInputChange(event, setFormData, "phone")}
-                  {...(isLoggedIn && { disabled: true })}
-                />
-              </div>
-              <div className="input__email">
-                <label htmlFor="email">Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  id="email"
-                  value={formData.email}
-                  onChange={(event) => handleInputChange(event, setFormData, "email")}
-                  required
-                  {...(isLoggedIn && { disabled: true })}
-                />
-              </div>
-              <div>
-                <ReservationSubmitButton formData={formData} reservationData={reservationData} />
-              </div>
-            </>
-          )}
-        </form>
-        <div className="navigation__buttons">
-          {step !== 1 && (
-            <div>
-              <button className="navigation__btn" onClick={() => setStep(step - 1)}>
-                <img alt="arrow-back" src={LeftArrow} width={40} height={40} />
-              </button>
+            <form className="form">
+              {step === 1 && (
+                <div className="input__date">
+                  <DatePicker
+                    selected={new Date(today)}
+                    onChange={handleDateChange}
+                    minDate={today}
+                    maxDate={maxDate}
+                    excludeDates={blockedDatesState}
+                    inline
+                  />
+                </div>
+              )}
+              {step === 2 && (
+                <>
+                  <div className="reservation__select-time">
+                    <div>
+                      <h3>Select time</h3>
+                    </div>
+                    <div className="reservation__select__container">
+                      {["12:00:00", "13:30:00", "15:00:00", "16:30:00", "18:00:00", "19:30:00", "21:00:00"]
+                        .filter((time) => !blockedTimesState.includes(time))
+                        .map((time) => {
+                          const [hour, minute] = time.split(":");
+                          const formattedTime = `${hour}:${minute}`;
+                          return (
+                            <button
+                              className="btn__reservation__select"
+                              key={time}
+                              value={time}
+                              onClick={(event) => handleTimeChange(event, time)}
+                            >
+                              {formattedTime}
+                            </button>
+                          );
+                        })}
+                    </div>
+                  </div>
+                  {isTimePickedState && (
+                    <div className="reservation__select-people">
+                      <div>
+                        <h3>Select amount of people</h3>
+                      </div>
+                      <div className="reservation__select__container">
+                        {tableList
+                          .filter((table) => !blockedTablesState.includes(table.id_table))
+                          .map((table) => (
+                            <button
+                              className="btn__reservation__select"
+                              key={table.id_table}
+                              value={table.id_table.toString()}
+                              onClick={(event) => handleTableChange(event, table.id_table.toString())}
+                            >
+                              {table.quantity}
+                            </button>
+                          ))}
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
+              {step === 3 && (
+                <>
+                  <div className="input__name">
+                    <label htmlFor="name">Name</label>
+                    <input
+                      type="text"
+                      name="name"
+                      id="name"
+                      value={formData.name}
+                      onChange={(event) => handleInputChange(event, "name")}
+                      required
+                      {...(isLoggedIn && { disabled: true })}
+                    />
+                  </div>
+                  <div className="input__phone">
+                    <label htmlFor="phone">Phone(optional)</label>
+                    <input
+                      type="tel"
+                      name="phone"
+                      id="phone"
+                      value={formData.phone}
+                      onChange={(event) => handleInputChange(event, "phone")}
+                      {...(isLoggedIn && { disabled: true })}
+                    />
+                  </div>
+                  <div className="input__email">
+                    <label htmlFor="email">Email</label>
+                    <input
+                      type="email"
+                      name="email"
+                      id="email"
+                      value={formData.email}
+                      onChange={(event) => handleInputChange(event, "email")}
+                      required
+                      {...(isLoggedIn && { disabled: true })}
+                    />
+                  </div>
+                  <div>
+                    <ReservationSubmitButton formData={formData} reservationData={reservationData} />
+                  </div>
+                </>
+              )}
+            </form>
+            <div className="navigation__buttons">
+              {step !== 1 && (
+                <div>
+                  <button className="navigation__btn" onClick={() => setStep(step - 1)}>
+                    <img alt="arrow-back" src={LeftArrow} width={40} height={40} />
+                  </button>
+                </div>
+              )}
+              {step !== 3 && (
+                <div>
+                  <button className="navigation__btn" onClick={() => setStep(step + 1)}>
+                    <img alt="arrow-next" src={RightArrow} width={40} height={40} />
+                  </button>
+                </div>
+              )}
             </div>
-          )}
-          {step !== 3 && (
-            <div>
-              <button className="navigation__btn" onClick={() => setStep(step + 1)}>
-                <img alt="arrow-next" src={RightArrow} width={40} height={40} />
-              </button>
-            </div>
-          )}
-        </div>
+          </>
+        )}
       </div>
     </div>
   );
