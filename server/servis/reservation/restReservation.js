@@ -65,6 +65,20 @@ const restReservation = {
     }
   },
 
+  getBookedTables: async function (req, res) {
+    res.type("application/json");
+    try {
+      let rdao = new ReservationDAO();
+      const date = req.params.date;
+      const time = req.params.time;
+      const reservations = await rdao.getBookedTables(date, time);
+      res.send(JSON.stringify(reservations));
+    } catch (error) {
+      console.error(error);
+      res.status(500).send(JSON.stringify({ error: "Internal Server Error" }));
+    }
+  },
+
   getReservationsUser: async function (req, res) {
     res.type("application/json");
     try {

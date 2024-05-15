@@ -12,8 +12,9 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./ReservationForm.css";
 import { AppDispatch, RootState } from "../../../state/store/store";
-import reservationsSlice, {
+import {
   fetchBookedDates,
+  fetchBookedTables,
   fetchBookedTime,
   fetchReservations,
 } from "../../../state/slices/reservations/reservationsSlice";
@@ -36,6 +37,10 @@ const ReservationForm = () => {
   const bookedTimeList = useSelector((state: RootState) => state.reservations.bookedTime);
   const bookedTimeStatus = useSelector((state: RootState) => state.reservations.status);
   const bookedTimeError = useSelector((state: RootState) => state.reservations.error);
+
+  const bookedTableList = useSelector((state: RootState) => state.reservations.bookedTable);
+  const bookedTableStatus = useSelector((state: RootState) => state.reservations.status);
+  const bookedTableError = useSelector((state: RootState) => state.reservations.error);
 
   const [blockedDatesState, setBlockedDatesState] = useState([]);
   const [blockedTimesState, setBlockedTimesState] = useState([]);
@@ -96,12 +101,22 @@ const ReservationForm = () => {
     }
   }, [bookedDatesList, bookedTimeList]);
 
-  if (userStatus === "loading" || tableStatus === "loading" || bookedDatesStatus === "loading") {
+  if (
+    userStatus === "loading" ||
+    tableStatus === "loading" ||
+    bookedDatesStatus === "loading" ||
+    bookedTimeStatus === "loading"
+  ) {
     return <div>Loading...</div>;
   }
 
-  if (userStatus === "failed" || tableStatus === "failed" || bookedDatesStatus === "failed") {
-    return <div>Error: {userError || tableError || bookedDatesError}</div>;
+  if (
+    userStatus === "failed" ||
+    tableStatus === "failed" ||
+    bookedDatesStatus === "failed" ||
+    bookedTimeStatus === "failed"
+  ) {
+    return <div>Error: {userError || tableError || bookedDatesError || bookedTimeError}</div>;
   }
 
   const handleDateChange = (date: Date) => {
@@ -125,6 +140,10 @@ const ReservationForm = () => {
       ...prevState,
       [stateKey]: value,
     }));
+    const date = new Date(reservationData.date);
+    const formattedDate = date.toISOString().split("T")[0];
+    dispatch(fetchBookedTables({ date: formattedDate, time: value }));
+    console.log("booked tables: " + bookedTableList);
   };
 
   return (

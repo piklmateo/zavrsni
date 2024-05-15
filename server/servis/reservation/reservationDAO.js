@@ -157,6 +157,30 @@ class ReservationDAO {
     }
   }
 
+  async getBookedTables(date, time) {
+    try {
+      let sql = `
+      SELECT DISTINCT 
+      CASE 
+          WHEN r.whole_day = 'yes' THEN t.id_table
+          ELSE r.table_id
+      END AS table_id
+      FROM 
+          reservation r
+          LEFT JOIN "table" t ON r.whole_day = 'yes'
+      WHERE 
+          r."date" = $1 
+          AND r."time" = $2;
+      `;
+      const data = await this.db.query(sql, [date, time]);
+      const rows = data.rows;
+      return rows;
+    } catch (error) {
+      console.error("Error while getting all reservations:", error);
+      throw error;
+    }
+  }
+
   async getAllUser(id_user) {
     try {
       let sql = `

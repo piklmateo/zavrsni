@@ -23,6 +23,7 @@ interface ReservationState {
   userSpecialReservations: Reservation[];
   bookedDates: Reservation[];
   bookedTime: Reservation[];
+  bookedTable: Reservation[];
   status: "idle" | "loading" | "succeded" | "failed";
   error: string | null | undefined;
 }
@@ -35,6 +36,7 @@ const initialState: ReservationState = {
   userSpecialReservations: [],
   bookedDates: [],
   bookedTime: [],
+  bookedTable: [],
   status: "idle",
   error: null,
 };
@@ -65,7 +67,7 @@ export const fetchReservations = createAsyncThunk("reservations/fetchReservation
     if (!res.ok) {
       throw new Error("Failed to fetch reservations");
     }
-    const data = res.json();
+    const data = await res.json();
     return data;
   } catch (error) {
     console.log("error: ", error);
@@ -91,7 +93,7 @@ export const fetchReservationsStandard = createAsyncThunk("reservations/fetchRes
     if (!res.ok) {
       throw new Error("Failed to fetch reservations");
     }
-    const data = res.json();
+    const data = await res.json();
     return data;
   } catch (error) {
     console.log("error: ", error);
@@ -117,7 +119,7 @@ export const fetchReservationsWholeDay = createAsyncThunk("reservations/fetchRes
     if (!res.ok) {
       throw new Error("Failed to fetch reservations");
     }
-    const data = res.json();
+    const data = await res.json();
     return data;
   } catch (error) {
     console.log("error: ", error);
@@ -136,7 +138,7 @@ export const fetchBookedDates = createAsyncThunk("reservations/fetchBookedDates"
     if (!res.ok) {
       throw new Error("Failed to fetch reservations");
     }
-    const data = res.json();
+    const data = await res.json();
     return data;
   } catch (error) {
     console.log("error: ", error);
@@ -155,13 +157,35 @@ export const fetchBookedTime = createAsyncThunk("reservations/fetchBookedTime", 
     if (!res.ok) {
       throw new Error("Failed to fetch reservations");
     }
-    const data = res.json();
+    const data = await res.json();
     return data;
   } catch (error) {
     console.log("error: ", error);
     throw error;
   }
 });
+
+export const fetchBookedTables = createAsyncThunk(
+  "reservations/fetchBookedTables",
+  async ({ date, time }: { date: string; time: string }) => {
+    try {
+      const res = await fetch(`http://localhost:12413/api/reservations/bookedTables/${date}/${time}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!res.ok) {
+        throw new Error("Failed to fetch reservations");
+      }
+      const data = await res.json();
+      return data;
+    } catch (error) {
+      console.log("error: ", error);
+      throw error;
+    }
+  }
+);
 
 export const fetchUserReservations = createAsyncThunk("reservationsUser/fetchUserReservations", async () => {
   try {
