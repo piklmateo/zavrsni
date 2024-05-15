@@ -8,6 +8,7 @@ import drinkReducer from "../slices/drink/drinkSlice";
 import orderReducer from "../slices/order/orderSlice";
 import orderListReducer from "../slices/order/orderListSlice";
 import tableReducer from "../slices/table/tableSlice";
+import statisticsReducer from "../slices/statistics/statisticsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -19,6 +20,7 @@ export const store = configureStore({
     order: orderReducer,
     orderList: orderListReducer,
     table: tableReducer,
+    statistics: statisticsReducer,
   },
 });
 
