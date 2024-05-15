@@ -17,7 +17,7 @@ const NavBar = () => {
   const [allowedRoutes, setAllowedRoutes] = useState<string[]>([]);
 
   const roleRoutes: { [key: number]: string[] } = {
-    1: ["/menu", "/profile", "/reservations", "/add-dish", "/add-drink", "/order", "/order-list"], // ADMIN
+    1: ["/menu", "/profile", "/reservations", "/add-dish", "/add-drink", "/order", "/order-list", "/statistics"], // ADMIN
     2: ["/menu", "/add-dish", "/add-drink", "/order", "/order-list"], // KUHAR
     3: ["/menu", "/reservations", "/add-drink", "/add-dish", "/order", "/order-list"], // KONOBAR
     4: ["/profile", "/my-reservations"], // KORISNIK
@@ -108,6 +108,14 @@ const NavBar = () => {
                       <li key={index} className="nav__list__item">
                         <Link className="nav__link" to={route}>
                           Order list
+                        </Link>
+                      </li>
+                    );
+                  } else if (route === "/statistics") {
+                    return (
+                      <li key={index} className="nav__list__item">
+                        <Link className="nav__link" to={route}>
+                          Statistics
                         </Link>
                       </li>
                     );

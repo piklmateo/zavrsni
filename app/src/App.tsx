@@ -15,6 +15,7 @@ import OrderPage from "./pages/OrderPage";
 import OrderListPage from "./pages/OrderListPage";
 import ReservationsPageUser from "./pages/ReservationsPageUser";
 import SpecialOccasionsPage from "./pages/SpecialOccasionsPage";
+import StatisticsPage from "./pages/StatisticsPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -34,6 +35,7 @@ const router = createBrowserRouter(
         <Route path="/order" element={<OrderPage />} />
         <Route path="/order-list" element={<OrderListPage />} />
         <Route path="/my-reservations" element={<ReservationsPageUser />} />
+        <Route path="/statistics" element={<StatisticsPage />} />
       </Route>
     </Route>
   )
