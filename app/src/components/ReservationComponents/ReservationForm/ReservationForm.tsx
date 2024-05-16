@@ -4,7 +4,7 @@ import LeftArrow from "../../../assets/images/left-arrow.svg";
 import RightArrow from "../../../assets/images/right-arrow.svg";
 import { today } from "../../../helpers/dateTimeFormat";
 import { useDispatch, useSelector } from "react-redux";
-import { User, fetchUserData } from "../../../state/slices/user/userSlice";
+import { User } from "../../../state/slices/user/userSlice";
 import { fetchTables } from "../../../state/slices/table/tableSlice";
 import "react-datepicker/dist/react-datepicker.css";
 import "./ReservationForm.css";
