@@ -35,12 +35,21 @@ const verifyToken = function (req, res, next) {
         return res.status(403).send("Invalid token");
       }
     }
-    //console.log("Token: " + token);
     next();
   });
+};
+
+const verifyRole = function (requiredRole) {
+  return (req, res, next) => {
+    if (!req.user || req.user.role !== requiredRole) {
+      return res.status(403).send("Forbidden");
+    }
+    next();
+  };
 };
 
 export default {
   createTokenJWT,
   verifyToken,
+  verifyRole,
 };
