@@ -61,7 +61,7 @@ const ReservationsTableUser = () => {
             <tbody>
               {reservationsUserList.map((reservation) => (
                 <tr key={reservation.id_reservation}>
-                  <td>{formatDate(reservation.date)}</td>
+                  <td>{formatDate(reservation.date.toString())}</td>
                   <td>{formatTime(reservation.time)}</td>
                   <td>{reservation.table_number}</td>
                   <td>{reservation.name}</td>
@@ -98,7 +98,7 @@ const ReservationsTableUser = () => {
             <tbody>
               {specialReservationsList.map((reservation) => (
                 <tr key={reservation.id_reservation}>
-                  <td>{formatDate(reservation.date)}</td>
+                  <td>{formatDate(reservation.date.toString())}</td>
                   <td>{formatTime(reservation.time)}</td>
                   <td>{reservation.table_number}</td>
                   <td>{reservation.name}</td>

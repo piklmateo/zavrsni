@@ -87,11 +87,6 @@
   background-color: var(--clr-primary);
 }
 
-.react-datepicker__day--today {
-  background-color: #ce6676;
-  color: var(--clr-neutral);
-}
-
 .reservation__select__container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-interface Table {
+export interface Table {
   id_table: number;
   number: number;
   quantity: number;

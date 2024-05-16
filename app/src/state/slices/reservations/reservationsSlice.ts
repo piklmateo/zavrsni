@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { jwtDecode, JwtPayload } from "jwt-decode";
 
-interface Reservation {
+export interface Reservation {
   id_reservation: number;
-  date: string;
+  date: Date;
   time: string;
   email: string;
   user_id: number | null | undefined;
@@ -15,7 +15,7 @@ interface Reservation {
   time_slot: string;
 }
 
-interface ReservationState {
+export interface ReservationState {
   reservations: Reservation[];
   reservationsStandard: Reservation[];
   specialReservations: Reservation[];

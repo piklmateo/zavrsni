@@ -63,7 +63,7 @@ const ReservationsTable = () => {
             <tbody>
               {reservationList.map((reservation) => (
                 <tr key={reservation.id_reservation}>
-                  <td>{formatDate(reservation.date)}</td>
+                  <td>{formatDate(reservation.date.toString())}</td>
                   <td>{formatTime(reservation.time)}</td>
                   <td>{reservation.table_number}</td>
                   <td>{reservation.name}</td>
@@ -100,7 +100,7 @@ const ReservationsTable = () => {
             <tbody>
               {specialReservationsList.map((reservation) => (
                 <tr key={reservation.id_reservation}>
-                  <td>{formatDate(reservation.date)}</td>
+                  <td>{formatDate(reservation.date.toString())}</td>
                   <td>{formatTime(reservation.time)}</td>
                   <td>{reservation.table_number}</td>
                   <td>{reservation.name}</td>

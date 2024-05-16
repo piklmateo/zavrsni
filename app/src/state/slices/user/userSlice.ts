@@ -8,7 +8,6 @@ export interface User {
   phone: string;
   email: string;
   username: string;
-  password: string;
   role_id: number;
 }
 

@@ -11,14 +11,13 @@ const ProfileForm = () => {
   const status = useSelector((state: RootState) => state.user.status);
   const error = useSelector((state: RootState) => state.user.error);
   const [formData, setFormData] = useState<User>({
-    id_user: 0,
+    id_user: null,
     name: "",
     surname: "",
     phone: "",
     email: "",
     username: "",
-    password: "",
-    role_id: 0,
+    role_id: null,
   });
 
   useEffect(() => {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserData } from "../../../../state/slices/user/userSlice";
-import { fetchBookedDates } from "../../../../state/slices/reservations/reservationsSlice";
+import { Reservation, fetchBookedDates } from "../../../../state/slices/reservations/reservationsSlice";
 import { maxDate, today } from "../../../../helpers/dateTimeFormat";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -27,12 +27,18 @@ const SpecialOccasions = () => {
     phone: "",
   });
 
-  const [reservationData, setReservationData] = useState({
-    date: today,
+  const [reservationData, setReservationData] = useState<Reservation>({
+    id_reservation: null,
+    date: new Date(today),
     time: "12:00:00",
     table_id: 2,
     user_id: null,
     whole_day: "yes",
+    email: "",
+    name: "",
+    phone: "",
+    table_number: 0,
+    time_slot: "",
   });
 
   useEffect(() => {

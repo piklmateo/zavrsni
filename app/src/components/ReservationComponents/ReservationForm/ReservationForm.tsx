@@ -2,178 +2,72 @@ import React, { useState, useEffect } from "react";
 import ReservationSubmitButton from "../ReservationSubmitButton/ReservationSubmitButton";
 import LeftArrow from "../../../assets/images/left-arrow.svg";
 import RightArrow from "../../../assets/images/right-arrow.svg";
-import { maxDate, today } from "../../../helpers/dateTimeFormat";
+import { today } from "../../../helpers/dateTimeFormat";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUserData } from "../../../state/slices/user/userSlice";
+import { User, fetchUserData } from "../../../state/slices/user/userSlice";
 import { fetchTables } from "../../../state/slices/table/tableSlice";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./ReservationForm.css";
 import { AppDispatch, RootState } from "../../../state/store/store";
-import {
-  fetchBookedDates,
-  fetchBookedTables,
-  fetchBookedTime,
-  fetchReservations,
-} from "../../../state/slices/reservations/reservationsSlice";
+import { Reservation } from "../../../state/slices/reservations/reservationsSlice";
 import ClockLoader from "react-spinners/ClockLoader";
+import ReservationDatePicker from "../ReservationDatePicker/DatePickerComponent";
+import ReservationTimeSelect from "../ReservationTimeSelect/ReservationTimeSelect";
+import ReservationTableSelect from "../ReservationTableSelect/ReservationTableSelect";
+import ReservationUserInput from "../ReservationUserInput/ReservationUserInput";
 
 const ReservationForm = () => {
   const [step, setStep] = useState(1);
   const dispatch = useDispatch<AppDispatch>();
-  const userList = useSelector((state: RootState) => state.user.user[0]);
-  const userStatus = useSelector((state: RootState) => state.user.status);
-  const userError = useSelector((state: RootState) => state.user.error);
 
   const tableList = useSelector((state: RootState) => state.table.table);
   const tableStatus = useSelector((state: RootState) => state.table.status);
   const tableError = useSelector((state: RootState) => state.table.error);
 
-  const bookedDatesList = useSelector((state: RootState) => state.reservations.bookedDates);
-  const bookedDatesStatus = useSelector((state: RootState) => state.reservations.status);
-  const bookedDatesError = useSelector((state: RootState) => state.reservations.error);
-
-  const bookedTimeList = useSelector((state: RootState) => state.reservations.bookedTime);
-  const bookedTimeStatus = useSelector((state: RootState) => state.reservations.status);
-  const bookedTimeError = useSelector((state: RootState) => state.reservations.error);
-
-  const bookedTableList = useSelector((state: RootState) => state.reservations.bookedTable);
-  const bookedTableStatus = useSelector((state: RootState) => state.reservations.status);
-  const bookedTableError = useSelector((state: RootState) => state.reservations.error);
-
-  const [blockedDatesState, setBlockedDatesState] = useState([]);
-  const [blockedTimesState, setBlockedTimesState] = useState([]);
-  const [blockedTablesState, setBlockedTablesState] = useState([]);
   const [isTimePickedState, setIsTimePickedState] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<User>({
+    id_user: null,
     name: "",
+    surname: "",
     email: "",
     phone: "",
+    username: "",
+    role_id: null,
   });
 
-  const [reservationData, setReservationData] = useState({
-    date: today,
+  const [reservationData, setReservationData] = useState<Reservation>({
+    id_reservation: null,
+    date: new Date(today),
     time: "12:00:00",
     table_id: 2,
     user_id: null,
     whole_day: "no",
+    email: "",
+    name: "",
+    phone: "",
+    table_number: 0,
+    time_slot: "",
   });
 
   useEffect(() => {
-    const token = sessionStorage.getItem("token");
-    if (token) {
-      setIsLoggedIn(true);
-    }
-    if (userStatus === "idle" || tableStatus === "idle" || bookedDatesStatus === "idle") {
-      dispatch(fetchUserData());
+    if (tableStatus === "idle") {
       dispatch(fetchTables());
-      dispatch(fetchReservations());
-      dispatch(fetchBookedDates());
     }
-  }, [userStatus, tableStatus, bookedDatesStatus, dispatch]);
+  }, [tableStatus, dispatch]);
 
   useEffect(() => {
-    if (userList) {
-      setFormData({
-        name: userList.name || "",
-        email: userList.email || "",
-        phone: userList.phone || "",
-      });
-    }
-  }, [userList]);
-
-  useEffect(() => {
-    if (bookedDatesList.length > 0) {
-      const blockedDatesArray = bookedDatesList.map((reservation) => new Date(reservation.date));
-      setBlockedDatesState(blockedDatesArray);
-    }
-
-    if (bookedTimeList.length > 0) {
-      const blockedTimesArray = bookedTimeList.map((reservation) => reservation.time_slot);
-      setBlockedTimesState(blockedTimesArray);
-      console.log("Blocked times:", JSON.stringify(blockedTimesArray));
-    } else {
-      setBlockedTimesState(bookedDatesList);
-    }
-
-    if (bookedTableList.length > 0) {
-      const blockedTablesArray = bookedTableList.map((reservation) => reservation.table_id);
-      setBlockedTablesState(blockedTablesArray);
-      console.log("Blocked tables:", JSON.stringify(blockedTablesArray));
-    } else {
-      setBlockedTablesState(bookedTableList);
-    }
-  }, [bookedDatesList, bookedTimeList, bookedTableList]);
-
-  useEffect(() => {
-    if (
-      userStatus === "loading" ||
-      tableStatus === "loading" ||
-      bookedDatesStatus === "loading" ||
-      bookedTimeStatus === "loading" ||
-      bookedTableStatus === "loading"
-    ) {
+    if (tableStatus === "loading") {
       setIsLoading(true);
     } else {
       setIsLoading(false);
     }
-  }, [userStatus, tableStatus, bookedDatesStatus, bookedTimeStatus, bookedTableStatus]);
+  }, [tableStatus]);
 
-  if (
-    userStatus === "failed" ||
-    tableStatus === "failed" ||
-    bookedDatesStatus === "failed" ||
-    bookedTimeStatus === "failed" ||
-    bookedTableStatus === "failed"
-  ) {
-    return <div>Error: {userError || tableError || bookedDatesError || bookedTimeError || bookedTableError}</div>;
+  if (tableStatus === "failed") {
+    return <div>Error: {tableError}</div>;
   }
-
-  const handleDateChange = (date: Date) => {
-    setReservationData((prevState: any) => ({
-      ...prevState,
-      date: date,
-    }));
-
-    const formattedDate = date.toISOString().split("T")[0];
-    dispatch(fetchBookedTime(formattedDate));
-    setStep(2);
-  };
-
-  const handleTimeChange = (event: React.MouseEvent<HTMLButtonElement>, time: string) => {
-    event.preventDefault();
-    setReservationData((prevState: any) => ({
-      ...prevState,
-      time: time,
-    }));
-
-    const date = new Date(reservationData.date);
-    const formattedDate = date.toISOString().split("T")[0];
-    dispatch(fetchBookedTables({ date: formattedDate, time: time }));
-    setIsTimePickedState(true);
-  };
-
-  const handleTableChange = (event: React.MouseEvent<HTMLButtonElement>, table_id: string) => {
-    event.preventDefault();
-    setReservationData((prevState: any) => ({
-      ...prevState,
-      table_id: table_id,
-    }));
-    setStep(3);
-  };
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>, stateKey: string) => {
-    event.preventDefault();
-    const value = event.target.value;
-
-    setFormData((prevState: any) => ({
-      ...prevState,
-      [stateKey]: value,
-    }));
-  };
 
   return (
     <div className="main__layout__container">
@@ -193,101 +87,36 @@ const ReservationForm = () => {
             <form className="form">
               {step === 1 && (
                 <div className="input__date">
-                  <DatePicker
-                    selected={new Date(today)}
-                    onChange={handleDateChange}
-                    minDate={today}
-                    maxDate={maxDate}
-                    excludeDates={blockedDatesState}
-                    inline
+                  <ReservationDatePicker
+                    setStep={setStep}
+                    reservationData={reservationData}
+                    setReservationData={setReservationData}
                   />
                 </div>
               )}
               {step === 2 && (
                 <>
                   <div className="reservation__select-time">
-                    <div>
-                      <h3>Select time</h3>
-                    </div>
-                    <div className="reservation__select__container">
-                      {["12:00:00", "13:30:00", "15:00:00", "16:30:00", "18:00:00", "19:30:00", "21:00:00"]
-                        .filter((time) => !blockedTimesState.includes(time))
-                        .map((time) => {
-                          const [hour, minute] = time.split(":");
-                          const formattedTime = `${hour}:${minute}`;
-                          return (
-                            <button
-                              className="btn__reservation__select"
-                              key={time}
-                              value={time}
-                              onClick={(event) => handleTimeChange(event, time)}
-                            >
-                              {formattedTime}
-                            </button>
-                          );
-                        })}
-                    </div>
+                    <ReservationTimeSelect
+                      reservationData={reservationData}
+                      setReservationData={setReservationData}
+                      setIsTimePickedState={setIsTimePickedState}
+                    />
                   </div>
                   {isTimePickedState && (
                     <div className="reservation__select-people">
-                      <div>
-                        <h3>Select amount of people</h3>
-                      </div>
-                      <div className="reservation__select__container">
-                        {tableList
-                          .filter((table) => !blockedTablesState.includes(table.id_table))
-                          .map((table) => (
-                            <button
-                              className="btn__reservation__select"
-                              key={table.id_table}
-                              value={table.id_table.toString()}
-                              onClick={(event) => handleTableChange(event, table.id_table.toString())}
-                            >
-                              {table.quantity}
-                            </button>
-                          ))}
-                      </div>
+                      <ReservationTableSelect
+                        setReservationData={setReservationData}
+                        setStep={setStep}
+                        tableList={tableList}
+                      />
                     </div>
                   )}
                 </>
               )}
               {step === 3 && (
                 <>
-                  <div className="input__name">
-                    <label htmlFor="name">Name</label>
-                    <input
-                      type="text"
-                      name="name"
-                      id="name"
-                      value={formData.name}
-                      onChange={(event) => handleInputChange(event, "name")}
-                      required
-                      {...(isLoggedIn && { disabled: true })}
-                    />
-                  </div>
-                  <div className="input__phone">
-                    <label htmlFor="phone">Phone(optional)</label>
-                    <input
-                      type="tel"
-                      name="phone"
-                      id="phone"
-                      value={formData.phone}
-                      onChange={(event) => handleInputChange(event, "phone")}
-                      {...(isLoggedIn && { disabled: true })}
-                    />
-                  </div>
-                  <div className="input__email">
-                    <label htmlFor="email">Email</label>
-                    <input
-                      type="email"
-                      name="email"
-                      id="email"
-                      value={formData.email}
-                      onChange={(event) => handleInputChange(event, "email")}
-                      required
-                      {...(isLoggedIn && { disabled: true })}
-                    />
-                  </div>
+                  <ReservationUserInput formData={formData} setFormData={setFormData} />
                   <div>
                     <ReservationSubmitButton formData={formData} reservationData={reservationData} />
                   </div>

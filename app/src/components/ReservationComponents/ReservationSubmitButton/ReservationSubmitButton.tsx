@@ -20,7 +20,7 @@ interface ReservationSubmitButtonProps {
     phone: string;
   };
   reservationData: {
-    date: string;
+    date: Date;
     time: string;
     table_id: number;
     user_id: number | null;
