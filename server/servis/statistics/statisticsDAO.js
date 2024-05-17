@@ -10,10 +10,20 @@ class StatisticsDAO {
   async getPopularTimeSlots() {
     try {
       let sql = `
-        SELECT "time", COUNT(*) AS reservation_count
-        FROM "reservation"
-        GROUP BY "time"
-        ORDER BY reservation_count DESC;
+      WITH time_slots AS (
+        SELECT '12:00:00'::time AS "time"
+        UNION ALL SELECT '13:30:00'::time
+        UNION ALL SELECT '15:00:00'::time
+        UNION ALL SELECT '16:30:00'::time
+        UNION ALL SELECT '18:00:00'::time
+        UNION ALL SELECT '19:30:00'::time
+        UNION ALL SELECT '21:00:00'::time
+      )
+      SELECT ts."time", COUNT(r."time") AS reservation_count
+      FROM time_slots ts
+      LEFT JOIN "reservation" r ON ts."time" = r."time"
+      GROUP BY ts."time"
+      ORDER BY ts."time" ASC;
       `;
       const data = await this.db.query(sql, []);
       const rows = data.rows;

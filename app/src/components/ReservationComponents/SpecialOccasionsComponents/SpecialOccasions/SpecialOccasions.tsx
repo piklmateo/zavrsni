@@ -108,6 +108,7 @@ const SpecialOccasions = () => {
             </div>
             <div className="calendar__container">
               <DatePicker
+                selected={new Date(reservationData.date)}
                 onChange={handleDateChange}
                 minDate={today}
                 maxDate={maxDate}

@@ -1,0 +1,21 @@
+.statistics__container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-block: 2rem;
+  padding: 2rem;
+}
+
+.char__container {
+  width: "100%";
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 1400px) {
+  .statistics__container {
+    grid-template-columns: 1fr;
+  }
+}

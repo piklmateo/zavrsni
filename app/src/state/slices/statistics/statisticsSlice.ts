@@ -7,12 +7,12 @@ export interface PopularTimeSlot {
 
 export interface PopularDish {
   dish_name: string;
-  quantity: string;
+  total_quantity: string;
 }
 
 export interface PopularDrink {
   drink_name: string;
-  quantity: string;
+  total_quantity: string;
 }
 
 interface StatisticsState {
@@ -31,100 +31,82 @@ const initialState: StatisticsState = {
   error: null,
 };
 
-export const fetchPopularTimeSlots = createAsyncThunk(
-  "statistics/fetchPopularTimeSlots",
-  async () => {
-    try {
-      const token = sessionStorage.getItem("token");
-      if (!token) {
-        throw new Error("You don't have a valid token");
-      }
-      const res = await fetch(
-        "http://localhost:12413/api/statistics/popular/timeSlots",
-        {
-          method: "GET",
-          headers: {
-            "Content-type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (!res.ok) {
-        throw new Error("Failed to fetch data...");
-      }
-      const data = await res.json();
-      return data;
-    } catch (error) {
-      console.log("error: ", error);
-      throw error;
+export const fetchPopularTimeSlots = createAsyncThunk("statistics/fetchPopularTimeSlots", async () => {
+  try {
+    const token = sessionStorage.getItem("token");
+    if (!token) {
+      throw new Error("You don't have a valid token");
     }
-  }
-);
+    const res = await fetch("http://localhost:12413/api/statistics/popular/timeSlots", {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-export const fetchPopularDishes = createAsyncThunk(
-  "statistics/fetchPopularDishes",
-  async () => {
-    try {
-      const token = sessionStorage.getItem("token");
-      if (!token) {
-        throw new Error("You don't have a valid token");
-      }
-      const res = await fetch(
-        "http://localhost:12413/api/statistics/popular/dishes",
-        {
-          method: "GET",
-          headers: {
-            "Content-type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (!res.ok) {
-        throw new Error("Failed to fetch data...");
-      }
-
-      const data = await res.json();
-      return data;
-    } catch (error) {
-      console.log("error: ", error);
-      throw error;
+    if (!res.ok) {
+      throw new Error("Failed to fetch data...");
     }
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.log("error: ", error);
+    throw error;
   }
-);
+});
 
-export const fetchPopularDrinks = createAsyncThunk(
-  "statistics/fetchPopularDrinks",
-  async () => {
-    try {
-      const token = sessionStorage.getItem("token");
-      if (!token) {
-        throw new Error("You don't have a valid token");
-      }
-      const res = await fetch(
-        "http://localhost:12413/api/statistics/popular/drinks",
-        {
-          method: "GET",
-          headers: {
-            "Content-type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (!res.ok) {
-        throw new Error("Failed to fetch data...");
-      }
-
-      const data = await res.json();
-      return data;
-    } catch (error) {
-      console.log("error: ", error);
-      throw error;
+export const fetchPopularDishes = createAsyncThunk("statistics/fetchPopularDishes", async () => {
+  try {
+    const token = sessionStorage.getItem("token");
+    if (!token) {
+      throw new Error("You don't have a valid token");
     }
+    const res = await fetch("http://localhost:12413/api/statistics/popular/dishes", {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch data...");
+    }
+
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.log("error: ", error);
+    throw error;
   }
-);
+});
+
+export const fetchPopularDrinks = createAsyncThunk("statistics/fetchPopularDrinks", async () => {
+  try {
+    const token = sessionStorage.getItem("token");
+    if (!token) {
+      throw new Error("You don't have a valid token");
+    }
+    const res = await fetch("http://localhost:12413/api/statistics/popular/drinks", {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch data...");
+    }
+
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.log("error: ", error);
+    throw error;
+  }
+});
 
 const statisticsSlice = createSlice({
   name: "statistics",
