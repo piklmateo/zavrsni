@@ -4,12 +4,15 @@ import { fetchCategories } from "../../state/slices/category/categorySlice";
 import { Link } from "react-router-dom";
 import "./DishFrom.css";
 import { AppDispatch, RootState } from "../../state/store/store";
+import ToastComponent from "../ToastComponent/ToastComponent";
 
 const Dish = () => {
   const dispatch = useDispatch<AppDispatch>();
   const categoryList = useSelector((state: RootState) => state.category.category);
   const status = useSelector((state: RootState) => state.category.status);
   const error = useSelector((state: RootState) => state.category.error);
+
+  const [toastMessage, setToastMessage] = useState<string>("");
 
   useEffect(() => {
     if (status === "idle") {
@@ -24,6 +27,12 @@ const Dish = () => {
   if (status === "failed") {
     return <div>Error: {error}</div>;
   }
+
+  const resetToastState = () => {
+    setTimeout(() => {
+      setToastMessage("");
+    }, 1000);
+  };
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
@@ -52,9 +61,14 @@ const Dish = () => {
 
       if (res.ok) {
         console.log("Dish added successfully");
-        window.location.reload();
+        form.reset();
+        setToastMessage("Dish added succesfully");
+        resetToastState();
       } else {
         console.log("Error adding dish");
+        form.reset();
+        setToastMessage("Failed to add dish network error...");
+        resetToastState();
       }
     } catch (error) {
       console.error("Error while adding dish:", error);
@@ -64,6 +78,7 @@ const Dish = () => {
   return (
     <div className="main__layout__container">
       <div className="add-dish__form__wrapper">
+        <ToastComponent message={toastMessage} />
         <h1>New dish</h1>
         <form className="form" onSubmit={handleSubmit}>
           <div className="add-dish__form__name">

@@ -1,5 +1,8 @@
+import { updateUser, User } from "../../state/slices/user/userSlice";
+import { fetchUserData } from "../../state/slices/user/userSlice"; // Correct import
+
 import { jwtDecode, JwtPayload } from "jwt-decode";
-import { updateUser } from "../../state/slices/user/userSlice";
+import { Dispatch } from "@reduxjs/toolkit";
 
 interface DecodedToken extends JwtPayload {
   user: {
@@ -9,13 +12,14 @@ interface DecodedToken extends JwtPayload {
   };
 }
 
-export const updateUserProfile = async (event: any, formData: any, dispatch: any) => {
+export const updateUserProfile = async (event: React.FormEvent<HTMLFormElement>, formData: User, dispatch: any) => {
   event.preventDefault();
 
   try {
     const token = sessionStorage.getItem("token");
     if (!token) {
       console.log("User doesn't have a valid token");
+      return { success: false };
     }
     const decodedToken = jwtDecode(token!) as DecodedToken;
     const id_user = decodedToken.user.id_user;
@@ -30,13 +34,15 @@ export const updateUserProfile = async (event: any, formData: any, dispatch: any
     });
 
     if (res.ok) {
-      dispatch(updateUser(formData));
-      window.location.reload();
       console.log("User profile updated successfully");
+      dispatch(fetchUserData());
+      return { success: true };
     } else {
       console.log("Failed to update user profile");
+      return { success: false };
     }
   } catch (error) {
     console.log("Error: " + error);
+    return { success: false };
   }
 };

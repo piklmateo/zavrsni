@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { User, fetchUserData } from "../../state/slices/user/userSlice";
 import { updateUserProfile } from "../../hooks/user/userUtils";
 import { AppDispatch, RootState } from "../../state/store/store";
+import ToastComponent from "../ToastComponent/ToastComponent";
 
 const ProfileForm = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -19,6 +20,7 @@ const ProfileForm = () => {
     username: "",
     role_id: null,
   });
+  const [toastMessage, setToastMessage] = useState<string>("");
 
   useEffect(() => {
     if (status === "idle") {
@@ -60,12 +62,23 @@ const ProfileForm = () => {
     }));
   };
 
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const result = await updateUserProfile(event, formData, dispatch);
+    if (result.success) {
+      setToastMessage("Profile updated successfully!");
+    } else {
+      setToastMessage("Failed to update profile.");
+    }
+  };
+
   return (
     <div>
       <div className="main__layout__container">
         <div className="profile__form__wrapper">
+          <ToastComponent message={toastMessage} />
           <h1>profile</h1>
-          <form className="form" onSubmit={(event) => updateUserProfile(event, formData, dispatch)}>
+          <form className="form" onSubmit={handleSubmit}>
             <div className="profile__form__input profile__form__name">
               <label htmlFor="name">Name</label>
               <input

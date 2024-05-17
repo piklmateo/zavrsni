@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCategories } from "../../state/slices/category/categorySlice";
 import { Link } from "react-router-dom";
 import { AppDispatch, RootState } from "../../state/store/store";
+import ToastComponent from "../ToastComponent/ToastComponent";
 import "./DrinkForm.css";
 
 const DrinkForm = () => {
@@ -10,6 +11,8 @@ const DrinkForm = () => {
   const categoryList = useSelector((state: RootState) => state.category.category);
   const status = useSelector((state: RootState) => state.category.status);
   const error = useSelector((state: RootState) => state.category.error);
+
+  const [toastMessage, setToastMessage] = useState<string>("");
 
   useEffect(() => {
     if (status === "idle") {
@@ -24,6 +27,12 @@ const DrinkForm = () => {
   if (status === "failed") {
     return <div>Error: {error}</div>;
   }
+
+  const resetToastState = () => {
+    setTimeout(() => {
+      setToastMessage("");
+    }, 1000);
+  };
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
@@ -52,9 +61,14 @@ const DrinkForm = () => {
 
       if (res.ok) {
         console.log("drink added successfully");
-        window.location.reload();
+        form.reset();
+        setToastMessage("Drink added succesfully");
+        resetToastState();
       } else {
         console.log("Error adding drink");
+        form.reset();
+        setToastMessage("Failed to add drink network error...");
+        resetToastState();
       }
     } catch (error) {
       console.error("Error while adding drink:", error);
@@ -64,6 +78,7 @@ const DrinkForm = () => {
   return (
     <div className="main__layout__container">
       <div className="add-drink__form__wrapper">
+        <ToastComponent message={toastMessage} />
         <h1>New drink</h1>
         <form className="form" onSubmit={handleSubmit}>
           <div className="add-drink__form__name">

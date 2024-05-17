@@ -31,7 +31,7 @@ interface DecodedToken extends JwtPayload {
   };
 }
 
-export const fetchUserData = createAsyncThunk("user/fetchUserData", async () => {
+export const fetchUserData = createAsyncThunk<User>("user/fetchUserData", async () => {
   try {
     const token = sessionStorage.getItem("token");
     console.log("profile-token");
@@ -75,7 +75,7 @@ const userSlice = createSlice({
       })
       .addCase(fetchUserData.fulfilled, (state, action) => {
         state.status = "succeded";
-        state.user = [action.payload];
+        state.user = [action.payload]; // Update state with the fetched user data
       })
       .addCase(fetchUserData.rejected, (state, action) => {
         state.status = "failed";
