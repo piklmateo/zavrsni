@@ -11,6 +11,7 @@
   color: var(--clr-neutral);
   cursor: pointer;
   transition: 200ms ease-in-out;
+  min-width: 74px;
 }
 
 .btn__register:hover {
