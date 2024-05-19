@@ -1,17 +1,26 @@
 import React, { FormEvent, useState } from "react";
+import { LoginSchema } from "../../validation/LoginValidation";
+import * as Yup from "yup";
 import "./LoginForm.css";
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({ username: "", password: "" });
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [serverError, setServerError] = useState<string>("");
 
   const handleChange = (e: FormEvent) => {
-    const { name, value } = e.target as HTMLFormElement;
+    const { name, value } = e.target as HTMLInputElement;
     setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
     try {
+      await LoginSchema.validate(formData, { abortEarly: false });
+      setErrors({});
+      setServerError("");
+
       const res = await fetch("http://localhost:12413/api/users/login", {
         method: "POST",
         headers: {
@@ -19,6 +28,7 @@ const LoginForm = () => {
         },
         body: JSON.stringify(formData),
       });
+
       if (res.ok) {
         const authHeader = res.headers.get("Authorization");
         console.log("TAJ HEDER: " + authHeader);
@@ -28,13 +38,24 @@ const LoginForm = () => {
           sessionStorage.setItem("token", token);
           window.location.href = "/";
         } else {
-          console.error("Login failed: No Authorization header in response");
+          setServerError("Login failed: Wrong username or password...");
         }
       } else {
-        console.error("Login failed:", res.statusText);
+        const errorData = await res.json();
+        setServerError(errorData.message || "Login failed");
       }
     } catch (error) {
-      console.error("Login failed:", error);
+      if (error instanceof Yup.ValidationError) {
+        const validationErrors: { [key: string]: string } = {};
+        error.inner.forEach((err) => {
+          if (err.path) {
+            validationErrors[err.path] = err.message;
+          }
+        });
+        setErrors(validationErrors);
+      } else {
+        setServerError("Login failed: Wrong username or password...");
+      }
     }
   };
 
@@ -44,7 +65,9 @@ const LoginForm = () => {
         <div className="login__form__heading">
           <h1>Login</h1>
         </div>
+
         <form className="form" onSubmit={handleSubmit}>
+          {serverError && <div className="error__server">{serverError}</div>}
           <div className="login__form__input">
             <label htmlFor="username">Username</label>
             <input
@@ -52,10 +75,11 @@ const LoginForm = () => {
               name="username"
               id="username"
               placeholder="johndoe"
-              required
               value={formData.username}
               onChange={handleChange}
+              className={errors.password ? "error__input" : ""}
             />
+            {errors.username && <div className="error__message">{errors.username}</div>}
           </div>
           <div className="login__form__input">
             <label htmlFor="password">Password</label>
@@ -64,10 +88,11 @@ const LoginForm = () => {
               name="password"
               id="password"
               placeholder="enter 6 characters or more"
-              required
               value={formData.password}
               onChange={handleChange}
+              className={errors.password ? "error__input" : ""}
             />
+            {errors.password && <div className="error__message">{errors.password}</div>}
           </div>
           <div>
             <button className="btn btn__login" type="submit">

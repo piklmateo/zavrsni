@@ -14,6 +14,8 @@
   --clr-preparing: #f7af1d;
   --clr-done: #44533c;
 
+  --clr-error: #b34757;
+
   --ff-primary: "Fjalla One", sans-serif;
   --ff-secondary: "Radley", serif;
   --fs-regular: clamp(1.25rem, 3vw, 1.3125rem);
@@ -102,12 +104,7 @@ footer {
   display: block;
   width: 100%;
   padding: 0.5rem;
-  border: 1px solid var(--clr-border);
   cursor: pointer;
-}
-
-.form > * input:hover {
-  border: 1px solid var(--clr-text);
 }
 
 .btn {
@@ -170,4 +167,22 @@ span {
 
 .loader__container {
   padding: 2rem;
+}
+
+.error__message {
+  color: var(--clr-error);
+  padding: 0.2rem 0rem;
+  font-family: var(--ff-primary);
+}
+
+.error__input {
+  border: 2px solid var(--clr-error);
+}
+
+.error__server {
+  background-color: var(--clr-error);
+  padding: 1rem;
+  color: var(--clr-neutral);
+  border-radius: 4px;
+  font-family: var(--ff-primary);
 }

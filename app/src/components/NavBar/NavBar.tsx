@@ -83,7 +83,7 @@ const NavBar = () => {
                   if (route === "/reservations") {
                     return (
                       <li key={index} className="nav__list__item">
-                        <Link className="nav__link" to={route}>
+                        <Link className="nav__link" to={route} onClick={handleMobileNav}>
                           Reservations
                         </Link>
                       </li>
@@ -91,7 +91,7 @@ const NavBar = () => {
                   } else if (route === "/profile") {
                     return (
                       <li key={index} className="nav__list__item">
-                        <Link className="nav__link" to={route}>
+                        <Link className="nav__link" to={route} onClick={handleMobileNav}>
                           Profile
                         </Link>
                       </li>
@@ -99,7 +99,7 @@ const NavBar = () => {
                   } else if (route === "/my-reservations") {
                     return (
                       <li key={index} className="nav__list__item">
-                        <Link className="nav__link" to={route}>
+                        <Link className="nav__link" to={route} onClick={handleMobileNav}>
                           My Reservations
                         </Link>
                       </li>
@@ -107,7 +107,7 @@ const NavBar = () => {
                   } else if (route === "/order") {
                     return (
                       <li key={index} className="nav__list__item">
-                        <Link className="nav__link" to={route}>
+                        <Link className="nav__link" to={route} onClick={handleMobileNav}>
                           Order
                         </Link>
                       </li>
@@ -115,7 +115,7 @@ const NavBar = () => {
                   } else if (route === "/order-list") {
                     return (
                       <li key={index} className="nav__list__item">
-                        <Link className="nav__link" to={route}>
+                        <Link className="nav__link" to={route} onClick={handleMobileNav}>
                           Order list
                         </Link>
                       </li>
@@ -123,7 +123,7 @@ const NavBar = () => {
                   } else if (route === "/statistics") {
                     return (
                       <li key={index} className="nav__list__item">
-                        <Link className="nav__link" to={route}>
+                        <Link className="nav__link" to={route} onClick={handleMobileNav}>
                           Statistics
                         </Link>
                       </li>
