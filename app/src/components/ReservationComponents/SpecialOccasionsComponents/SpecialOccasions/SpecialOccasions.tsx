@@ -19,6 +19,10 @@ const SpecialOccasions = () => {
   const bookedDatesStatus = useSelector((state: RootState) => state.reservations.status);
   const bookedDatesError = useSelector((state: RootState) => state.reservations.error);
 
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [serverError, setServerError] = useState<string>("");
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+
   const [blockedDates, setBlockedDates] = useState([]);
 
   const [formData, setFormData] = useState({
@@ -42,6 +46,10 @@ const SpecialOccasions = () => {
   });
 
   useEffect(() => {
+    const token = sessionStorage.getItem("token");
+    if (token) {
+      setIsLoggedIn(true);
+    }
     if (status === "idle") {
       dispatch(fetchUserData());
       dispatch(fetchBookedDates());
@@ -119,6 +127,7 @@ const SpecialOccasions = () => {
           </div>
           <div className="form__container">
             <form>
+              {serverError && <div className="error__server">{serverError}</div>}
               <div className="input__name">
                 <label htmlFor="name">Name</label>
                 <input
@@ -127,8 +136,10 @@ const SpecialOccasions = () => {
                   id="name"
                   value={formData.name}
                   onChange={(event) => handleInputChange(event, setFormData, "name")}
-                  required
+                  className={errors.name ? "error__input" : ""}
+                  {...(isLoggedIn && { disabled: true })}
                 />
+                {errors.name && <div className="error__message">{errors.name}</div>}
               </div>
               <div className="input__phone">
                 <label htmlFor="phone">Phone(optional)</label>
@@ -138,7 +149,10 @@ const SpecialOccasions = () => {
                   id="phone"
                   value={formData.phone}
                   onChange={(event) => handleInputChange(event, setFormData, "phone")}
+                  className={errors.phone ? "error__input" : ""}
+                  {...(isLoggedIn && { disabled: true })}
                 />
+                {errors.phone && <div className="error__message">{errors.phone}</div>}
               </div>
               <div className="input__email">
                 <label htmlFor="email">Email</label>
@@ -148,10 +162,17 @@ const SpecialOccasions = () => {
                   id="email"
                   value={formData.email}
                   onChange={(event) => handleInputChange(event, setFormData, "email")}
-                  required
+                  className={errors.email ? "error__input" : ""}
+                  {...(isLoggedIn && { disabled: true })}
                 />
+                {errors.email && <div className="error__message">{errors.email}</div>}
               </div>
-              <ReservationSubmitButton formData={formData} reservationData={reservationData} />
+              <ReservationSubmitButton
+                formData={formData}
+                reservationData={reservationData}
+                setErrors={setErrors}
+                setServerError={setServerError}
+              />
             </form>
           </div>
         </div>

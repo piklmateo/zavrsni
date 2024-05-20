@@ -77,7 +77,7 @@ const LoginForm = () => {
               placeholder="johndoe"
               value={formData.username}
               onChange={handleChange}
-              className={errors.password ? "error__input" : ""}
+              className={errors.username ? "error__input" : ""}
             />
             {errors.username && <div className="error__message">{errors.username}</div>}
           </div>

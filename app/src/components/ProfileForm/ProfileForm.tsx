@@ -4,13 +4,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { User, fetchUserData } from "../../state/slices/user/userSlice";
 import { updateUserProfile } from "../../hooks/user/userUtils";
 import { AppDispatch, RootState } from "../../state/store/store";
+import { ProfileSchema } from "../../validation/ProfileValidation";
 import ToastComponent from "../ToastComponent/ToastComponent";
+import * as Yup from "yup";
+import { ValidationError } from "webpack";
 
 const ProfileForm = () => {
   const dispatch = useDispatch<AppDispatch>();
   const userList = useSelector((state: RootState) => state.user.user);
   const status = useSelector((state: RootState) => state.user.status);
   const error = useSelector((state: RootState) => state.user.error);
+
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [serverError, setServerError] = useState("");
+
   const [formData, setFormData] = useState<User>({
     id_user: null,
     name: "",
@@ -63,12 +70,32 @@ const ProfileForm = () => {
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const result = await updateUserProfile(event, formData, dispatch);
-    if (result.success) {
-      setToastMessage("Profile updated successfully!");
-    } else {
-      setToastMessage("Failed to update profile.");
+    try {
+      event.preventDefault();
+      setErrors({});
+      setServerError("");
+
+      await ProfileSchema.validate(formData, { abortEarly: false });
+
+      const result = await updateUserProfile(event, formData, dispatch);
+      if (result.success) {
+        setToastMessage("Profile updated successfully!");
+      } else {
+        setServerError("Profile update failed: Internal server error, check user data.");
+        setToastMessage("Failed to update profile.");
+      }
+    } catch (error) {
+      if (error instanceof Yup.ValidationError) {
+        const validationErrors: { [key: string]: string } = {};
+        error.inner.forEach((err) => {
+          if (err.path) {
+            validationErrors[err.path] = err.message;
+          }
+        });
+        setErrors(validationErrors);
+      } else {
+        setServerError("Profile update failed: Internal server error, check user data.");
+      }
     }
   };
 
@@ -79,6 +106,7 @@ const ProfileForm = () => {
           <ToastComponent message={toastMessage} />
           <h1>profile</h1>
           <form className="form" onSubmit={handleSubmit}>
+            {serverError && <div className="error__server">{serverError}</div>}
             <div className="profile__form__input profile__form__name">
               <label htmlFor="name">Name</label>
               <input
@@ -87,7 +115,9 @@ const ProfileForm = () => {
                 id="name"
                 value={formData.name}
                 onChange={(event) => handleChange(event, setFormData, "name")}
+                className={errors.name ? "error__input" : ""}
               />
+              {errors.name && <div className="error__message">{errors.name}</div>}
             </div>
             <div className="profile__form__input profile__form__surname">
               <label htmlFor="surname">Surname</label>
@@ -97,7 +127,9 @@ const ProfileForm = () => {
                 id="surname"
                 value={formData.surname}
                 onChange={(event) => handleChange(event, setFormData, "surname")}
+                className={errors.surname ? "error__input" : ""}
               />
+              {errors.surname && <div className="error__message">{errors.surname}</div>}
             </div>
             <div className="profile__form__input profile__form__phone">
               <label htmlFor="phone">Phone</label>
@@ -107,7 +139,9 @@ const ProfileForm = () => {
                 id="phone"
                 value={formData.phone}
                 onChange={(event) => handleChange(event, setFormData, "phone")}
+                className={errors.phone ? "error__input" : ""}
               />
+              {errors.phone && <div className="error__message">{errors.phone}</div>}
             </div>
             <div className="profile__form__input profile__form__email">
               <label htmlFor="email">Email</label>

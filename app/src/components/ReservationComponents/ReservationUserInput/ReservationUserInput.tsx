@@ -10,9 +10,11 @@ import { Table } from "../../../state/slices/table/tableSlice";
 interface ReservationUserInputProps {
   formData: User;
   setFormData: React.Dispatch<React.SetStateAction<User>>;
+  errors: { [key: string]: string };
+  serverError: string;
 }
 
-const ReservationUserInput = ({ formData, setFormData }: ReservationUserInputProps) => {
+const ReservationUserInput = ({ formData, setFormData, errors, serverError }: ReservationUserInputProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const userList = useSelector((state: RootState) => state.user.user[0]);
   const userStatus = useSelector((state: RootState) => state.user.status);
@@ -68,9 +70,10 @@ const ReservationUserInput = ({ formData, setFormData }: ReservationUserInputPro
           id="name"
           value={formData.name}
           onChange={(event) => handleInputChange(event, "name")}
-          required
+          className={errors.name ? "error__input" : ""}
           {...(isLoggedIn && { disabled: true })}
         />
+        {errors.name && <div className="error__message">{errors.name}</div>}
       </div>
       <div className="input__phone">
         <label htmlFor="phone">Phone(optional)</label>
@@ -80,8 +83,10 @@ const ReservationUserInput = ({ formData, setFormData }: ReservationUserInputPro
           id="phone"
           value={formData.phone}
           onChange={(event) => handleInputChange(event, "phone")}
+          className={errors.phone ? "error__input" : ""}
           {...(isLoggedIn && { disabled: true })}
         />
+        {errors.phone && <div className="error__message">{errors.phone}</div>}
       </div>
       <div className="input__email">
         <label htmlFor="email">Email</label>
@@ -91,9 +96,10 @@ const ReservationUserInput = ({ formData, setFormData }: ReservationUserInputPro
           id="email"
           value={formData.email}
           onChange={(event) => handleInputChange(event, "email")}
-          required
+          className={errors.email ? "error__input" : ""}
           {...(isLoggedIn && { disabled: true })}
         />
+        {errors.email && <div className="error__message">{errors.email}</div>}
       </div>
     </>
   );

@@ -27,6 +27,9 @@ const ReservationForm = () => {
   const [isTimePickedState, setIsTimePickedState] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [serverError, setServerError] = useState<string>("");
+
   const [formData, setFormData] = useState<User>({
     id_user: null,
     name: "",
@@ -116,9 +119,19 @@ const ReservationForm = () => {
               )}
               {step === 3 && (
                 <>
-                  <ReservationUserInput formData={formData} setFormData={setFormData} />
+                  <ReservationUserInput
+                    formData={formData}
+                    setFormData={setFormData}
+                    errors={errors}
+                    serverError={serverError}
+                  />
                   <div>
-                    <ReservationSubmitButton formData={formData} reservationData={reservationData} />
+                    <ReservationSubmitButton
+                      formData={formData}
+                      reservationData={reservationData}
+                      setErrors={setErrors}
+                      setServerError={setServerError}
+                    />
                   </div>
                 </>
               )}

@@ -1,8 +1,10 @@
 // ReservationSubmitButton.js
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../../../state/slices/user/userSlice";
 import { jwtDecode, JwtPayload } from "jwt-decode";
+import { ReservationSchema } from "../../../validation/ReservationValidation";
+import * as Yup from "yup";
 import "./ReservationSubmitButton.css";
 
 interface DecodedToken extends JwtPayload {
@@ -26,9 +28,20 @@ interface ReservationSubmitButtonProps {
     user_id: number | null;
     whole_day: string;
   };
+  setErrors: React.Dispatch<
+    React.SetStateAction<{
+      [key: string]: string;
+    }>
+  >;
+  setServerError: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const ReservationSubmitButton = ({ formData, reservationData }: ReservationSubmitButtonProps) => {
+const ReservationSubmitButton = ({
+  formData,
+  reservationData,
+  setServerError,
+  setErrors,
+}: ReservationSubmitButtonProps) => {
   const dispatch = useDispatch();
 
   const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -45,9 +58,12 @@ const ReservationSubmitButton = ({ formData, reservationData }: ReservationSubmi
         dataToSend = {
           ...reservationData,
           user_id: user_id,
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
         };
       } catch (error) {
-        console.log("error catch: " + error);
+        console.log("Error decoding token: " + error);
         return;
       }
     } else {
@@ -60,6 +76,8 @@ const ReservationSubmitButton = ({ formData, reservationData }: ReservationSubmi
     }
 
     try {
+      await ReservationSchema.validate(dataToSend, { abortEarly: false });
+
       const res = await fetch("http://localhost:12413/api/reservations", {
         method: "POST",
         headers: {
@@ -71,12 +89,23 @@ const ReservationSubmitButton = ({ formData, reservationData }: ReservationSubmi
       if (res.ok) {
         dispatch(updateUser(dataToSend));
         window.location.reload();
-        console.log("Successfull reservation!");
+        console.log("Successful reservation!");
       } else {
-        console.log("error res not ok");
+        setServerError("Reservation failed: Internal server error, check data.");
+        console.log("Error: response not ok");
       }
     } catch (error) {
-      console.log("error catch: " + error);
+      if (error instanceof Yup.ValidationError) {
+        const validationErrors: { [key: string]: string } = {};
+        error.inner.forEach((err) => {
+          if (err.path) {
+            validationErrors[err.path] = err.message;
+          }
+        });
+        setErrors(validationErrors);
+      } else {
+        setServerError("Reservation failed: Internal server error, check data.");
+      }
     }
   };
 
