@@ -1,7 +1,33 @@
 .hero__container {
-  width: 100%;
+  background-image: url("../../assets/images/hero.png");
+  background-size: cover;
+  background-position: center;
   height: 100vh;
-  text-align: center;
-  padding-top: 10rem;
-  background-color: azure;
+  border: 1px solid var(--clr-border);
+  border-top: none;
+  border-inline: none;
+}
+
+.hero__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 70vh;
+  gap: 2rem;
+}
+
+.btn__menu {
+  width: 100%;
+  max-width: 10rem;
+  background-color: var(--clr-neutral);
+  color: var(--clr-primary);
+  border: 1px solid var(--clr-primary);
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: 200ms ease-in-out;
+}
+
+.btn__menu:hover {
+  background-color: var(--clr-primary);
+  color: var(--clr-neutral);
 }

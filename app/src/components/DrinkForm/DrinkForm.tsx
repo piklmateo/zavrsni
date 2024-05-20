@@ -4,7 +4,7 @@ import { fetchCategories } from "../../state/slices/category/categorySlice";
 import { Link } from "react-router-dom";
 import { AppDispatch, RootState } from "../../state/store/store";
 import ToastComponent from "../ToastComponent/ToastComponent";
-import { AddMenuItemValidationSchema } from "../../validation/AddMenuItemValidation";
+import { AddDrinkValidationSchema } from "../../validation/AddDrinkValidation";
 import * as Yup from "yup";
 import "./DrinkForm.css";
 
@@ -54,7 +54,9 @@ const DrinkForm = () => {
 
       console.log("DrinkForm:", drinkFormData);
 
-      await AddMenuItemValidationSchema.validate(drinkFormData, { abortEarly: false });
+      await AddDrinkValidationSchema.validate(drinkFormData, { abortEarly: false });
+      setErrors({});
+      setServerError("");
 
       const jwtToken = sessionStorage.getItem("token");
       const res = await fetch("http://localhost:12413/api/drinks", {

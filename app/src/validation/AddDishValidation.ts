@@ -3,7 +3,7 @@ import * as Yup from "yup";
 const nameRegex = /^[A-Za-z\s]+$/;
 const ingredientsRegex = /^[A-Za-z]+(?:\s+[A-Za-z]+)*(?:,\s*[A-Za-z]+(?:\s+[A-Za-z]+)*)*$/;
 
-export const AddMenuItemValidationSchema = Yup.object().shape({
+export const AddDishValidationSchema = Yup.object().shape({
   name: Yup.string()
     .matches(nameRegex, "Please enter a valid name.")
     .min(2, "Please enter a valid name.")

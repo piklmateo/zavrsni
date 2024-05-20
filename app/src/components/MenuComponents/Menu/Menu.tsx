@@ -7,6 +7,15 @@ import MenuFilter from "../MenuFilter/MenuFilter";
 import MenuSort from "../MenuSort/MenuSort";
 import AddDrinkButton from "../AddDrinkButton/AddDrinkButton";
 import AddDishButton from "../AddDishButton/AddDishButton";
+import { jwtDecode } from "jwt-decode";
+
+interface DecodedToken {
+  user: {
+    id_user: number;
+    username: string;
+    role: number;
+  };
+}
 
 const Menu = () => {
   const [selectedCategory, setSelectedCategory] = useState("Main course");
@@ -17,7 +26,15 @@ const Menu = () => {
   useEffect(() => {
     const token = sessionStorage.getItem("token");
     if (token) {
-      setIsLoggedIn(true);
+      try {
+        const decodedToken = jwtDecode<DecodedToken>(token);
+        const role = decodedToken.user.role;
+        if (role === 1 || role === 2 || role === 3) {
+          setIsLoggedIn(true);
+        }
+      } catch (error) {
+        console.error("Invalid token:", error);
+      }
     }
   }, []);
 

@@ -35,13 +35,14 @@ const verifyToken = function (req, res, next) {
         return res.status(403).send("Invalid token");
       }
     }
+    req.user = payload.user;
     next();
   });
 };
 
-const verifyRole = function (requiredRole) {
+const verifyRole = function (allowedRoles) {
   return (req, res, next) => {
-    if (!req.user || req.user.role !== requiredRole) {
+    if (!req.user || !allowedRoles.includes(req.user.role)) {
       return res.status(403).send("Forbidden");
     }
     next();

@@ -6,7 +6,7 @@ import "./DishFrom.css";
 import { AppDispatch, RootState } from "../../state/store/store";
 import ToastComponent from "../ToastComponent/ToastComponent";
 import * as Yup from "yup";
-import { AddMenuItemValidationSchema } from "../../validation/AddMenuItemValidation";
+import { AddDishValidationSchema } from "../../validation/AddDishValidation";
 
 const Dish = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -53,7 +53,7 @@ const Dish = () => {
       };
       console.log("dish:", dishData);
 
-      await AddMenuItemValidationSchema.validate(dishData, { abortEarly: false });
+      await AddDishValidationSchema.validate(dishData, { abortEarly: false });
       setErrors({});
       setServerError("");
 
@@ -108,11 +108,7 @@ const Dish = () => {
           </div>
           <div className="add-dish__form__ingridients">
             <label htmlFor="ingridients">Ingridients</label>
-            <textarea
-              name="ingridients"
-              id="ingridients"
-              className={errors.ingridients ? "error__input" : ""}
-            ></textarea>
+            <textarea name="ingridients" id="ingridients" className={errors.ingridients ? "error__input" : ""}></textarea>
             {errors && <div className="error__message">{errors.ingridients}</div>}
           </div>
           <div className="add-dish__form__price">
