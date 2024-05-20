@@ -1,8 +1,16 @@
 import * as Yup from "yup";
 
-export const ReservationSchema = Yup.object().shape({
-  name: Yup.string().min(2).max(100, "Please enter a valid dish name.").required("Please enter valid ingrediesnts."),
+const nameRegex = /^[A-Za-z\s]+$/;
+const ingredientsRegex = /^[A-Za-z]+(?:\s+[A-Za-z]+)*(?:,\s*[A-Za-z]+(?:\s+[A-Za-z]+)*)*$/;
+
+export const AddMenuItemValidationSchema = Yup.object().shape({
+  name: Yup.string()
+    .matches(nameRegex, "Please enter a valid dish name.")
+    .min(2)
+    .max(100, "Please enter a valid dish name.")
+    .required("Please enter valid ingrediesnts."),
   ingridients: Yup.string()
+    .matches(ingredientsRegex, "Please enter valid ingredients")
     .min(6, "Please enter valid ingredients.")
     .max(255, "Please enter a valid phone number.")
     .required("Please enter valid ingredients."),

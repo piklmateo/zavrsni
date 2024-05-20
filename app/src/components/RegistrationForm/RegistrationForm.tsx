@@ -61,6 +61,7 @@ const RegistrationForm = () => {
         <h1>register</h1>
         <form className="form" onSubmit={handleSubmit}>
           <div className="register__form__input register__form__name">
+            {serverError && <div className="error__server">{serverError}</div>}
             <label htmlFor="name">Name</label>
             <input type="text" name="name" id="name" placeholder="john" value={formData.name} onChange={handleChange} />
             {errors.name && <div className="error__message">{errors.name}</div>}

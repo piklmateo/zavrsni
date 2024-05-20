@@ -5,12 +5,17 @@ import { Link } from "react-router-dom";
 import "./DishFrom.css";
 import { AppDispatch, RootState } from "../../state/store/store";
 import ToastComponent from "../ToastComponent/ToastComponent";
+import * as Yup from "yup";
+import { AddMenuItemValidationSchema } from "../../validation/AddMenuItemValidation";
 
 const Dish = () => {
   const dispatch = useDispatch<AppDispatch>();
   const categoryList = useSelector((state: RootState) => state.category.category);
   const status = useSelector((state: RootState) => state.category.status);
   const error = useSelector((state: RootState) => state.category.error);
+
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [serverError, setServerError] = useState<string>("");
 
   const [toastMessage, setToastMessage] = useState<string>("");
 
@@ -35,20 +40,23 @@ const Dish = () => {
   };
 
   const handleSubmit = async (event: FormEvent) => {
-    event.preventDefault();
-
-    const form = event.target as HTMLFormElement;
-    const formData = new FormData(form);
-
-    const dishData = {
-      name: formData.get("name"),
-      ingridients: formData.get("ingridients"),
-      price: formData.get("price"),
-      category_id: formData.get("category"),
-    };
-    console.log("dish:", dishData);
-
     try {
+      event.preventDefault();
+      const form = event.target as HTMLFormElement;
+      const formData = new FormData(form);
+
+      const dishData = {
+        name: formData.get("name"),
+        ingridients: formData.get("ingridients"),
+        price: formData.get("price"),
+        category_id: formData.get("category"),
+      };
+      console.log("dish:", dishData);
+
+      await AddMenuItemValidationSchema.validate(dishData, { abortEarly: false });
+      setErrors({});
+      setServerError("");
+
       const jwtToken = sessionStorage.getItem("token");
       const res = await fetch("http://localhost:12413/api/dishes", {
         method: "POST",
@@ -65,13 +73,23 @@ const Dish = () => {
         setToastMessage("Dish added succesfully");
         resetToastState();
       } else {
-        console.log("Error adding dish");
+        setServerError("Adding dish failed: Internal server error, check dish data...");
         form.reset();
         setToastMessage("Failed to add dish network error...");
         resetToastState();
       }
     } catch (error) {
-      console.error("Error while adding dish:", error);
+      if (error instanceof Yup.ValidationError) {
+        const validationErrors: { [key: string]: string } = {};
+        error.inner.forEach((err) => {
+          if (err.path) {
+            validationErrors[err.path] = err.message;
+          }
+        });
+        setErrors(validationErrors);
+      } else {
+        setServerError("Adding dish failed: Internal server error, check dish data...");
+      }
     }
   };
 
@@ -81,17 +99,26 @@ const Dish = () => {
         <ToastComponent message={toastMessage} />
         <h1>New dish</h1>
         <form className="form" onSubmit={handleSubmit}>
+          {serverError && <div className="error__server">{serverError}</div>}
+
           <div className="add-dish__form__name">
             <label htmlFor="name">Name</label>
-            <input type="text" name="name" id="name" required />
+            <input type="text" name="name" id="name" className={errors.name ? "error__input" : ""} />
+            {errors && <div className="error__message">{errors.name}</div>}
           </div>
           <div className="add-dish__form__ingridients">
             <label htmlFor="ingridients">Ingridients</label>
-            <textarea name="ingridients" id="ingridients" required></textarea>
+            <textarea
+              name="ingridients"
+              id="ingridients"
+              className={errors.ingridients ? "error__input" : ""}
+            ></textarea>
+            {errors && <div className="error__message">{errors.ingridients}</div>}
           </div>
           <div className="add-dish__form__price">
             <label htmlFor="price">Price</label>
-            <input type="text" name="price" id="price" required />
+            <input type="text" name="price" id="price" className={errors.price ? "error__input" : ""} />
+            {errors && <div className="error__message">{errors.price}</div>}
           </div>
           <div className="add-dish__form__category">
             <label htmlFor="category">Category</label>

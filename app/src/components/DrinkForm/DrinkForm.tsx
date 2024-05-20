@@ -4,6 +4,8 @@ import { fetchCategories } from "../../state/slices/category/categorySlice";
 import { Link } from "react-router-dom";
 import { AppDispatch, RootState } from "../../state/store/store";
 import ToastComponent from "../ToastComponent/ToastComponent";
+import { AddMenuItemValidationSchema } from "../../validation/AddMenuItemValidation";
+import * as Yup from "yup";
 import "./DrinkForm.css";
 
 const DrinkForm = () => {
@@ -11,6 +13,9 @@ const DrinkForm = () => {
   const categoryList = useSelector((state: RootState) => state.category.category);
   const status = useSelector((state: RootState) => state.category.status);
   const error = useSelector((state: RootState) => state.category.error);
+
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [serverError, setServerError] = useState<string>("");
 
   const [toastMessage, setToastMessage] = useState<string>("");
 
@@ -35,20 +40,22 @@ const DrinkForm = () => {
   };
 
   const handleSubmit = async (event: FormEvent) => {
-    event.preventDefault();
-
-    const form = event.target as HTMLFormElement;
-    const formData = new FormData(form);
-
-    const drinkFormData = {
-      name: formData.get("name"),
-      price: formData.get("price"),
-      category_id: formData.get("category"),
-    };
-
-    console.log("DrinkForm:", drinkFormData);
-
     try {
+      event.preventDefault();
+
+      const form = event.target as HTMLFormElement;
+      const formData = new FormData(form);
+
+      const drinkFormData = {
+        name: formData.get("name"),
+        price: formData.get("price"),
+        category_id: formData.get("category"),
+      };
+
+      console.log("DrinkForm:", drinkFormData);
+
+      await AddMenuItemValidationSchema.validate(drinkFormData, { abortEarly: false });
+
       const jwtToken = sessionStorage.getItem("token");
       const res = await fetch("http://localhost:12413/api/drinks", {
         method: "POST",
@@ -65,12 +72,24 @@ const DrinkForm = () => {
         setToastMessage("Drink added succesfully");
         resetToastState();
       } else {
+        setServerError("Failed to add drink: Internal server error, check drink data.");
         console.log("Error adding drink");
         form.reset();
         setToastMessage("Failed to add drink network error...");
         resetToastState();
       }
     } catch (error) {
+      if (error instanceof Yup.ValidationError) {
+        const validationErrors: { [key: string]: string } = {};
+        error.inner.forEach((err) => {
+          if (err.path) {
+            validationErrors[err.path] = err.message;
+          }
+        });
+        setErrors(validationErrors);
+      } else {
+        setServerError("Failed to add drink: Internal server error, check drink data.");
+      }
       console.error("Error while adding drink:", error);
     }
   };
@@ -81,13 +100,16 @@ const DrinkForm = () => {
         <ToastComponent message={toastMessage} />
         <h1>New drink</h1>
         <form className="form" onSubmit={handleSubmit}>
+          {serverError && <div className=""></div>}
           <div className="add-drink__form__name">
             <label htmlFor="name">Name</label>
-            <input type="text" name="name" id="name" required />
+            <input type="text" name="name" id="name" className={errors.name ? "error__input" : ""} />
+            {errors && <div className="error__message">{errors.name}</div>}
           </div>
           <div className="add-drink__form__price">
             <label htmlFor="price">Price</label>
-            <input type="text" name="price" id="price" required />
+            <input type="text" name="price" id="price" className={errors.name ? "error__input" : ""} />
+            {errors && <div className="error__message">{errors.price}</div>}
           </div>
           <div className="add-drink__form__category">
             <label htmlFor="category">Category</label>
