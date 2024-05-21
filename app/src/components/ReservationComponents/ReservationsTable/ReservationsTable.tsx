@@ -1,5 +1,3 @@
-//Mozda table_number puca
-
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -12,8 +10,12 @@ import { AppDispatch, RootState } from "../../../state/store/store";
 
 const ReservationsTable = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const reservationList = useSelector((state: RootState) => state.reservations.reservationsStandard);
-  const specialReservationsList = useSelector((state: RootState) => state.reservations.specialReservations);
+  const reservationList = useSelector(
+    (state: RootState) => state.reservations.reservationsStandard
+  );
+  const specialReservationsList = useSelector(
+    (state: RootState) => state.reservations.specialReservations
+  );
   const status = useSelector((state: RootState) => state.reservations.status);
   const error = useSelector((state: RootState) => state.reservations.error);
 

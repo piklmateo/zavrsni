@@ -83,9 +83,15 @@ const ReservationForm = () => {
           <>
             <h1>Reservation</h1>
             <div className="step__indicator">
-              <div className={`step__line ${step >= 1 ? "step__active" : ""}`}></div>
-              <div className={`step__line ${step >= 2 ? "step__active" : ""}`}></div>
-              <div className={`step__line ${step >= 3 ? "step__active" : ""}`}></div>
+              <div
+                className={`step__line ${step >= 1 ? "step__active" : ""}`}
+              ></div>
+              <div
+                className={`step__line ${step >= 2 ? "step__active" : ""}`}
+              ></div>
+              <div
+                className={`step__line ${step >= 3 ? "step__active" : ""}`}
+              ></div>
             </div>
             <form className="form">
               {step === 1 && (
@@ -103,6 +109,7 @@ const ReservationForm = () => {
                     <ReservationTimeSelect
                       reservationData={reservationData}
                       setReservationData={setReservationData}
+                      isTimePickedState={isTimePickedState}
                       setIsTimePickedState={setIsTimePickedState}
                     />
                   </div>
@@ -139,15 +146,31 @@ const ReservationForm = () => {
             <div className="navigation__buttons">
               {step !== 1 && (
                 <div>
-                  <button className="navigation__btn" onClick={() => setStep(step - 1)}>
-                    <img alt="arrow-back" src={LeftArrow} width={40} height={40} />
+                  <button
+                    className="navigation__btn"
+                    onClick={() => setStep(step - 1)}
+                  >
+                    <img
+                      alt="arrow-back"
+                      src={LeftArrow}
+                      width={40}
+                      height={40}
+                    />
                   </button>
                 </div>
               )}
               {step !== 3 && (
                 <div>
-                  <button className="navigation__btn" onClick={() => setStep(step + 1)}>
-                    <img alt="arrow-next" src={RightArrow} width={40} height={40} />
+                  <button
+                    className="navigation__btn"
+                    onClick={() => setStep(step + 1)}
+                  >
+                    <img
+                      alt="arrow-next"
+                      src={RightArrow}
+                      width={40}
+                      height={40}
+                    />
                   </button>
                 </div>
               )}

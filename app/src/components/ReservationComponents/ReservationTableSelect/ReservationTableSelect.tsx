@@ -12,16 +12,28 @@ interface ReservationTableListProps {
   tableList: Table[];
 }
 
-const ReservationTableSelect = ({ setReservationData, setStep, tableList }: ReservationTableListProps) => {
-  const dispatch = useDispatch<AppDispatch>();
-  const bookedTableList = useSelector((state: RootState) => state.reservations.bookedTable);
-  const bookedTableStatus = useSelector((state: RootState) => state.reservations.status);
-  const bookedTableError = useSelector((state: RootState) => state.reservations.error);
+const ReservationTableSelect = ({
+  setReservationData,
+  setStep,
+  tableList,
+}: ReservationTableListProps) => {
+  const bookedTableList = useSelector(
+    (state: RootState) => state.reservations.bookedTable
+  );
+  const bookedTableStatus = useSelector(
+    (state: RootState) => state.reservations.status
+  );
+  const bookedTableError = useSelector(
+    (state: RootState) => state.reservations.error
+  );
   const [blockedTablesState, setBlockedTablesState] = useState([]);
+  const [selectedTable, setSelectedTable] = useState(null);
 
   useEffect(() => {
     if (bookedTableList.length > 0) {
-      const blockedTablesArray = bookedTableList.map((reservation) => reservation.table_id);
+      const blockedTablesArray = bookedTableList.map(
+        (reservation) => reservation.table_id
+      );
       setBlockedTablesState(blockedTablesArray);
       console.log("Blocked tables:", JSON.stringify(blockedTablesArray));
     } else {
@@ -33,13 +45,17 @@ const ReservationTableSelect = ({ setReservationData, setStep, tableList }: Rese
     return <div>Error: {bookedTableError}</div>;
   }
 
-  const handleTableChange = (event: React.MouseEvent<HTMLButtonElement>, table_id: string) => {
+  const handleTableChange = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    table_id: number
+  ) => {
     event.preventDefault();
     setReservationData((prevState: any) => ({
       ...prevState,
       table_id: table_id,
     }));
     setStep(3);
+    setSelectedTable(table_id);
   };
 
   return (
@@ -52,10 +68,14 @@ const ReservationTableSelect = ({ setReservationData, setStep, tableList }: Rese
           .filter((table) => !blockedTablesState.includes(table.id_table))
           .map((table) => (
             <button
-              className="btn__reservation__select"
+              className={
+                selectedTable === table.id_table
+                  ? "btn__reservation__select-active"
+                  : "btn__reservation__select"
+              }
               key={table.id_table}
               value={table.id_table.toString()}
-              onClick={(event) => handleTableChange(event, table.id_table.toString())}
+              onClick={(event) => handleTableChange(event, table.id_table)}
             >
               {table.quantity}
             </button>
