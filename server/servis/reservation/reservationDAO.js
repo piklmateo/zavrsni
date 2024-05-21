@@ -280,15 +280,7 @@ class ReservationDAO {
   async update(id_reservation, reservation) {
     try {
       let sql = `UPDATE "reservation" SET date=$1, time=$2, occupied=$3, email=$4, table_id=$5, user_id WHERE id_reservation=$6`;
-      let data = [
-        reservation.date,
-        reservation.time,
-        reservation.occupied,
-        reservation.email,
-        reservation.table_id,
-        reservation.user_id,
-        id_reservation,
-      ];
+      let data = [reservation.date, reservation.time, reservation.occupied, reservation.email, reservation.table_id, reservation.user_id, id_reservation];
       await this.db.query(sql, data);
       return true;
     } catch (error) {

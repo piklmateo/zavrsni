@@ -1,7 +1,8 @@
 .hero__container {
   background-image: url("../../assets/images/hero.png");
   background-size: cover;
-  background-position: center;
+  background-position: right;
+  background-repeat: no-repeat;
   height: 100vh;
   border: 1px solid var(--clr-border);
   border-top: none;
@@ -10,15 +11,16 @@
 
 .hero__content {
   display: flex;
+  width: fit-content;
   flex-direction: column;
+  color: var(--clr-text);
   justify-content: center;
   min-height: 70vh;
   gap: 2rem;
 }
 
 .btn__menu {
-  width: 100%;
-  max-width: 10rem;
+  width: 10rem;
   background-color: var(--clr-neutral);
   color: var(--clr-primary);
   border: 1px solid var(--clr-primary);
@@ -30,4 +32,37 @@
 .btn__menu:hover {
   background-color: var(--clr-primary);
   color: var(--clr-neutral);
+}
+
+@media (max-width: 1100px) {
+  .hero__content {
+    display: flex;
+    width: fit-content;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 1rem;
+    color: var(--clr-neutral);
+    background-color: #00000070;
+    border-radius: 8px;
+    min-height: 70vh;
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 550px) {
+  .hero__content {
+    display: flex;
+    width: fit-content;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: var(--clr-neutral);
+    background-color: #00000070;
+    border-radius: 8px;
+    min-height: 70vh;
+    gap: 2rem;
+  }
 }

@@ -7,11 +7,11 @@ const Hero = () => {
     <div className="hero__container">
       <div className="main__layout__container">
         <div className="hero__content">
-          <div>
+          <div className="hero__content-heading">
             <h1>Restaurant</h1>
             <h1>Vicino al cuore</h1>
           </div>
-          <div>
+          <div className="hero__content-info">
             <h2>Work hours</h2>
             <p>
               <span>Monday, Tuesday, Wednesday, Thursday i Sunday</span>
