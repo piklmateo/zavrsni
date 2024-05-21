@@ -12,7 +12,7 @@ let mailer = nodemailer.createTransport({
   },
 });
 
-exports.sendMail = async function (from, to, subject, message) {
+const sendMail = async function (from, to, subject, message) {
   message = {
     from: from,
     to: to,
@@ -24,3 +24,5 @@ exports.sendMail = async function (from, to, subject, message) {
   console.log(response);
   return response;
 };
+
+export default sendMail;

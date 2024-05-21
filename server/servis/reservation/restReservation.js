@@ -1,4 +1,6 @@
 import ReservationDAO from "./reservationDAO.js";
+import sendMail from "../../modules/mailer.js";
+import { formatDate } from "../../helpers/dateTimeFormat.js";
 import env from "dotenv";
 
 env.config();
@@ -110,8 +112,16 @@ const restReservation = {
     try {
       let data = req.body;
       let rdao = new ReservationDAO();
-      const reservations = await rdao.insert(data);
-      res.send(JSON.stringify(reservations));
+      await rdao.insert(data);
+
+      const from = process.env.MAIL_USER;
+      const to = data.email;
+      const subject = "Reservation Confirmation";
+      const message = `Dear ${data.name},\n\nYour reservation for ${formatDate(data.date)} at ${data.time} has been confirmed. We look forward to seeing you!`;
+
+      await sendMail(from, to, subject, message);
+
+      res.send(JSON.stringify({ success: true }));
     } catch (error) {
       console.error(error);
       res.status(500).send(JSON.stringify({ error: "Internal Server Error" }));
