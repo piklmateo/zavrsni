@@ -58,7 +58,7 @@ const Dish = () => {
       setServerError("");
 
       const jwtToken = sessionStorage.getItem("token");
-      const res = await fetch("http://localhost:12413/api/dishes", {
+      const res = await fetch("zavrsni-server-git-main-mateos-projects-26cbfc3e.vercel.app/api/dishes", {
         method: "POST",
         headers: {
           "Content-type": "application/json",

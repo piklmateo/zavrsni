@@ -31,7 +31,7 @@ export const fetchOrders = createAsyncThunk("orderList/fetchOrders", async () =>
       console.log("You don't have a valid token");
     }
 
-    const res = await fetch("http://localhost:12413/api/orders", {
+    const res = await fetch("zavrsni-server-git-main-mateos-projects-26cbfc3e.vercel.app/api/orders", {
       method: "GET",
       headers: {
         "Content-type": "application/json",

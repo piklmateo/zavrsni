@@ -36,12 +36,7 @@ interface ReservationSubmitButtonProps {
   setServerError: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const ReservationSubmitButton = ({
-  formData,
-  reservationData,
-  setServerError,
-  setErrors,
-}: ReservationSubmitButtonProps) => {
+const ReservationSubmitButton = ({ formData, reservationData, setServerError, setErrors }: ReservationSubmitButtonProps) => {
   const dispatch = useDispatch();
 
   const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -78,7 +73,7 @@ const ReservationSubmitButton = ({
     try {
       await ReservationSchema.validate(dataToSend, { abortEarly: false });
 
-      const res = await fetch("http://localhost:12413/api/reservations", {
+      const res = await fetch("zavrsni-server-git-main-mateos-projects-26cbfc3e.vercel.app/api/reservations", {
         method: "POST",
         headers: {
           "Content-type": "application/json",

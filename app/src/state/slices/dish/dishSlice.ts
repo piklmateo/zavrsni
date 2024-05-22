@@ -23,7 +23,7 @@ const initialState: DishState = {
 
 export const fetchDishes = createAsyncThunk("dish/fetchDishData", async () => {
   try {
-    const res = await fetch("http://localhost:12413/api/dishes", {
+    const res = await fetch("zavrsni-server-git-main-mateos-projects-26cbfc3e.vercel.app/api/dishes", {
       method: "GET",
       headers: {
         "Content-type": "application/json",

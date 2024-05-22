@@ -19,7 +19,7 @@ const initialState: CategoryState = {
 
 export const fetchCategories = createAsyncThunk("category/fetchCategories", async () => {
   try {
-    const res = await fetch("http://localhost:12413/api/categories", {
+    const res = await fetch("zavrsni-server-git-main-mateos-projects-26cbfc3e.vercel.app/api/categories", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

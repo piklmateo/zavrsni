@@ -57,7 +57,7 @@ export const fetchReservations = createAsyncThunk("reservations/fetchReservation
       return [];
     }
 
-    const res = await fetch("http://localhost:12413/api/reservations", {
+    const res = await fetch("zavrsni-server-git-main-mateos-projects-26cbfc3e.vercel.app/api/reservations", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -83,7 +83,7 @@ export const fetchReservationsStandard = createAsyncThunk("reservations/fetchRes
       return [];
     }
 
-    const res = await fetch("http://localhost:12413/api/reservations/standard", {
+    const res = await fetch("zavrsni-server-git-main-mateos-projects-26cbfc3e.vercel.app/api/reservations/standard", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -109,7 +109,7 @@ export const fetchReservationsWholeDay = createAsyncThunk("reservations/fetchRes
       return [];
     }
 
-    const res = await fetch("http://localhost:12413/api/reservations/special", {
+    const res = await fetch("zavrsni-server-git-main-mateos-projects-26cbfc3e.vercel.app/api/reservations/special", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -129,7 +129,7 @@ export const fetchReservationsWholeDay = createAsyncThunk("reservations/fetchRes
 
 export const fetchBookedDates = createAsyncThunk("reservations/fetchBookedDates", async () => {
   try {
-    const res = await fetch("http://localhost:12413/api/reservations/bookedDate", {
+    const res = await fetch("zavrsni-server-git-main-mateos-projects-26cbfc3e.vercel.app/api/reservations/bookedDate", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -148,7 +148,7 @@ export const fetchBookedDates = createAsyncThunk("reservations/fetchBookedDates"
 
 export const fetchBookedTime = createAsyncThunk("reservations/fetchBookedTime", async (date: string) => {
   try {
-    const res = await fetch(`http://localhost:12413/api/reservations/bookedTime/${date}`, {
+    const res = await fetch(`zavrsni-server-git-main-mateos-projects-26cbfc3e.vercel.app/api/reservations/bookedTime/${date}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -165,27 +165,24 @@ export const fetchBookedTime = createAsyncThunk("reservations/fetchBookedTime", 
   }
 });
 
-export const fetchBookedTables = createAsyncThunk(
-  "reservations/fetchBookedTables",
-  async ({ date, time }: { date: string; time: string }) => {
-    try {
-      const res = await fetch(`http://localhost:12413/api/reservations/bookedTables/${date}/${time}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (!res.ok) {
-        throw new Error("Failed to fetch reservations");
-      }
-      const data = await res.json();
-      return data;
-    } catch (error) {
-      console.log("error: ", error);
-      throw error;
+export const fetchBookedTables = createAsyncThunk("reservations/fetchBookedTables", async ({ date, time }: { date: string; time: string }) => {
+  try {
+    const res = await fetch(`zavrsni-server-git-main-mateos-projects-26cbfc3e.vercel.app/api/reservations/bookedTables/${date}/${time}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (!res.ok) {
+      throw new Error("Failed to fetch reservations");
     }
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.log("error: ", error);
+    throw error;
   }
-);
+});
 
 export const fetchUserReservations = createAsyncThunk("reservationsUser/fetchUserReservations", async () => {
   try {
@@ -197,7 +194,7 @@ export const fetchUserReservations = createAsyncThunk("reservationsUser/fetchUse
     const decodedToken = jwtDecode(token) as DecodedToken;
     const id_user = decodedToken.user.id_user;
 
-    const res = await fetch("http://localhost:12413/api/users/reservations/" + id_user, {
+    const res = await fetch("zavrsni-server-git-main-mateos-projects-26cbfc3e.vercel.app/api/users/reservations/" + id_user, {
       method: "GET",
       headers: {
         "Content-type": "application/json",
@@ -217,38 +214,35 @@ export const fetchUserReservations = createAsyncThunk("reservationsUser/fetchUse
   }
 });
 
-export const fetchSpecialUserReservations = createAsyncThunk(
-  "reservationsUser/fetchSpecialUserReservations",
-  async () => {
-    try {
-      const token = sessionStorage.getItem("token");
-      if (!token) {
-        console.log("You don't have a valid token");
-        return [];
-      }
-      const decodedToken = jwtDecode(token) as DecodedToken;
-      const id_user = decodedToken.user.id_user;
-
-      const res = await fetch("http://localhost:12413/api/users/reservations/special/" + id_user, {
-        method: "GET",
-        headers: {
-          "Content-type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
-
-      if (!res.ok) {
-        console.log("Unable to fetch user reservations");
-      }
-
-      const data = await res.json();
-      return data;
-    } catch (error) {
-      console.log("error: ", error);
-      throw error;
+export const fetchSpecialUserReservations = createAsyncThunk("reservationsUser/fetchSpecialUserReservations", async () => {
+  try {
+    const token = sessionStorage.getItem("token");
+    if (!token) {
+      console.log("You don't have a valid token");
+      return [];
     }
+    const decodedToken = jwtDecode(token) as DecodedToken;
+    const id_user = decodedToken.user.id_user;
+
+    const res = await fetch("zavrsni-server-git-main-mateos-projects-26cbfc3e.vercel.app/api/users/reservations/special/" + id_user, {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
+
+    if (!res.ok) {
+      console.log("Unable to fetch user reservations");
+    }
+
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.log("error: ", error);
+    throw error;
   }
-);
+});
 
 const reservationsSlice = createSlice({
   name: "reservations",

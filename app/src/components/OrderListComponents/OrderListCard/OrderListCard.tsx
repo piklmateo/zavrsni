@@ -43,7 +43,7 @@ const OrderListCard = ({ orders }: OrderListCardProps) => {
 
       console.log("novi status: " + newStatus);
 
-      const res = await fetch(`http://localhost:12413/api/orders/status/${id_order}`, {
+      const res = await fetch(`zavrsni-server-git-main-mateos-projects-26cbfc3e.vercel.app/api/orders/status/${id_order}`, {
         method: "PATCH",
         headers: {
           "Content-type": "application/json",
@@ -75,13 +75,7 @@ const OrderListCard = ({ orders }: OrderListCardProps) => {
         <div>
           <button
             onClick={handleOrderStatus}
-            className={`btn ${
-              orderStatus === "pending"
-                ? "btn__order__pending"
-                : orderStatus === "preparing"
-                ? "btn__order__preparing"
-                : "btn__order__done"
-            }`}
+            className={`btn ${orderStatus === "pending" ? "btn__order__pending" : orderStatus === "preparing" ? "btn__order__preparing" : "btn__order__done"}`}
           >
             {status}
           </button>

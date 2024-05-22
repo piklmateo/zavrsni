@@ -37,7 +37,7 @@ export const fetchPopularTimeSlots = createAsyncThunk("statistics/fetchPopularTi
     if (!token) {
       throw new Error("You don't have a valid token");
     }
-    const res = await fetch("http://localhost:12413/api/statistics/popular/timeSlots", {
+    const res = await fetch("zavrsni-server-git-main-mateos-projects-26cbfc3e.vercel.app/api/statistics/popular/timeSlots", {
       method: "GET",
       headers: {
         "Content-type": "application/json",
@@ -62,7 +62,7 @@ export const fetchPopularDishes = createAsyncThunk("statistics/fetchPopularDishe
     if (!token) {
       throw new Error("You don't have a valid token");
     }
-    const res = await fetch("http://localhost:12413/api/statistics/popular/dishes", {
+    const res = await fetch("zavrsni-server-git-main-mateos-projects-26cbfc3e.vercel.app/api/statistics/popular/dishes", {
       method: "GET",
       headers: {
         "Content-type": "application/json",
@@ -88,7 +88,7 @@ export const fetchPopularDrinks = createAsyncThunk("statistics/fetchPopularDrink
     if (!token) {
       throw new Error("You don't have a valid token");
     }
-    const res = await fetch("http://localhost:12413/api/statistics/popular/drinks", {
+    const res = await fetch("zavrsni-server-git-main-mateos-projects-26cbfc3e.vercel.app/api/statistics/popular/drinks", {
       method: "GET",
       headers: {
         "Content-type": "application/json",

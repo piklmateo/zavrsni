@@ -41,7 +41,7 @@ export const fetchUserData = createAsyncThunk<User>("user/fetchUserData", async 
     }
     const decodedToken = jwtDecode(token) as DecodedToken;
     const id_user = decodedToken.user.id_user;
-    const res = await fetch(`http://localhost:12413/api/users/${id_user}`, {
+    const res = await fetch(`zavrsni-server-git-main-mateos-projects-26cbfc3e.vercel.app/api/users/${id_user}`, {
       method: "GET",
       headers: {
         "Content-type": "application/json",
