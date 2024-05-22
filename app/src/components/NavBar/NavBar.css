@@ -96,6 +96,19 @@
     width: 27px;
     height: 2px;
     background: black;
+    transition: 200ms ease-in-out;
+  }
+
+  .bar--open:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .bar--open:nth-child(2) {
+    opacity: 0;
+  }
+
+  .bar--open:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
   }
 
   .nav__menu {

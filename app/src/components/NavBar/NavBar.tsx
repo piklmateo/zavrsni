@@ -51,9 +51,9 @@ const NavBar = () => {
           <div className="logo__container">
             <img className="logo__navigation" src={logo} alt="logo" />
             <div className="burger__menu" onClick={handleMobileNav}>
-              <div className="bar"></div>
-              <div className="bar"></div>
-              <div className="bar"></div>
+              <div className={`bar ${isMobileNav ? "bar--open" : ""}`}></div>
+              <div className={`bar ${isMobileNav ? "bar--open" : ""}`}></div>
+              <div className={`bar ${isMobileNav ? "bar--open" : ""}`}></div>
             </div>
           </div>
           <nav className={`nav__menu ${isMobileNav ? "nav__menu--open" : ""}`}>

@@ -2,19 +2,19 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./Hero.css";
 
-const Hero = () => {
+const HeroSection = () => {
   return (
-    <div className="hero__container">
+    <section className="hero-section">
       <div className="main__layout__container">
-        <div className="hero__content">
-          <div className="hero__content-heading">
+        <div className="hero-section__content">
+          <div className="hero-section__heading">
             <h1>Restaurant</h1>
             <h1>Vicino al cuore</h1>
           </div>
-          <div className="hero__content-info">
-            <h2>Work hours</h2>
+          <div className="hero-section__info">
+            <h2>Work Hours</h2>
             <p>
-              <span>Monday, Tuesday, Wednesday, Thursday i Sunday</span>
+              <span>Monday, Tuesday, Wednesday, Thursday, and Sunday</span>
               <br /> 08:00 - 22:00
             </p>
             <p>
@@ -24,12 +24,12 @@ const Hero = () => {
             </p>
           </div>
           <Link to="/menu">
-            <button className=" btn__menu">Menu</button>
+            <button className="hero-section__menu-button">Menu</button>
           </Link>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
-export default Hero;
+export default HeroSection;
