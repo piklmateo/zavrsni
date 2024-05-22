@@ -44,10 +44,6 @@ function startServer() {
     })
   );
 
-  server.get("*", (req, res) => {
-    res.sendFile(path.resolve() + "../../app/public");
-  });
-
   prepareUserPaths();
   prepareReservationPaths();
   prepareDishPaths();
@@ -58,6 +54,10 @@ function startServer() {
   prepareOrderDrinkPaths();
   prepareTablePaths();
   prepareStatisticsPaths();
+
+  server.get("*", (req, res) => {
+    res.sendFile(path.resolve() + "../react/public");
+  });
 
   server.use((req, res) => {
     res.status(404);
