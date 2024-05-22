@@ -13,6 +13,10 @@ import restTable from "../servis/table/restTable.js";
 import restStatistics from "../servis/statistics/restStatistics.js";
 import cors from "cors";
 import jwt from "../modules/jwt.js";
+import { fileURLToPath } from "url";
+import path, { dirname } from "path";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const server = express();
 const port = process.env.SERVER_PORT || 3000;
@@ -55,8 +59,16 @@ function startServer() {
   prepareTablePaths();
   prepareStatisticsPaths();
 
+  // server.get("*", (req, res) => {
+  //   res.sendFile(path.resolve() + "/react/public");
+  // });
+
+  // Serve static files from the React build directory
+  server.use(express.static(path.join(__dirname, "../react/public")));
+
+  // Route all requests to the React application
   server.get("*", (req, res) => {
-    res.sendFile(path.resolve() + "../react/public");
+    res.sendFile(path.join(__dirname, "../react/public", "index.html"));
   });
 
   server.use((req, res) => {
