@@ -27,6 +27,15 @@ function startServer() {
     })
   );
 
+  app.use(express.static(path.join(__dirname, "../../app/public")));
+
+  // Define API routes or other server routes here...
+
+  // Catch-all route for serving index.html
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "/app/public", "index.html"));
+  });
+
   server.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "https://zavrsni-app.vercel.app");
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
