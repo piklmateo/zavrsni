@@ -59,7 +59,7 @@ const DrinkForm = () => {
       setServerError("");
 
       const jwtToken = sessionStorage.getItem("token");
-      const res = await fetch("zavrsni-server-git-main-mateos-projects-26cbfc3e.vercel.app/api/drinks", {
+      const res = await fetch("https://zavrsni-server.vercel.app/api/drinks", {
         method: "POST",
         headers: {
           "Content-type": "application/json",

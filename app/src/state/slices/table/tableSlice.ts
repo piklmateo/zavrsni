@@ -20,7 +20,7 @@ const initialState: TableState = {
 
 export const fetchTables = createAsyncThunk("table/fetchTables", async () => {
   try {
-    const res = await fetch("zavrsni-server-git-main-mateos-projects-26cbfc3e.vercel.app/api/tables", {
+    const res = await fetch("https://zavrsni-server.vercel.app/api/tables", {
       method: "GET",
       headers: {
         "Content-type": "application/json",

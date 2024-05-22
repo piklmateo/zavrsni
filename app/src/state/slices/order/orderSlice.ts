@@ -42,11 +42,7 @@ const orderSlice = createSlice({
       const newItem = action.payload;
 
       const existingIndex = state.findIndex((item) =>
-        isDish(newItem) && isDish(item)
-          ? item.id_dish === newItem.id_dish
-          : isDrink(newItem) && isDrink(item)
-          ? item.id_drink === newItem.id_drink
-          : false
+        isDish(newItem) && isDish(item) ? item.id_dish === newItem.id_dish : isDrink(newItem) && isDrink(item) ? item.id_drink === newItem.id_drink : false
       );
 
       const price = parseFloat(newItem.price.toString());
@@ -69,9 +65,7 @@ const orderSlice = createSlice({
     removeItem(state, action: PayloadAction<OrderItem>) {
       const itemToRemove = action.payload;
       const existingIndex = state.findIndex(
-        (item) =>
-          (item as Dish).id_dish === (itemToRemove as Dish).id_dish ||
-          (item as Drink).id_drink === (itemToRemove as Drink).id_drink
+        (item) => (item as Dish).id_dish === (itemToRemove as Dish).id_dish || (item as Drink).id_drink === (itemToRemove as Drink).id_drink
       );
 
       if (existingIndex !== -1) {
@@ -80,10 +74,8 @@ const orderSlice = createSlice({
         const updatedQuantity = existingItem.quantity - 1;
 
         if (updatedQuantity === 0) {
-          // If quantity becomes zero, remove the item from the order
           return state.filter((item, index) => index !== existingIndex);
         } else {
-          // Update the quantity and totalPrice of the existing item
           return state.map((item, index) =>
             index === existingIndex
               ? {

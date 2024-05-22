@@ -22,7 +22,7 @@ const initialState: DrinkState = {
 
 export const fetchDrinks = createAsyncThunk("drink/fetchDrinkData", async () => {
   try {
-    const res = await fetch("zavrsni-server-git-main-mateos-projects-26cbfc3e.vercel.app/api/drinks", {
+    const res = await fetch("https://zavrsni-server.vercel.app/api/drinks", {
       method: "GET",
       headers: {
         "Content-type": "application/json",

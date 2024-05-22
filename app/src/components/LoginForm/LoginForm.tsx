@@ -21,7 +21,7 @@ const LoginForm = () => {
       setErrors({});
       setServerError("");
 
-      const res = await fetch("zavrsni-server-git-main-mateos-projects-26cbfc3e.vercel.app/api/users/login", {
+      const res = await fetch("https://zavrsni-server.vercel.app/api/users/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -25,7 +25,7 @@ export const insertOrder = async (orderData: OrderData) => {
       return null;
     }
 
-    const res = await fetch("zavrsni-server-git-main-mateos-projects-26cbfc3e.vercel.app/api/orders", {
+    const res = await fetch("https://zavrsni-server.vercel.app/api/orders", {
       method: "POST",
       headers: {
         "Content-type": "application/json",
@@ -57,7 +57,7 @@ export const insertOrderDish = async (dishData: DishData) => {
       return null;
     }
 
-    const res = await fetch("zavrsni-server-git-main-mateos-projects-26cbfc3e.vercel.app/api/order-dish", {
+    const res = await fetch("https://zavrsni-server.vercel.app/api/order-dish", {
       method: "POST",
       headers: {
         "Content-type": "application/json",
@@ -88,7 +88,7 @@ export const insertOrderDrink = async (drinkData: DrinkData) => {
       return null;
     }
 
-    const res = await fetch("zavrsni-server-git-main-mateos-projects-26cbfc3e.vercel.app/api/order-drink", {
+    const res = await fetch("https://zavrsni-server.vercel.app/api/order-drink", {
       method: "POST",
       headers: {
         "Content-type": "application/json",

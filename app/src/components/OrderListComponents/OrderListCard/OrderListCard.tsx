@@ -43,7 +43,7 @@ const OrderListCard = ({ orders }: OrderListCardProps) => {
 
       console.log("novi status: " + newStatus);
 
-      const res = await fetch(`zavrsni-server-git-main-mateos-projects-26cbfc3e.vercel.app/api/orders/status/${id_order}`, {
+      const res = await fetch(`https://zavrsni-server.vercel.app/api/orders/status/${id_order}`, {
         method: "PATCH",
         headers: {
           "Content-type": "application/json",

@@ -73,7 +73,7 @@ const ReservationSubmitButton = ({ formData, reservationData, setServerError, se
     try {
       await ReservationSchema.validate(dataToSend, { abortEarly: false });
 
-      const res = await fetch("zavrsni-server-git-main-mateos-projects-26cbfc3e.vercel.app/api/reservations", {
+      const res = await fetch("https://zavrsni-server.vercel.app/api/reservations", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
