@@ -1,19 +1,19 @@
 import express from "express";
 import env from "dotenv";
-import session from "express-session";
-import restUser from "./servis/user/restUser.js";
-import restReservation from "./servis/reservation/restReservation.js";
-import restDish from "./servis/dish/restDish.js";
-import restDrink from "./servis/drink/restDrink.js";
-import restOrder from "./servis/order/restOrder.js";
-import restOrderDish from "./servis/order_dish/restOrderDish.js";
-import restOrderDrink from "./servis/order_drink/restOrderDrink.js";
-import restTable from "./servis/table/restTable.js";
-import restStatistics from "./servis/statistics/restStatistics.js";
-import cors from "cors";
-import jwt from "./modules/jwt.js";
-
 env.config();
+import session from "express-session";
+import restUser from "../servis/user/restUser.js";
+import restReservation from "../servis/reservation/restReservation.js";
+import restDish from "../servis/dish/restDish.js";
+import restDrink from "../servis/drink/restDrink.js";
+import restOrder from "../servis/order/restOrder.js";
+import restOrderDish from "../servis/order_dish/restOrderDish.js";
+import restOrderDrink from "../servis/order_drink/restOrderDrink.js";
+import restTable from "../servis/table/restTable.js";
+import restStatistics from "../servis/statistics/restStatistics.js";
+import cors from "cors";
+import jwt from "../modules/jwt.js";
+
 const server = express();
 const port = process.env.SERVER_PORT || 3000;
 const SESSION_SECRET = process.env.SESSION_SECRET;
