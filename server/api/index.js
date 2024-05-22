@@ -21,10 +21,14 @@ const SESSION_SECRET = process.env.SESSION_SECRET;
 function startServer() {
   server.use(express.urlencoded({ extended: true }));
   server.use(express.json());
-  server.use(cors());
+  server.use(
+    cors({
+      origin: "https://zavrsni-app.vercel.app",
+    })
+  );
 
   server.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "https://zavrsni-app.vercel.app/");
+    res.setHeader("Access-Control-Allow-Origin", "https://zavrsni-app.vercel.app");
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
     res.setHeader("Access-Control-Expose-Headers", "Authorization");
