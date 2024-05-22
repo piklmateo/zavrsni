@@ -44,9 +44,8 @@ function startServer() {
     })
   );
 
-  app.use(express.static(path.join(__dirname, "../../app/public")));
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "/app/public", "index.html"));
+  server.get("*", (req, res) => {
+    res.sendFile(path.resolve() + "../../app/public");
   });
 
   prepareUserPaths();
