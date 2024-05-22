@@ -12,7 +12,7 @@ module.exports = {
   mode: dev ? "development" : "production",
   entry: "./src/main.tsx",
   output: {
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve(__dirname, "public"),
     publicPath: "/",
     filename: "bundle.js",
     assetModuleFilename: "images/[hash][ext][query]",
