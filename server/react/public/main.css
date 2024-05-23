@@ -2238,6 +2238,18 @@
   margin-top: 1rem;
 }
 
+@media (max-width: 500px) {
+  .reservation__select__container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 350px) {
+  .reservation__select__container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 .reservations__table__wrapper {
   display: flex;
   flex-direction: column;
