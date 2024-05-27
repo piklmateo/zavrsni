@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Reservation, fetchBookedDates, fetchBookedTime } from "../../../state/slices/reservations/reservationsSlice";
+import {
+  Reservation,
+  fetchBookedDates,
+  fetchBookedTime,
+} from "../../../state/slices/reservations/reservationsSlice";
 import { AppDispatch, RootState } from "../../../state/store/store";
 import { maxDate, today } from "../../../helpers/dateTimeFormat";
 import DatePicker from "react-datepicker";
@@ -13,17 +17,32 @@ interface ReservationDatePickerProps {
   setReservationData: React.Dispatch<React.SetStateAction<Reservation>>;
 }
 
-const ReservationDatePicker = ({ setStep, reservationData, setReservationData }: ReservationDatePickerProps) => {
+const ReservationDatePicker = ({
+  setStep,
+  reservationData,
+  setReservationData,
+}: ReservationDatePickerProps) => {
   const dispatch = useDispatch<AppDispatch>();
-  const bookedDatesList = useSelector((state: RootState) => state.reservations.bookedDates);
-  const bookedDatesStatus = useSelector((state: RootState) => state.reservations.status);
-  const bookedDatesError = useSelector((state: RootState) => state.reservations.error);
+  const bookedDatesList = useSelector(
+    (state: RootState) => state.reservations.bookedDates
+  );
+  const bookedDatesStatus = useSelector(
+    (state: RootState) => state.reservations.status
+  );
+  const bookedDatesError = useSelector(
+    (state: RootState) => state.reservations.error
+  );
 
   const [blockedDatesState, setBlockedDatesState] = useState([]);
 
   useEffect(() => {
+    console.log("status: " + bookedDatesStatus);
+    console.log("status plus " + 5);
+    console.log("status zarez ", 5);
     if (bookedDatesStatus === "idle") {
-      dispatch(fetchBookedDates());
+      setTimeout(() => {
+        dispatch(fetchBookedDates());
+      }, 0);
     }
   }, [bookedDatesStatus, dispatch]);
 
@@ -33,7 +52,9 @@ const ReservationDatePicker = ({ setStep, reservationData, setReservationData }:
 
   useEffect(() => {
     if (bookedDatesList.length > 0) {
-      const blockedDatesArray = bookedDatesList.map((reservation) => new Date(reservation.date));
+      const blockedDatesArray = bookedDatesList.map(
+        (reservation) => new Date(reservation.date)
+      );
       setBlockedDatesState(blockedDatesArray);
     }
   }, [bookedDatesList]);

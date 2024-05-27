@@ -21,10 +21,12 @@ const ReservationsTable = () => {
 
   useEffect(() => {
     if (status === "idle") {
+      // setTimeout(() => {
       dispatch(fetchReservationsStandard());
       dispatch(fetchReservationsWholeDay());
+      // }, 1000);3
     }
-  }, [status, dispatch]);
+  }, [status]);
 
   if (status === "loading") {
     return <div>Loading...</div>;

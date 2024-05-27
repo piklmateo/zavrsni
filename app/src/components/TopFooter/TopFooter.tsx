@@ -1,5 +1,5 @@
 import React from "react";
-import { FaLocationDot, FaEnvelope, FaPhone } from "react-icons/fa6";
+// import { FaLocationDot, FaEnvelope, FaPhone } from "react-icons/fa6/index.esj";
 import "./TopFooter.css";
 import logo from "../../assets/images/logo-transparent.png";
 
@@ -15,16 +15,16 @@ const TopFooter = () => {
             <div className="footer__grid__item footer__address">
               <h3>Address</h3>
               <div className="icons">
-                <FaLocationDot />
+                {/* <FaLocationDot /> */}
                 <p>83100 Avellino AV Italia</p>
               </div>
               <h3>Contact</h3>
               <div className="icons">
-                <FaEnvelope />
+                {/* <FaEnvelope /> */}
                 <p>nest@nest.com</p>
               </div>
               <div className="icons">
-                <FaPhone />
+                {/* <FaPhone /> */}
                 <p>040-319-067</p>
               </div>
             </div>
