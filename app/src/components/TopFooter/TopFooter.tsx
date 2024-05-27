@@ -1,6 +1,6 @@
 import React from "react";
 import "./TopFooter.css";
-import logo from "../../assets/images/logo-transparent.png";
+import logo from "../../assets/images/logo-transparent.webp";
 import location from "../../assets/images/location--grey.svg";
 import phone from "../../assets/images/phone.svg";
 import email from "../../assets/images/email.svg";

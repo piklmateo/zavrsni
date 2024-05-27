@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import logo from "../../assets/images/logo-transparent.png";
+import logo from "../../assets/images/logo-transparent.webp";
 import { JwtPayload, jwtDecode } from "jwt-decode";
 import "./NavBar.css";
 
