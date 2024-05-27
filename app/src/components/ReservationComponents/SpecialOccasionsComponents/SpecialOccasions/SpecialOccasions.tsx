@@ -50,11 +50,9 @@ const SpecialOccasions = () => {
     if (token) {
       setIsLoggedIn(true);
     }
-    if (status === "idle") {
-      dispatch(fetchUserData());
-      dispatch(fetchBookedDates());
-    }
-  }, [status, dispatch]);
+    dispatch(fetchUserData());
+    dispatch(fetchBookedDates());
+  }, [dispatch]);
 
   useEffect(() => {
     if (userList) {
@@ -167,12 +165,7 @@ const SpecialOccasions = () => {
                 />
                 {errors.email && <div className="error__message">{errors.email}</div>}
               </div>
-              <ReservationSubmitButton
-                formData={formData}
-                reservationData={reservationData}
-                setErrors={setErrors}
-                setServerError={setServerError}
-              />
+              <ReservationSubmitButton formData={formData} reservationData={reservationData} setErrors={setErrors} setServerError={setServerError} />
             </form>
           </div>
         </div>

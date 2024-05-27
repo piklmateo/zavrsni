@@ -1,9 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchSpecialUserReservations,
-  fetchUserReservations,
-} from "../../../state/slices/reservations/reservationsSlice";
+import { fetchSpecialUserReservations, fetchUserReservations } from "../../../state/slices/reservations/reservationsSlice";
 import { formatDate, formatTime } from "../../../helpers/dateTimeFormat";
 import "./ReservationsTableUser.css";
 import { AppDispatch, RootState } from "../../../state/store/store";
@@ -16,11 +13,9 @@ const ReservationsTableUser = () => {
   const error = useSelector((state: RootState) => state.reservations.error);
 
   useEffect(() => {
-    if (status === "idle") {
-      dispatch(fetchUserReservations());
-      dispatch(fetchSpecialUserReservations());
-    }
-  }, [status, dispatch]);
+    dispatch(fetchUserReservations());
+    dispatch(fetchSpecialUserReservations());
+  }, [dispatch]);
 
   if (status === "loading") {
     return <div>Loading...</div>;

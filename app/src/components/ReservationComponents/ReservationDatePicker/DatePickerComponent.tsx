@@ -22,10 +22,8 @@ const ReservationDatePicker = ({ setStep, reservationData, setReservationData }:
   const [blockedDatesState, setBlockedDatesState] = useState([]);
 
   useEffect(() => {
-    if (bookedDatesStatus === "idle") {
-      dispatch(fetchBookedDates());
-    }
-  }, [bookedDatesStatus, dispatch]);
+    dispatch(fetchBookedDates());
+  }, [dispatch]);
 
   if (bookedDatesStatus === "failed") {
     return <div>Error: {bookedDatesError}</div>;

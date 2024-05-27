@@ -1,30 +1,21 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchReservationsStandard,
-  fetchReservationsWholeDay,
-} from "../../../state/slices/reservations/reservationsSlice";
+import { fetchReservationsStandard, fetchReservationsWholeDay } from "../../../state/slices/reservations/reservationsSlice";
 import { formatDate, formatTime } from "../../../helpers/dateTimeFormat";
 import "./ReservationsTable.css";
 import { AppDispatch, RootState } from "../../../state/store/store";
 
 const ReservationsTable = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const reservationList = useSelector(
-    (state: RootState) => state.reservations.reservationsStandard
-  );
-  const specialReservationsList = useSelector(
-    (state: RootState) => state.reservations.specialReservations
-  );
+  const reservationList = useSelector((state: RootState) => state.reservations.reservationsStandard);
+  const specialReservationsList = useSelector((state: RootState) => state.reservations.specialReservations);
   const status = useSelector((state: RootState) => state.reservations.status);
   const error = useSelector((state: RootState) => state.reservations.error);
 
   useEffect(() => {
-    if (status === "idle") {
-      dispatch(fetchReservationsStandard());
-      dispatch(fetchReservationsWholeDay());
-    }
-  }, [status, dispatch]);
+    dispatch(fetchReservationsStandard());
+    dispatch(fetchReservationsWholeDay());
+  }, [dispatch]);
 
   if (status === "loading") {
     return <div>Loading...</div>;
