@@ -36,15 +36,8 @@ const ReservationDatePicker = ({
   const [blockedDatesState, setBlockedDatesState] = useState([]);
 
   useEffect(() => {
-    console.log("status: " + bookedDatesStatus);
-    console.log("status plus " + 5);
-    console.log("status zarez ", 5);
-    if (bookedDatesStatus === "idle") {
-      setTimeout(() => {
-        dispatch(fetchBookedDates());
-      }, 0);
-    }
-  }, [bookedDatesStatus, dispatch]);
+    dispatch(fetchBookedDates());
+  }, [dispatch]);
 
   if (bookedDatesStatus === "failed") {
     return <div>Error: {bookedDatesError}</div>;

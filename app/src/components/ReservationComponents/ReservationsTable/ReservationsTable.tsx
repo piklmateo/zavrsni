@@ -20,13 +20,9 @@ const ReservationsTable = () => {
   const error = useSelector((state: RootState) => state.reservations.error);
 
   useEffect(() => {
-    if (status === "idle") {
-      // setTimeout(() => {
-      dispatch(fetchReservationsStandard());
-      dispatch(fetchReservationsWholeDay());
-      // }, 1000);3
-    }
-  }, [status]);
+    dispatch(fetchReservationsStandard());
+    dispatch(fetchReservationsWholeDay());
+  }, [dispatch]);
 
   if (status === "loading") {
     return <div>Loading...</div>;
