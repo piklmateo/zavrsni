@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import logo from "../../assets/images/logo-transparent.png";
+import logo from "../../assets/images/logo-transparent.webp";
 import { JwtPayload, jwtDecode } from "jwt-decode";
 import "./NavBar.css";
 
@@ -18,9 +18,25 @@ const NavBar = () => {
   const [isMobileNav, setIsMobileNav] = useState<boolean>(false);
 
   const roleRoutes: { [key: number]: string[] } = {
-    1: ["/menu", "/profile", "/reservations", "/add-dish", "/add-drink", "/order", "/order-list", "/statistics"], // ADMIN
+    1: [
+      "/menu",
+      "/profile",
+      "/reservations",
+      "/add-dish",
+      "/add-drink",
+      "/order",
+      "/order-list",
+      "/statistics",
+    ], // ADMIN
     2: ["/menu", "/add-dish", "/add-drink", "/order", "/order-list"], // KUHAR
-    3: ["/menu", "/reservations", "/add-drink", "/add-dish", "/order", "/order-list"], // KONOBAR
+    3: [
+      "/menu",
+      "/reservations",
+      "/add-drink",
+      "/add-dish",
+      "/order",
+      "/order-list",
+    ], // KONOBAR
     4: ["/profile", "/my-reservations"], // KORISNIK
   };
 
@@ -64,17 +80,29 @@ const NavBar = () => {
                 </Link>
               </li>
               <li className="nav__list__item">
-                <Link className="nav__link" to="/menu" onClick={handleMobileNav}>
+                <Link
+                  className="nav__link"
+                  to="/menu"
+                  onClick={handleMobileNav}
+                >
                   Menu
                 </Link>
               </li>
               <li className="nav__list__item">
-                <Link className="nav__link" to="/reservation" onClick={handleMobileNav}>
+                <Link
+                  className="nav__link"
+                  to="/reservation"
+                  onClick={handleMobileNav}
+                >
                   Reservation
                 </Link>
               </li>
               <li className="nav__list__item">
-                <Link className="nav__link" to="/special-occasions" onClick={handleMobileNav}>
+                <Link
+                  className="nav__link"
+                  to="/special-occasions"
+                  onClick={handleMobileNav}
+                >
                   Special occasions
                 </Link>
               </li>
@@ -83,7 +111,11 @@ const NavBar = () => {
                   if (route === "/reservations") {
                     return (
                       <li key={index} className="nav__list__item">
-                        <Link className="nav__link" to={route} onClick={handleMobileNav}>
+                        <Link
+                          className="nav__link"
+                          to={route}
+                          onClick={handleMobileNav}
+                        >
                           Reservations
                         </Link>
                       </li>
@@ -91,7 +123,11 @@ const NavBar = () => {
                   } else if (route === "/profile") {
                     return (
                       <li key={index} className="nav__list__item">
-                        <Link className="nav__link" to={route} onClick={handleMobileNav}>
+                        <Link
+                          className="nav__link"
+                          to={route}
+                          onClick={handleMobileNav}
+                        >
                           Profile
                         </Link>
                       </li>
@@ -99,7 +135,11 @@ const NavBar = () => {
                   } else if (route === "/my-reservations") {
                     return (
                       <li key={index} className="nav__list__item">
-                        <Link className="nav__link" to={route} onClick={handleMobileNav}>
+                        <Link
+                          className="nav__link"
+                          to={route}
+                          onClick={handleMobileNav}
+                        >
                           My Reservations
                         </Link>
                       </li>
@@ -107,7 +147,11 @@ const NavBar = () => {
                   } else if (route === "/order") {
                     return (
                       <li key={index} className="nav__list__item">
-                        <Link className="nav__link" to={route} onClick={handleMobileNav}>
+                        <Link
+                          className="nav__link"
+                          to={route}
+                          onClick={handleMobileNav}
+                        >
                           Order
                         </Link>
                       </li>
@@ -115,7 +159,11 @@ const NavBar = () => {
                   } else if (route === "/order-list") {
                     return (
                       <li key={index} className="nav__list__item">
-                        <Link className="nav__link" to={route} onClick={handleMobileNav}>
+                        <Link
+                          className="nav__link"
+                          to={route}
+                          onClick={handleMobileNav}
+                        >
                           Order list
                         </Link>
                       </li>
@@ -123,7 +171,11 @@ const NavBar = () => {
                   } else if (route === "/statistics") {
                     return (
                       <li key={index} className="nav__list__item">
-                        <Link className="nav__link" to={route} onClick={handleMobileNav}>
+                        <Link
+                          className="nav__link"
+                          to={route}
+                          onClick={handleMobileNav}
+                        >
                           Statistics
                         </Link>
                       </li>

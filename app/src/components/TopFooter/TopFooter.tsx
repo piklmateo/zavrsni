@@ -1,7 +1,9 @@
 import React from "react";
-// import { FaLocationDot, FaEnvelope, FaPhone } from "react-icons/fa6/index.esj";
+import location from "../../assets/images/location--grey.svg";
+import email from "../../assets/images/email.svg";
+import phone from "../../assets/images/phone.svg";
+import logo from "../../assets/images/logo-transparent.webp";
 import "./TopFooter.css";
-import logo from "../../assets/images/logo-transparent.png";
 
 const TopFooter = () => {
   return (
@@ -15,16 +17,21 @@ const TopFooter = () => {
             <div className="footer__grid__item footer__address">
               <h3>Address</h3>
               <div className="icons">
-                {/* <FaLocationDot /> */}
+                <img
+                  src={location}
+                  alt="location_icon"
+                  width={16}
+                  height={16}
+                />
                 <p>83100 Avellino AV Italia</p>
               </div>
               <h3>Contact</h3>
               <div className="icons">
-                {/* <FaEnvelope /> */}
+                <img src={email} alt="email_icon" width={16} height={16} />
                 <p>nest@nest.com</p>
               </div>
               <div className="icons">
-                {/* <FaPhone /> */}
+                <img src={phone} alt="phone_icon" width={16} height={16} />
                 <p>040-319-067</p>
               </div>
             </div>
