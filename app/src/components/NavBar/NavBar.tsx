@@ -14,6 +14,7 @@ interface DecodedToken extends JwtPayload {
 
 const NavBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userRole, setUserRole] = useState<number>(0);
   const [allowedRoutes, setAllowedRoutes] = useState<string[]>([]);
   const [isMobileNav, setIsMobileNav] = useState<boolean>(false);
 
@@ -46,6 +47,7 @@ const NavBar = () => {
       setIsLoggedIn(true);
       const decodedToken = jwtDecode(token) as DecodedToken;
       const role = decodedToken.user.role;
+      setUserRole(role);
       setAllowedRoutes(roleRoutes[role] || []);
     }
   }, []);
@@ -74,11 +76,20 @@ const NavBar = () => {
           </div>
           <nav className={`nav__menu ${isMobileNav ? "nav__menu--open" : ""}`}>
             <ul className="nav__list">
-              <li className="nav__list__item">
-                <Link className="nav__link" to="/" onClick={handleMobileNav}>
-                  Home
-                </Link>
-              </li>
+              {userRole !== 2 && userRole !== 3 && (
+                <>
+                  <li className="nav__list__item">
+                    <Link
+                      className="nav__link"
+                      to="/"
+                      onClick={handleMobileNav}
+                    >
+                      Home
+                    </Link>
+                  </li>
+                </>
+              )}
+
               <li className="nav__list__item">
                 <Link
                   className="nav__link"
@@ -88,24 +99,34 @@ const NavBar = () => {
                   Menu
                 </Link>
               </li>
-              <li className="nav__list__item">
-                <Link
-                  className="nav__link"
-                  to="/reservation"
-                  onClick={handleMobileNav}
-                >
-                  Reservation
-                </Link>
-              </li>
-              <li className="nav__list__item">
-                <Link
-                  className="nav__link"
-                  to="/special-occasions"
-                  onClick={handleMobileNav}
-                >
-                  Special occasions
-                </Link>
-              </li>
+              {userRole !== 2 && (
+                <>
+                  <li className="nav__list__item">
+                    <Link
+                      className="nav__link"
+                      to="/reservation"
+                      onClick={handleMobileNav}
+                    >
+                      Reservation
+                    </Link>
+                  </li>
+                </>
+              )}
+
+              {userRole !== 2 && (
+                <>
+                  <li className="nav__list__item">
+                    <Link
+                      className="nav__link"
+                      to="/special-occasions"
+                      onClick={handleMobileNav}
+                    >
+                      Special occasions
+                    </Link>
+                  </li>
+                </>
+              )}
+
               {isLoggedIn &&
                 allowedRoutes.map((route, index) => {
                   if (route === "/reservations") {
