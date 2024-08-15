@@ -31,34 +31,40 @@ interface DecodedToken extends JwtPayload {
   };
 }
 
-export const fetchUserData = createAsyncThunk<User>("user/fetchUserData", async () => {
-  try {
-    const token = sessionStorage.getItem("token");
-    console.log("profile-token");
-    if (!token) {
-      console.log("You don't have a valid token");
-      return [];
-    }
-    const decodedToken = jwtDecode(token) as DecodedToken;
-    const id_user = decodedToken.user.id_user;
-    const res = await fetch(`https://zavrsni-server.vercel.app/api/users/${id_user}`, {
-      method: "GET",
-      headers: {
-        "Content-type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    });
+export const fetchUserData = createAsyncThunk<User>(
+  "user/fetchUserData",
+  async () => {
+    try {
+      const token = sessionStorage.getItem("token");
+      console.log("profile-token");
+      if (!token) {
+        console.log("You don't have a valid token");
+        return [];
+      }
+      const decodedToken = jwtDecode(token) as DecodedToken;
+      const id_user = decodedToken.user.id_user;
+      const res = await fetch(
+        `https://zavrsni-server.vercel.app/api/users/${id_user}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
 
-    if (!res.ok) {
-      throw new Error("Failed to fetch user data");
+      if (!res.ok) {
+        throw new Error("Failed to fetch user data");
+      }
+      const data = await res.json();
+      return data;
+    } catch (error) {
+      console.log("error: ", error);
+      throw error;
     }
-    const data = await res.json();
-    return data;
-  } catch (error) {
-    console.log("error: ", error);
-    throw error;
   }
-});
+);
 
 const userSlice = createSlice({
   name: "user",
@@ -75,7 +81,7 @@ const userSlice = createSlice({
       })
       .addCase(fetchUserData.fulfilled, (state, action) => {
         state.status = "succeded";
-        state.user = [action.payload]; // Update state with the fetched user data
+        state.user = [action.payload];
       })
       .addCase(fetchUserData.rejected, (state, action) => {
         state.status = "failed";

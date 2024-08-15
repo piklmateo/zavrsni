@@ -1,5 +1,3 @@
-//CSS PROPERTIES MYB PROBLEM
-
 import React from "react";
 import Modal from "react-modal";
 import { OrderItem, Dish, Drink } from "../../../state/slices/order/orderSlice";
@@ -52,7 +50,9 @@ const OrderModal = ({ isOpen, closeModal, order }: OrderModalProps) => {
     >
       <div className="order__modal__container">
         {order.map((orderItem) => (
-          <div key={(orderItem as Dish).id_dish || (orderItem as Drink).id_drink}>
+          <div
+            key={(orderItem as Dish).id_dish || (orderItem as Drink).id_drink}
+          >
             <div className="order__modal__info">
               <div className="order__modal__info-left">
                 <h2>{orderItem.name}</h2>

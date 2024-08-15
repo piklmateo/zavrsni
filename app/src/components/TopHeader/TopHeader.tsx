@@ -13,12 +13,19 @@ function TopHeader() {
           <div className="social__icons">
             <div className="icon">
               <img src={share} alt="share_icon" width={16} height={16} />
+              <img src={share} alt="share_icon" width={16} height={16} />
             </div>
             <div className="icon">
               <img src={facebook} alt="facebook_icon" width={16} height={16} />
+              <img src={facebook} alt="facebook_icon" width={16} height={16} />
             </div>
             <div className="icon">
-              <img src={instagram} alt="instagram_icon" width={16} height={16} />
+              <img
+                src={instagram}
+                alt="instagram_icon"
+                width={16}
+                height={16}
+              />
             </div>
           </div>
           <div className="location__info">

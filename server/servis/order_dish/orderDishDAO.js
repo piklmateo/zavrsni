@@ -1,13 +1,12 @@
-// orderDishDAO.js
 import DB from "../database.js";
 
 class orderDishDAO {
   constructor() {
     this.db = new DB();
-    this.db.connect();
   }
 
   async getAll() {
+    this.db.connect();
     try {
       let sql = `SELECT * FROM "order_dish";`;
       const data = await this.db.query(sql, []);
@@ -16,10 +15,13 @@ class orderDishDAO {
     } catch (error) {
       console.error("Error while getting all order_dishes:", error);
       throw error;
+    } finally {
+      await this.db.disconnect();
     }
   }
 
   async insert(order_dish) {
+    this.db.connect();
     try {
       let sql = `INSERT INTO "order_dish" ("order_id", "dish_id", "quantity") VALUES ($1,$2,$3)`;
       let data = [
@@ -32,6 +34,8 @@ class orderDishDAO {
     } catch (error) {
       console.error("Error while inserting order_dish:", error);
       throw error;
+    } finally {
+      await this.db.disconnect();
     }
   }
 }

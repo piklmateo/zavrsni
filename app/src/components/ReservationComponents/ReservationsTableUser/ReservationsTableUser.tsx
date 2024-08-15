@@ -7,8 +7,12 @@ import { AppDispatch, RootState } from "../../../state/store/store";
 
 const ReservationsTableUser = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const reservationsUserList = useSelector((state: RootState) => state.reservations.userReservations);
-  const specialReservationsList = useSelector((state: RootState) => state.reservations.userSpecialReservations);
+  const reservationsUserList = useSelector(
+    (state: RootState) => state.reservations.userReservations
+  );
+  const specialReservationsList = useSelector(
+    (state: RootState) => state.reservations.userSpecialReservations
+  );
   const status = useSelector((state: RootState) => state.reservations.status);
   const error = useSelector((state: RootState) => state.reservations.error);
 
@@ -16,6 +20,13 @@ const ReservationsTableUser = () => {
     dispatch(fetchUserReservations());
     dispatch(fetchSpecialUserReservations());
   }, [dispatch]);
+    if (status === "idle") {
+      setTimeout(() => {
+        dispatch(fetchUserReservations());
+        dispatch(fetchSpecialUserReservations());
+      }, 0);
+    }
+  }, [status, dispatch]);
 
   if (status === "loading") {
     return <div>Loading...</div>;

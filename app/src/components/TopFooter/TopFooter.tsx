@@ -1,9 +1,9 @@
 import React from "react";
-import "./TopFooter.css";
-import logo from "../../assets/images/logo-transparent.webp";
 import location from "../../assets/images/location--grey.svg";
-import phone from "../../assets/images/phone.svg";
 import email from "../../assets/images/email.svg";
+import phone from "../../assets/images/phone.svg";
+import logo from "../../assets/images/logo-transparent.webp";
+import "./TopFooter.css";
 
 const TopFooter = () => {
   return (
@@ -17,15 +17,22 @@ const TopFooter = () => {
             <div className="footer__grid__item footer__address">
               <h3>Address</h3>
               <div className="icons">
-                <img src={location} alt="location__icon" width={16} height={16} />
+                <img
+                  src={location}
+                  alt="location__icon"
+                  width={16}
+                  height={16}
+                />
                 <p>83100 Avellino AV Italia</p>
               </div>
               <h3>Contact</h3>
               <div className="icons">
                 <img src={email} alt="email_icon" width={16} height={16} />
+                <img src={email} alt="email_icon" width={16} height={16} />
                 <p>nest@nest.com</p>
               </div>
               <div className="icons">
+                <img src={phone} alt="phone_icon" width={16} height={16} />
                 <img src={phone} alt="phone_icon" width={16} height={16} />
                 <p>040-319-067</p>
               </div>

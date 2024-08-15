@@ -14,13 +14,30 @@ interface DecodedToken extends JwtPayload {
 
 const NavBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userRole, setUserRole] = useState<number>(0);
   const [allowedRoutes, setAllowedRoutes] = useState<string[]>([]);
   const [isMobileNav, setIsMobileNav] = useState<boolean>(false);
 
   const roleRoutes: { [key: number]: string[] } = {
-    1: ["/menu", "/profile", "/reservations", "/add-dish", "/add-drink", "/order", "/order-list", "/statistics"], // ADMIN
+    1: [
+      "/menu",
+      "/profile",
+      "/reservations",
+      "/add-dish",
+      "/add-drink",
+      "/order",
+      "/order-list",
+      "/statistics",
+    ], // ADMIN
     2: ["/menu", "/add-dish", "/add-drink", "/order", "/order-list"], // KUHAR
-    3: ["/menu", "/reservations", "/add-drink", "/add-dish", "/order", "/order-list"], // KONOBAR
+    3: [
+      "/menu",
+      "/reservations",
+      "/add-drink",
+      "/add-dish",
+      "/order",
+      "/order-list",
+    ], // KONOBAR
     4: ["/profile", "/my-reservations"], // KORISNIK
   };
 
@@ -30,6 +47,7 @@ const NavBar = () => {
       setIsLoggedIn(true);
       const decodedToken = jwtDecode(token) as DecodedToken;
       const role = decodedToken.user.role;
+      setUserRole(role);
       setAllowedRoutes(roleRoutes[role] || []);
     }
   }, []);
@@ -58,32 +76,67 @@ const NavBar = () => {
           </div>
           <nav className={`nav__menu ${isMobileNav ? "nav__menu--open" : ""}`}>
             <ul className="nav__list">
+              {userRole !== 2 && userRole !== 3 && (
+                <>
+                  <li className="nav__list__item">
+                    <Link
+                      className="nav__link"
+                      to="/"
+                      onClick={handleMobileNav}
+                    >
+                      Home
+                    </Link>
+                  </li>
+                </>
+              )}
+
               <li className="nav__list__item">
-                <Link className="nav__link" to="/" onClick={handleMobileNav}>
-                  Home
-                </Link>
-              </li>
-              <li className="nav__list__item">
-                <Link className="nav__link" to="/menu" onClick={handleMobileNav}>
+                <Link
+                  className="nav__link"
+                  to="/menu"
+                  onClick={handleMobileNav}
+                >
                   Menu
                 </Link>
               </li>
-              <li className="nav__list__item">
-                <Link className="nav__link" to="/reservation" onClick={handleMobileNav}>
-                  Reservation
-                </Link>
-              </li>
-              <li className="nav__list__item">
-                <Link className="nav__link" to="/special-occasions" onClick={handleMobileNav}>
-                  Special occasions
-                </Link>
-              </li>
+              {userRole !== 2 && (
+                <>
+                  <li className="nav__list__item">
+                    <Link
+                      className="nav__link"
+                      to="/reservation"
+                      onClick={handleMobileNav}
+                    >
+                      Reservation
+                    </Link>
+                  </li>
+                </>
+              )}
+
+              {userRole !== 2 && (
+                <>
+                  <li className="nav__list__item">
+                    <Link
+                      className="nav__link"
+                      to="/special-occasions"
+                      onClick={handleMobileNav}
+                    >
+                      Special occasions
+                    </Link>
+                  </li>
+                </>
+              )}
+
               {isLoggedIn &&
                 allowedRoutes.map((route, index) => {
                   if (route === "/reservations") {
                     return (
                       <li key={index} className="nav__list__item">
-                        <Link className="nav__link" to={route} onClick={handleMobileNav}>
+                        <Link
+                          className="nav__link"
+                          to={route}
+                          onClick={handleMobileNav}
+                        >
                           Reservations
                         </Link>
                       </li>
@@ -91,7 +144,11 @@ const NavBar = () => {
                   } else if (route === "/profile") {
                     return (
                       <li key={index} className="nav__list__item">
-                        <Link className="nav__link" to={route} onClick={handleMobileNav}>
+                        <Link
+                          className="nav__link"
+                          to={route}
+                          onClick={handleMobileNav}
+                        >
                           Profile
                         </Link>
                       </li>
@@ -99,7 +156,11 @@ const NavBar = () => {
                   } else if (route === "/my-reservations") {
                     return (
                       <li key={index} className="nav__list__item">
-                        <Link className="nav__link" to={route} onClick={handleMobileNav}>
+                        <Link
+                          className="nav__link"
+                          to={route}
+                          onClick={handleMobileNav}
+                        >
                           My Reservations
                         </Link>
                       </li>
@@ -107,7 +168,11 @@ const NavBar = () => {
                   } else if (route === "/order") {
                     return (
                       <li key={index} className="nav__list__item">
-                        <Link className="nav__link" to={route} onClick={handleMobileNav}>
+                        <Link
+                          className="nav__link"
+                          to={route}
+                          onClick={handleMobileNav}
+                        >
                           Order
                         </Link>
                       </li>
@@ -115,7 +180,11 @@ const NavBar = () => {
                   } else if (route === "/order-list") {
                     return (
                       <li key={index} className="nav__list__item">
-                        <Link className="nav__link" to={route} onClick={handleMobileNav}>
+                        <Link
+                          className="nav__link"
+                          to={route}
+                          onClick={handleMobileNav}
+                        >
                           Order list
                         </Link>
                       </li>
@@ -123,7 +192,11 @@ const NavBar = () => {
                   } else if (route === "/statistics") {
                     return (
                       <li key={index} className="nav__list__item">
-                        <Link className="nav__link" to={route} onClick={handleMobileNav}>
+                        <Link
+                          className="nav__link"
+                          to={route}
+                          onClick={handleMobileNav}
+                        >
                           Statistics
                         </Link>
                       </li>

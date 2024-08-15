@@ -1,4 +1,3 @@
-// OrderDashboard.jsx
 import React, { useState } from "react";
 import MenuFilter from "../../MenuComponents/MenuFilter/MenuFilter";
 import OrderMenu from "../OrderMenu/OrderMenu";
@@ -17,7 +16,6 @@ const OrderDashboard = () => {
     setSelectedCategory(category);
   };
 
-  //MODAL
   const openModal = () => {
     setModalIsOpen(true);
   };
@@ -29,7 +27,10 @@ const OrderDashboard = () => {
     <div className="main__layout__container">
       <h1 className="text__center mbl-2">Order</h1>
 
-      <MenuFilter selectedCategory={selectedCategory} handleCategoryClick={handleCategoryClick} />
+      <MenuFilter
+        selectedCategory={selectedCategory}
+        handleCategoryClick={handleCategoryClick}
+      />
 
       <OrderMenu category={selectedCategory} />
 

@@ -32,23 +32,33 @@ const OrderMenu = ({ category }: OrderMenuProps) => {
   }
 
   if (dishStatus === "failed" || drinkStatus === "failed") {
-    return <div>Error: {dishStatus === "failed" ? "Dish error" : "Drink error"}</div>;
+    return (
+      <div>Error: {dishStatus === "failed" ? "Dish error" : "Drink error"}</div>
+    );
   }
 
   const getMenuItemsWithQuantity = () => {
     const combinedMenuItems = [...drinkList, ...dishList];
-    const quantities: { [itemId: string]: number } = {}; // Use string type for itemId
+    const quantities: { [itemId: string]: number } = {};
     order.forEach((orderItem) => {
-      const itemId: string = "id_dish" in orderItem ? orderItem.id_dish.toString() : orderItem.id_drink.toString();
+      const itemId: string =
+        "id_dish" in orderItem
+          ? orderItem.id_dish.toString()
+          : orderItem.id_drink.toString();
       quantities[itemId] = (quantities[itemId] || 0) + orderItem.quantity;
     });
     return combinedMenuItems.map((item) => ({
       ...item,
-      quantity: quantities["id_dish" in item ? item.id_dish.toString() : item.id_drink.toString()] || 0,
+      quantity:
+        quantities[
+          "id_dish" in item ? item.id_dish.toString() : item.id_drink.toString()
+        ] || 0,
     }));
   };
 
-  const menuItems = getMenuItemsWithQuantity().filter((item) => item.category_name === category);
+  const menuItems = getMenuItemsWithQuantity().filter(
+    (item) => item.category_name === category
+  );
 
   return (
     <div className="order__item__container">
@@ -58,7 +68,7 @@ const OrderMenu = ({ category }: OrderMenuProps) => {
       <div className="order__grid">
         {menuItems.map((item) => (
           <OrderItemCard
-            key={(item as Dish).id_dish || (item as Drink).id_drink} // Ensure a unique key for each item
+            key={(item as Dish).id_dish || (item as Drink).id_drink}
             item={item}
             handleRemoveItem={handleRemoveItem}
             handleAddItem={handleAddItem}
