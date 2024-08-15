@@ -1,6 +1,9 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchSpecialUserReservations, fetchUserReservations } from "../../../state/slices/reservations/reservationsSlice";
+import {
+  fetchSpecialUserReservations,
+  fetchUserReservations,
+} from "../../../state/slices/reservations/reservationsSlice";
 import { formatDate, formatTime } from "../../../helpers/dateTimeFormat";
 import "./ReservationsTableUser.css";
 import { AppDispatch, RootState } from "../../../state/store/store";
@@ -17,9 +20,6 @@ const ReservationsTableUser = () => {
   const error = useSelector((state: RootState) => state.reservations.error);
 
   useEffect(() => {
-    dispatch(fetchUserReservations());
-    dispatch(fetchSpecialUserReservations());
-  }, [dispatch]);
     if (status === "idle") {
       setTimeout(() => {
         dispatch(fetchUserReservations());
