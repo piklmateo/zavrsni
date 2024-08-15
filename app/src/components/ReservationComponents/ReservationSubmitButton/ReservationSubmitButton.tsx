@@ -1,4 +1,3 @@
-// ReservationSubmitButton.js
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../../../state/slices/user/userSlice";
@@ -44,7 +43,9 @@ const ReservationSubmitButton = ({
 }: ReservationSubmitButtonProps) => {
   const dispatch = useDispatch();
 
-  const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleSubmit = async (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     event.preventDefault();
     const token = sessionStorage.getItem("token");
 
@@ -91,7 +92,9 @@ const ReservationSubmitButton = ({
         window.location.reload();
         console.log("Successful reservation!");
       } else {
-        setServerError("Reservation failed: Internal server error, check data.");
+        setServerError(
+          "Reservation failed: Internal server error, check data."
+        );
         console.log("Error: response not ok");
       }
     } catch (error) {
@@ -104,7 +107,9 @@ const ReservationSubmitButton = ({
         });
         setErrors(validationErrors);
       } else {
-        setServerError("Reservation failed: Internal server error, check data.");
+        setServerError(
+          "Reservation failed: Internal server error, check data."
+        );
       }
     }
   };

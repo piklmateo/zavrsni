@@ -3,6 +3,7 @@
   flex-direction: row;
   justify-content: space-between;
   gap: 2rem;
+  margin-bottom: 2rem;
 }
 
 .btn__submit__show {

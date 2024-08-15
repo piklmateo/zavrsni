@@ -4,10 +4,10 @@ import DB from "../database.js";
 class ReservationDAO {
   constructor() {
     this.db = new DB();
-    this.db.connect();
   }
 
   async getAll() {
+    this.db.connect();
     try {
       let sql = `
       SELECT
@@ -30,10 +30,13 @@ class ReservationDAO {
     } catch (error) {
       console.error("Error while getting all reservations:", error);
       throw error;
+    } finally {
+      await this.db.disconnect();
     }
   }
 
   async getAllNoWholeDay() {
+    this.db.connect();
     try {
       let sql = `
       SELECT
@@ -57,10 +60,13 @@ class ReservationDAO {
     } catch (error) {
       console.error("Error while getting all reservations:", error);
       throw error;
+    } finally {
+      await this.db.disconnect();
     }
   }
 
   async getAllWholeDay() {
+    this.db.connect();
     try {
       let sql = `
       SELECT
@@ -84,10 +90,13 @@ class ReservationDAO {
     } catch (error) {
       console.error("Error while getting all reservations:", error);
       throw error;
+    } finally {
+      await this.db.disconnect();
     }
   }
 
   async getBookedDates() {
+    this.db.connect();
     try {
       let sql = `
       WITH time_slots AS (
@@ -122,10 +131,13 @@ class ReservationDAO {
     } catch (error) {
       console.error("Error while getting all reservations:", error);
       throw error;
+    } finally {
+      await this.db.disconnect();
     }
   }
 
   async getBookedTimeSlots(date) {
+    this.db.connect();
     try {
       let sql = `
       WITH available_slots AS (
@@ -154,10 +166,13 @@ class ReservationDAO {
     } catch (error) {
       console.error("Error while getting all reservations:", error);
       throw error;
+    } finally {
+      await this.db.disconnect();
     }
   }
 
   async getBookedTables(date, time) {
+    this.db.connect();
     try {
       let sql = `
       SELECT DISTINCT 
@@ -178,10 +193,13 @@ class ReservationDAO {
     } catch (error) {
       console.error("Error while getting all reservations:", error);
       throw error;
+    } finally {
+      await this.db.disconnect();
     }
   }
 
   async getAllUser(id_user) {
+    this.db.connect();
     try {
       let sql = `
       SELECT
@@ -204,10 +222,13 @@ class ReservationDAO {
     } catch (error) {
       console.error("Error while getting all reservations:", error);
       throw error;
+    } finally {
+      await this.db.disconnect();
     }
   }
 
   async getAllUserSpecial(id_user) {
+    this.db.connect();
     try {
       let sql = `
       SELECT
@@ -230,10 +251,13 @@ class ReservationDAO {
     } catch (error) {
       console.error("Error while getting all reservations:", error);
       throw error;
+    } finally {
+      await this.db.disconnect();
     }
   }
 
   async getOne(id_reservation) {
+    this.db.connect();
     try {
       let sql = `SELECT * FROM "reservation" WHERE id_reservation=$1;`;
       const data = await this.db.query(sql, [id_reservation]);
@@ -242,10 +266,13 @@ class ReservationDAO {
     } catch (error) {
       console.error("Error while getting Reservation by id:", error);
       throw error;
+    } finally {
+      await this.db.disconnect();
     }
   }
 
   async insert(reservation) {
+    this.db.connect();
     try {
       let sql = `INSERT INTO "reservation" ("date", "time", "email", user_id, table_id, "name", "phone", "whole_day") VALUES ($1,$2,$3,$4,$5,$6,$7,$8)`;
       let data = [
@@ -263,10 +290,13 @@ class ReservationDAO {
     } catch (error) {
       console.error("Error while inserting Reservation:", error);
       throw error;
+    } finally {
+      await this.db.disconnect();
     }
   }
 
   async delete(id_reservation) {
+    this.db.connect();
     try {
       let sql = `DELETE FROM "reservation" WHERE id_reservation=$1`;
       await this.db.query(sql, [id_reservation]);
@@ -274,18 +304,31 @@ class ReservationDAO {
     } catch (error) {
       console.error("Error while deleting Reservation:", error);
       throw error;
+    } finally {
+      await this.db.disconnect();
     }
   }
 
   async update(id_reservation, reservation) {
+    this.db.connect();
     try {
       let sql = `UPDATE "reservation" SET date=$1, time=$2, occupied=$3, email=$4, table_id=$5, user_id WHERE id_reservation=$6`;
-      let data = [reservation.date, reservation.time, reservation.occupied, reservation.email, reservation.table_id, reservation.user_id, id_reservation];
+      let data = [
+        reservation.date,
+        reservation.time,
+        reservation.occupied,
+        reservation.email,
+        reservation.table_id,
+        reservation.user_id,
+        id_reservation,
+      ];
       await this.db.query(sql, data);
       return true;
     } catch (error) {
       console.error("Error while updating Reservation:", error);
       throw error;
+    } finally {
+      await this.db.disconnect();
     }
   }
 }
