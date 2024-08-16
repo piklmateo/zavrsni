@@ -6,7 +6,6 @@ class StatisticsDAO {
   }
 
   async getPopularTimeSlots() {
-    this.db.connect();
     try {
       let sql = `
       WITH time_slots AS (
@@ -30,13 +29,10 @@ class StatisticsDAO {
     } catch (error) {
       console.error("Error while getting all reservations:", error);
       throw error;
-    } finally {
-      await this.db.disconnect();
     }
   }
 
   async getPopularDishes() {
-    this.db.connect();
     try {
       let sql = `
         SELECT d.name AS dish_name, COALESCE(SUM(od.quantity), 0) AS total_quantity
@@ -51,13 +47,10 @@ class StatisticsDAO {
     } catch (error) {
       console.error("Error while getting all reservations:", error);
       throw error;
-    } finally {
-      await this.db.disconnect();
     }
   }
 
   async getPopularDrinks() {
-    this.db.connect();
     try {
       let sql = `
         SELECT d.name AS drink_name, COALESCE(SUM(od.quantity), 0) AS total_quantity
@@ -72,8 +65,6 @@ class StatisticsDAO {
     } catch (error) {
       console.error("Error while getting all reservations:", error);
       throw error;
-    } finally {
-      await this.db.disconnect();
     }
   }
 }
