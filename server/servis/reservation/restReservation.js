@@ -22,7 +22,8 @@ const restReservation = {
     res.type("application/json");
     try {
       let rdao = new ReservationDAO();
-      const reservations = await rdao.getAllNoWholeDay();
+      const data = req.query;
+      const reservations = await rdao.getAllNoWholeDay(data.limit, data.page);
       res.send(JSON.stringify(reservations));
     } catch (error) {
       console.error(error);
@@ -34,7 +35,8 @@ const restReservation = {
     res.type("application/json");
     try {
       let rdao = new ReservationDAO();
-      const reservations = await rdao.getAllWholeDay();
+      const data = req.query;
+      const reservations = await rdao.getAllWholeDay(data.limit, data.page);
       res.send(JSON.stringify(reservations));
     } catch (error) {
       console.error(error);
@@ -117,7 +119,9 @@ const restReservation = {
       const from = process.env.MAIL_USER;
       const to = data.email;
       const subject = "Reservation Confirmation";
-      const message = `Dear ${data.name},\n\nYour reservation for ${formatDate(data.date)} at ${data.time} has been confirmed. We look forward to seeing you!`;
+      const message = `Dear ${data.name},\n\nYour reservation for ${formatDate(
+        data.date
+      )} at ${data.time} has been confirmed. We look forward to seeing you!`;
 
       await sendMail(from, to, subject, message);
 

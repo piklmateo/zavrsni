@@ -6,7 +6,6 @@ class DishDAO {
   }
 
   async getAll() {
-    this.db.connect();
     try {
       let sql = `
         SELECT d.*, c.name AS category_name
@@ -19,13 +18,10 @@ class DishDAO {
     } catch (error) {
       console.error("Error while getting all dishes:", error);
       throw error;
-    } finally {
-      await this.db.disconnect();
     }
   }
 
   async getOne(id_dish) {
-    this.db.connect();
     try {
       let sql = `SELECT * FROM "dish" WHERE "id_dish"=$1;`;
       const data = await this.db.query(sql, [id_dish]);
@@ -34,13 +30,10 @@ class DishDAO {
     } catch (error) {
       console.error("Error while getting dish by id_dish:", error);
       throw error;
-    } finally {
-      await this.db.disconnect();
     }
   }
 
   async getCategories() {
-    this.db.connect();
     try {
       let sql = `SELECT DISTINCT *
                  FROM category`;
@@ -50,13 +43,10 @@ class DishDAO {
     } catch (error) {
       console.error("Error while getting categories:", error);
       throw error;
-    } finally {
-      await this.db.disconnect();
     }
   }
 
   async getOne(id_dish) {
-    this.db.connect();
     try {
       let sql = `SELECT * FROM "dish" WHERE "id_dish"=$1;`;
       const data = await this.db.query(sql, [id_dish]);
@@ -65,13 +55,10 @@ class DishDAO {
     } catch (error) {
       console.error("Error while getting dish by id_dish:", error);
       throw error;
-    } finally {
-      await this.db.disconnect();
     }
   }
 
   async insert(dish) {
-    this.db.connect();
     try {
       let sql = `INSERT INTO "dish" ("name", ingridients, price, category_id) VALUES ($1,$2,$3,$4)`;
       let data = [dish.name, dish.ingridients, dish.price, dish.category_id];
@@ -80,13 +67,10 @@ class DishDAO {
     } catch (error) {
       console.error("Error while inserting dish:", error);
       throw error;
-    } finally {
-      await this.db.disconnect();
     }
   }
 
   async delete(id_dish) {
-    this.db.connect();
     try {
       let sql = `DELETE FROM "dish" WHERE id_dish=$1`;
       await this.db.query(sql, [id_dish]);
@@ -94,13 +78,10 @@ class DishDAO {
     } catch (error) {
       console.error("Error while deleting dish:", error);
       throw error;
-    } finally {
-      await this.db.disconnect();
     }
   }
 
   async update(id_dish, dish) {
-    this.db.connect();
     try {
       let sql = `UPDATE "dish" SET "name"=$1, ingridients=$2, price=$3, category_id=$4 WHERE id_dish=$5`;
       let data = [
@@ -115,8 +96,6 @@ class DishDAO {
     } catch (error) {
       console.error("Error while updating dish:", error);
       throw error;
-    } finally {
-      await this.db.disconnect();
     }
   }
 }

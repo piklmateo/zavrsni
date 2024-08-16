@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  PaginationArguments,
   fetchReservationsStandard,
   fetchReservationsWholeDay,
 } from "../../../state/slices/reservations/reservationsSlice";
@@ -10,19 +11,35 @@ import { AppDispatch, RootState } from "../../../state/store/store";
 
 const ReservationsTable = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const reservationList = useSelector(
-    (state: RootState) => state.reservations.reservationsStandard
-  );
-  const specialReservationsList = useSelector(
-    (state: RootState) => state.reservations.specialReservations
-  );
+  const reservationList = useSelector((state: RootState) => state.reservations.reservationsStandard);
+  const specialReservationsList = useSelector((state: RootState) => state.reservations.specialReservations);
   const status = useSelector((state: RootState) => state.reservations.status);
   const error = useSelector((state: RootState) => state.reservations.error);
 
+  const [page, setPage] = useState<number>(1);
+  const pageSize = 2;
+  const paginationArgs = {
+    pageNumber: page,
+    pageSize: pageSize,
+  } as PaginationArguments;
+
   useEffect(() => {
-    dispatch(fetchReservationsStandard());
-    dispatch(fetchReservationsWholeDay());
+    dispatch(fetchReservationsStandard(paginationArgs));
+    dispatch(fetchReservationsWholeDay(paginationArgs));
+    setPage(reservationList.length + 1);
   }, [dispatch]);
+
+  const handlePreviousPage = () => {
+    setPage((prevPage) => Math.max(prevPage - 1, 1));
+    dispatch(fetchReservationsStandard(paginationArgs));
+    dispatch(fetchReservationsWholeDay(paginationArgs));
+  };
+
+  const handleNextPage = () => {
+    setPage((prevPage) => prevPage + 1);
+    dispatch(fetchReservationsStandard(paginationArgs));
+    dispatch(fetchReservationsWholeDay(paginationArgs));
+  };
 
   if (status === "loading") {
     return <div>Loading...</div>;
@@ -110,6 +127,23 @@ const ReservationsTable = () => {
               ))}
             </tbody>
           </table>
+          <div className="pagination-container">
+            {page !== 1 && (
+              <button className="btn btn_pagination" onClick={handlePreviousPage} disabled={page === 1}>
+                Previous
+              </button>
+            )}
+
+            <div className="pagination-number-container">
+              <span>Page</span>
+              <span>{page}</span>
+            </div>
+            {reservationList.length !== 0 && specialReservationsList.length !== 0 && (
+              <button className="btn btn_pagination" onClick={handleNextPage}>
+                Next
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </>

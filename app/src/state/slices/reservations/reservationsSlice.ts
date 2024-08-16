@@ -28,6 +28,11 @@ export interface ReservationState {
   error: string | null | undefined;
 }
 
+export interface PaginationArguments {
+  pageSize: number;
+  pageNumber: number;
+}
+
 const initialState: ReservationState = {
   reservations: [],
   reservationsStandard: [],
@@ -80,7 +85,7 @@ export const fetchReservations = createAsyncThunk(
 
 export const fetchReservationsStandard = createAsyncThunk(
   "reservations/fetchReservationsStandard",
-  async () => {
+  async ({ pageSize, pageNumber }: PaginationArguments) => {
     try {
       const token = sessionStorage.getItem("token");
       if (!token) {
@@ -89,7 +94,7 @@ export const fetchReservationsStandard = createAsyncThunk(
       }
 
       const res = await fetch(
-        "http://localhost:12413/api/reservations/standard",
+        `http://localhost:12413/api/reservations/standard?limit=${pageSize}&page=${pageNumber}`,
         {
           method: "GET",
           headers: {
@@ -112,7 +117,7 @@ export const fetchReservationsStandard = createAsyncThunk(
 
 export const fetchReservationsWholeDay = createAsyncThunk(
   "reservations/fetchReservationsWholeDay",
-  async () => {
+  async ({ pageSize, pageNumber }: PaginationArguments) => {
     try {
       const token = sessionStorage.getItem("token");
       if (!token) {
@@ -121,7 +126,7 @@ export const fetchReservationsWholeDay = createAsyncThunk(
       }
 
       const res = await fetch(
-        "http://localhost:12413/api/reservations/special",
+        `http://localhost:12413/api/reservations/special?limit=${pageSize}&page=${pageNumber}`,
         {
           method: "GET",
           headers: {

@@ -6,7 +6,6 @@ class OrderDAO {
   }
 
   async getAll() {
-    this.db.connect();
     try {
       let sql = `SELECT 
       o.id_order,
@@ -54,13 +53,10 @@ class OrderDAO {
     } catch (error) {
       console.error("Error while getting all orders:", error);
       throw error;
-    } finally {
-      await this.db.disconnect();
     }
   }
 
   async getOne(id_order) {
-    this.db.connect();
     try {
       let sql = `SELECT * FROM "order" WHERE id_order=$1;`;
       const data = await this.db.query(sql, [id_order]);
@@ -69,13 +65,10 @@ class OrderDAO {
     } catch (error) {
       console.error("Error while getting order by id:", error);
       throw error;
-    } finally {
-      await this.db.disconnect();
     }
   }
 
   async getOrderStatus(id_order) {
-    this.db.connect();
     try {
       let sql = `SELECT "status" FROM "order" WHERE id_order=$1;`;
       const data = await this.db.query(sql, [id_order]);
@@ -84,13 +77,10 @@ class OrderDAO {
     } catch (error) {
       console.error("Error while getting order by id:", error);
       throw error;
-    } finally {
-      await this.db.disconnect();
     }
   }
 
   async insert(order) {
-    this.db.connect();
     try {
       let sql = `INSERT INTO "order" ("date", "bill", "table_id", "status") VALUES ($1, $2, $3, $4) RETURNING id_order`;
       let data = [order.date, order.bill, order.table_id || 1, "pending"];
@@ -99,13 +89,10 @@ class OrderDAO {
     } catch (error) {
       console.error("Error while inserting order:", error);
       throw error;
-    } finally {
-      await this.db.disconnect();
     }
   }
 
   async delete(id_order) {
-    this.db.connect();
     try {
       let sql = `DELETE FROM "order" WHERE id_order=$1`;
       await this.db.query(sql, [id_order]);
@@ -113,13 +100,10 @@ class OrderDAO {
     } catch (error) {
       console.error("Error while deleting order:", error);
       throw error;
-    } finally {
-      await this.db.disconnect();
     }
   }
 
   async update(id_order, order) {
-    this.db.connect();
     try {
       let sql = `UPDATE "order" SET date=$1, bill=$2, table_id=$3, status=$4 WHERE id_order=$6`;
       let data = [
@@ -134,13 +118,10 @@ class OrderDAO {
     } catch (error) {
       console.error("Error while updating order:", error);
       throw error;
-    } finally {
-      await this.db.disconnect();
     }
   }
 
   async updateOrderStatus(id_order, status) {
-    this.db.connect();
     try {
       let sql = `UPDATE "order" SET "status"=$1 WHERE "id_order"=$2`;
       let data = [status, id_order];
@@ -149,8 +130,6 @@ class OrderDAO {
     } catch (error) {
       console.error("Error while updating order:", error);
       throw error;
-    } finally {
-      await this.db.disconnect();
     }
   }
 }
