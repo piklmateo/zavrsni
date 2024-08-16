@@ -2712,6 +2712,31 @@
   }
 }
 
+.empty-reservations-message {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  text-align: center;
+}
+
+.reservation-page-links {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.reservation__link {
+  color: var(--clr-neutral);
+  background-color: var(--clr-primary);
+  text-decoration: none;
+}
+
+.reservation__link:hover {
+  color: var(--clr-primary);
+  background-color: var(--clr-neutral);
+}
 
 .special__occasions__container {
   display: grid;
