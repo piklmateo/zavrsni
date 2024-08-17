@@ -119,9 +119,9 @@ const restReservation = {
       const from = process.env.MAIL_USER;
       const to = data.email;
       const subject = "Reservation Confirmation";
-      const message = `Dear ${data.name},\n\nYour reservation for ${formatDate(
-        data.date
-      )} at ${data.time} has been confirmed. We look forward to seeing you!`;
+      const message = `Dear ${data.name},\n\nYour reservation for ${formatDate(data.date)} at ${
+        data.time
+      } has been confirmed. We look forward to seeing you!`;
 
       await sendMail(from, to, subject, message);
 

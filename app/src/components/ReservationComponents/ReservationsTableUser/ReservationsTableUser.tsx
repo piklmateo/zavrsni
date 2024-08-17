@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchSpecialUserReservations,
@@ -8,6 +8,7 @@ import { formatDate, formatTime } from "../../../helpers/dateTimeFormat";
 import "./ReservationsTableUser.css";
 import { AppDispatch, RootState } from "../../../state/store/store";
 import { Link } from "react-router-dom";
+import Pagination from "../../Pagination/Pagination";
 
 const ReservationsTableUser = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -21,6 +22,25 @@ const ReservationsTableUser = () => {
     dispatch(fetchSpecialUserReservations());
   }, [dispatch]);
 
+  const [currentPageStandard, setCurrentPageStandard] = useState<number>(1);
+  const [currentPageSpecial, setCurrentPageSpecial] = useState<number>(1);
+  const pageSize = 15;
+
+  const totalItemsStandard = reservationsUserList.length;
+  const totalItemsSpecial = specialReservationsList.length;
+
+  const totalPagesStandard = Math.ceil(totalItemsStandard / pageSize);
+  const totalPagesSpecial = Math.ceil(totalItemsSpecial / pageSize);
+
+  const paginatedReservations = reservationsUserList.slice(
+    (currentPageStandard - 1) * pageSize,
+    currentPageStandard * pageSize
+  );
+  const paginatedSpecialReservations = specialReservationsList.slice(
+    (currentPageSpecial - 1) * pageSize,
+    currentPageSpecial * pageSize
+  );
+
   if (status === "loading") {
     return <div>Loading...</div>;
   }
@@ -32,7 +52,7 @@ const ReservationsTableUser = () => {
   return (
     <>
       <div className="main__layout__container">
-        {reservationsUserList.length === 0 && specialReservationsList.length === 0 && (
+        {paginatedReservations.length === 0 && paginatedSpecialReservations.length === 0 && (
           <div className="empty-reservations-message">
             <h1>No reservations avaliable</h1>
             <h3>Book a table or the restaurant for your special occasion</h3>
@@ -47,7 +67,7 @@ const ReservationsTableUser = () => {
           </div>
         )}
         <div className="reservations__table__wrapper">
-          {reservationsUserList.length !== 0 && (
+          {paginatedReservations.length !== 0 && (
             <>
               <h1>Reservations</h1>
               <table className="reservations__table">
@@ -74,7 +94,7 @@ const ReservationsTableUser = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {reservationsUserList.map((reservation) => (
+                  {paginatedReservations.map((reservation) => (
                     <tr key={reservation.id_reservation}>
                       <td>{formatDate(reservation.date.toString())}</td>
                       <td>{formatTime(reservation.time)}</td>
@@ -86,10 +106,18 @@ const ReservationsTableUser = () => {
                   ))}
                 </tbody>
               </table>
+              {totalPagesStandard > 1 && (
+                <Pagination
+                  currentPage={currentPageStandard}
+                  totalItems={totalItemsStandard}
+                  pageSize={pageSize}
+                  onPageChange={setCurrentPageStandard}
+                />
+              )}
             </>
           )}
 
-          {specialReservationsList.length !== 0 && (
+          {paginatedSpecialReservations.length !== 0 && (
             <>
               <h1>Special occasions</h1>
               <table className="reservations__table">
@@ -116,7 +144,7 @@ const ReservationsTableUser = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {specialReservationsList.map((reservation) => (
+                  {paginatedSpecialReservations.map((reservation) => (
                     <tr key={reservation.id_reservation}>
                       <td>{formatDate(reservation.date.toString())}</td>
                       <td>{formatTime(reservation.time)}</td>
@@ -128,6 +156,14 @@ const ReservationsTableUser = () => {
                   ))}
                 </tbody>
               </table>
+              {totalPagesSpecial > 1 && (
+                <Pagination
+                  currentPage={currentPageSpecial}
+                  totalItems={totalItemsSpecial}
+                  pageSize={pageSize}
+                  onPageChange={setCurrentPageSpecial}
+                />
+              )}
             </>
           )}
         </div>
