@@ -48,7 +48,7 @@ class ReservationDAO {
         WHERE r.whole_day='no'
         ORDER BY r.date DESC
       `;
-      const data = await this.db.query(sql, [limit, offset]);
+      const data = await this.db.query(sql, []);
       const rows = data.rows;
       return rows;
     } catch (error) {
@@ -74,7 +74,7 @@ class ReservationDAO {
         WHERE r.whole_day='yes'
         ORDER BY r.date DESC
       `;
-      const data = await this.db.query(sql, [limit, offset]);
+      const data = await this.db.query(sql, []);
       const rows = data.rows;
       return rows;
     } catch (error) {
