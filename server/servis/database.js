@@ -14,19 +14,19 @@ class DB {
   }
 
   async query(sql, params) {
-    const client = await this.pool.connect(); // Acquire a client from the pool
+    const client = await this.pool.connect();
     try {
-      const query = await client.query(sql, params); // Execute the query
+      const query = await client.query(sql, params);
       return query;
     } catch (error) {
       throw error;
     } finally {
-      client.release(); // Release the client back to the pool
+      client.release();
     }
   }
 
   async endPool() {
-    await this.pool.end(); // Close all connections in the pool
+    await this.pool.end();
   }
 }
 

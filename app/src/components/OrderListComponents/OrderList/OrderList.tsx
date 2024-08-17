@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchOrders } from "../../../state/slices/order/orderListSlice";
 import OrderListCard from "../OrderListCard/OrderListCard";
 import "./OrderList.css";
 import { AppDispatch, RootState } from "../../../state/store/store";
+import Pagination from "../../Pagination/Pagination";
 
 interface Order {
   id_order: number;
@@ -23,6 +24,9 @@ const OrderList = () => {
   const orderStatus = useSelector((state: RootState) => state.orderList.status);
   const error = useSelector((state: RootState) => state.orderList.error);
 
+  const pageSize = 15;
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
   useEffect(() => {
     if (orderStatus === "idle") {
       dispatch(fetchOrders());
@@ -34,7 +38,7 @@ const OrderList = () => {
   }
 
   if (orderStatus === "failed") {
-    return <div>Error: {error}</div>;
+    return <div>Error: {error || "An unknown error occurred"}</div>;
   }
 
   const ordersById: { [key: number]: Order[] } = {};
@@ -45,15 +49,29 @@ const OrderList = () => {
     }
     ordersById[order.id_order].push(order);
   });
+
   const ordersByIdArray = Object.values(ordersById);
+  const totalItems = ordersByIdArray.length;
+  const totalPages = Math.ceil(totalItems / pageSize);
+  const paginatedOrders = ordersByIdArray.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
   return (
     <div className="main__layout__container">
       <div className="order__card__container">
-        {ordersByIdArray.map((orders, index) => (
-          <OrderListCard key={index} orders={orders} />
+        {paginatedOrders.map((orders) => (
+          <OrderListCard key={orders[0].id_order} orders={orders} />
         ))}
       </div>
+      {totalPages > 1 && (
+        <div className="reservations__table__wrapper">
+          <Pagination
+            currentPage={currentPage}
+            pageSize={pageSize}
+            totalItems={totalItems}
+            onPageChange={setCurrentPage}
+          />
+        </div>
+      )}
     </div>
   );
 };

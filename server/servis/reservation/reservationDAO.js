@@ -47,9 +47,8 @@ class ReservationDAO {
         LEFT JOIN "table" t ON r.table_id = t.id_table
         WHERE r.whole_day='no'
         ORDER BY r.date DESC
-        LIMIT $1 OFFSET $2;
       `;
-      const data = await this.db.query(sql, [limit, offset]);
+      const data = await this.db.query(sql, []);
       const rows = data.rows;
       return rows;
     } catch (error) {
@@ -58,7 +57,7 @@ class ReservationDAO {
     }
   }
 
-  async getAllWholeDay(limit, offset) {
+  async getAllWholeDay() {
     try {
       let sql = `
         SELECT
@@ -74,9 +73,8 @@ class ReservationDAO {
         LEFT JOIN "table" t ON r.table_id = t.id_table
         WHERE r.whole_day='yes'
         ORDER BY r.date DESC
-        LIMIT $1 OFFSET $2;
       `;
-      const data = await this.db.query(sql, [limit, offset]);
+      const data = await this.db.query(sql, []);
       const rows = data.rows;
       return rows;
     } catch (error) {

@@ -28,11 +28,6 @@ export interface ReservationState {
   error: string | null | undefined;
 }
 
-export interface PaginationArguments {
-  pageSize: number;
-  pageNumber: number;
-}
-
 const initialState: ReservationState = {
   reservations: [],
   reservationsStandard: [],
@@ -54,21 +49,130 @@ interface DecodedToken extends JwtPayload {
   };
 }
 
-export const fetchReservations = createAsyncThunk(
-  "reservations/fetchReservations",
-  async () => {
-    try {
-      const token = sessionStorage.getItem("token");
-      if (!token) {
-        console.log("You don't have a valid token");
-        return [];
-      }
+export const fetchReservations = createAsyncThunk("reservations/fetchReservations", async () => {
+  try {
+    const token = sessionStorage.getItem("token");
+    if (!token) {
+      console.log("You don't have a valid token");
+      return [];
+    }
 
-      const res = await fetch("http://localhost:12413/api/reservations", {
+    const res = await fetch("http://localhost:12413/api/reservations", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
+    if (!res.ok) {
+      throw new Error("Failed to fetch reservations");
+    }
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.log("error: ", error);
+    throw error;
+  }
+});
+
+export const fetchReservationsStandard = createAsyncThunk("reservations/fetchReservationsStandard", async () => {
+  try {
+    const token = sessionStorage.getItem("token");
+    if (!token) {
+      console.log("You don't have a valid token");
+      return [];
+    }
+
+    const res = await fetch(`http://localhost:12413/api/reservations/standard`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
+    if (!res.ok) {
+      throw new Error("Failed to fetch reservations");
+    }
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.log("error: ", error);
+    throw error;
+  }
+});
+
+export const fetchReservationsWholeDay = createAsyncThunk("reservations/fetchReservationsWholeDay", async () => {
+  try {
+    const token = sessionStorage.getItem("token");
+    if (!token) {
+      console.log("You don't have a valid token");
+      return [];
+    }
+
+    const res = await fetch(`http://localhost:12413/api/reservations`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
+    if (!res.ok) {
+      throw new Error("Failed to fetch reservations");
+    }
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.log("error: ", error);
+    throw error;
+  }
+});
+
+export const fetchBookedDates = createAsyncThunk("reservations/fetchBookedDates", async () => {
+  try {
+    const res = await fetch("http://localhost:12413/api/reservations/bookedDate", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (!res.ok) {
+      throw new Error("Failed to fetch reservations");
+    }
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.log("error: ", error);
+    throw error;
+  }
+});
+
+export const fetchBookedTime = createAsyncThunk("reservations/fetchBookedTime", async (date: string) => {
+  try {
+    const res = await fetch(`http://localhost:12413/api/reservations/bookedTime/${date}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (!res.ok) {
+      throw new Error("Failed to fetch reservations");
+    }
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.log("error: ", error);
+    throw error;
+  }
+});
+
+export const fetchBookedTables = createAsyncThunk(
+  "reservations/fetchBookedTables",
+  async ({ date, time }: { date: string; time: string }) => {
+    try {
+      const res = await fetch(`http://localhost:12413/api/reservations/bookedTables/${date}/${time}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
         },
       });
       if (!res.ok) {
@@ -83,180 +187,35 @@ export const fetchReservations = createAsyncThunk(
   }
 );
 
-export const fetchReservationsStandard = createAsyncThunk(
-  "reservations/fetchReservationsStandard",
-  async ({ pageSize, pageNumber }: PaginationArguments) => {
-    try {
-      const token = sessionStorage.getItem("token");
-      if (!token) {
-        console.log("You don't have a valid token");
-        return [];
-      }
-
-      const res = await fetch(
-        `http://localhost:12413/api/reservations/standard?limit=${pageSize}&page=${pageNumber}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-      if (!res.ok) {
-        throw new Error("Failed to fetch reservations");
-      }
-      const data = await res.json();
-      return data;
-    } catch (error) {
-      console.log("error: ", error);
-      throw error;
+export const fetchUserReservations = createAsyncThunk("reservationsUser/fetchUserReservations", async () => {
+  try {
+    const token = sessionStorage.getItem("token");
+    if (!token) {
+      console.log("You don't have a valid token");
+      return [];
     }
-  }
-);
+    const decodedToken = jwtDecode(token) as DecodedToken;
+    const id_user = decodedToken.user.id_user;
 
-export const fetchReservationsWholeDay = createAsyncThunk(
-  "reservations/fetchReservationsWholeDay",
-  async ({ pageSize, pageNumber }: PaginationArguments) => {
-    try {
-      const token = sessionStorage.getItem("token");
-      if (!token) {
-        console.log("You don't have a valid token");
-        return [];
-      }
+    const res = await fetch("http://localhost:12413/api/users/reservations/" + id_user, {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
 
-      const res = await fetch(
-        `http://localhost:12413/api/reservations/special?limit=${pageSize}&page=${pageNumber}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-      if (!res.ok) {
-        throw new Error("Failed to fetch reservations");
-      }
-      const data = await res.json();
-      return data;
-    } catch (error) {
-      console.log("error: ", error);
-      throw error;
+    if (!res.ok) {
+      console.log("Unable to fetch user reservations");
     }
+
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.log("error: ", error);
+    throw error;
   }
-);
-
-export const fetchBookedDates = createAsyncThunk(
-  "reservations/fetchBookedDates",
-  async () => {
-    try {
-      const res = await fetch(
-        "http://localhost:12413/api/reservations/bookedDate",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      if (!res.ok) {
-        throw new Error("Failed to fetch reservations");
-      }
-      const data = await res.json();
-      return data;
-    } catch (error) {
-      console.log("error: ", error);
-      throw error;
-    }
-  }
-);
-
-export const fetchBookedTime = createAsyncThunk(
-  "reservations/fetchBookedTime",
-  async (date: string) => {
-    try {
-      const res = await fetch(
-        `http://localhost:12413/api/reservations/bookedTime/${date}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      if (!res.ok) {
-        throw new Error("Failed to fetch reservations");
-      }
-      const data = await res.json();
-      return data;
-    } catch (error) {
-      console.log("error: ", error);
-      throw error;
-    }
-  }
-);
-
-export const fetchBookedTables = createAsyncThunk(
-  "reservations/fetchBookedTables",
-  async ({ date, time }: { date: string; time: string }) => {
-    try {
-      const res = await fetch(
-        `http://localhost:12413/api/reservations/bookedTables/${date}/${time}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      if (!res.ok) {
-        throw new Error("Failed to fetch reservations");
-      }
-      const data = await res.json();
-      return data;
-    } catch (error) {
-      console.log("error: ", error);
-      throw error;
-    }
-  }
-);
-
-export const fetchUserReservations = createAsyncThunk(
-  "reservationsUser/fetchUserReservations",
-  async () => {
-    try {
-      const token = sessionStorage.getItem("token");
-      if (!token) {
-        console.log("You don't have a valid token");
-        return [];
-      }
-      const decodedToken = jwtDecode(token) as DecodedToken;
-      const id_user = decodedToken.user.id_user;
-
-      const res = await fetch(
-        "http://localhost:12413/api/users/reservations/" + id_user,
-        {
-          method: "GET",
-          headers: {
-            "Content-type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-
-      if (!res.ok) {
-        console.log("Unable to fetch user reservations");
-      }
-
-      const data = await res.json();
-      return data;
-    } catch (error) {
-      console.log("error: ", error);
-      throw error;
-    }
-  }
-);
+});
 
 export const fetchSpecialUserReservations = createAsyncThunk(
   "reservationsUser/fetchSpecialUserReservations",
@@ -270,16 +229,13 @@ export const fetchSpecialUserReservations = createAsyncThunk(
       const decodedToken = jwtDecode(token) as DecodedToken;
       const id_user = decodedToken.user.id_user;
 
-      const res = await fetch(
-        "http://localhost:12413/api/users/reservations/special/" + id_user,
-        {
-          method: "GET",
-          headers: {
-            "Content-type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
+      const res = await fetch("http://localhost:12413/api/users/reservations/special/" + id_user, {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
 
       if (!res.ok) {
         console.log("Unable to fetch user reservations");
