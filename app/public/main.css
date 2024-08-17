@@ -2321,6 +2321,43 @@
   }
 }
 
+.pagination-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 2rem;
+  align-items: center;
+  max-width: 200px;
+  width: 100%;
+}
+
+.pagination-number-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pagination-number-container > span {
+  font-family: var(--ff-primary);
+}
+
+.btn_pagination {
+  background-color: var(--clr-primary);
+  color: var(--clr-neutral);
+  cursor: pointer;
+  transition: 200ms ease-in-out;
+  min-width: 74px;
+}
+
+.btn_pagination:hover {
+  border: 1px solid var(--clr-primary);
+  color: var(--clr-primary);
+  background-color: var(--clr-neutral);
+  cursor: pointer;
+}
+
 .add-dish__form__wrapper {
   display: flex;
   flex-direction: column;
