@@ -2,7 +2,9 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
-  border: 1px solid var(--clr-border);
+  border-inline: 1px solid var(--clr-border);
+  border-top: 1px solid var(--clr-border);
+  border-bottom: 8px solid var(--clr-primary);
   box-shadow: 0px 2px 4px var(--clr-border);
   transition: transform 100ms ease-in-out;
   margin-top: 0.5rem;

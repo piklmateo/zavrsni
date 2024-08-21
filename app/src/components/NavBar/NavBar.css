@@ -55,6 +55,10 @@
   color: var(--clr-primary);
 }
 
+.active {
+  color: var(--clr-primary);
+}
+
 .btn__logout {
   background-color: var(--clr-primary);
   color: var(--clr-neutral);
