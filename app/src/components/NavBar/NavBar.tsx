@@ -29,7 +29,7 @@ const NavBar = () => {
       "/order-list",
       "/statistics",
     ], // ADMIN
-    2: ["/menu", "/add-dish", "/add-drink", "/order", "/order-list"], // KUHAR
+    2: ["/menu", "/add-dish", "/add-drink", "/order-list"], // KUHAR
     3: [
       "/menu",
       "/reservations",
@@ -99,7 +99,7 @@ const NavBar = () => {
                   Menu
                 </Link>
               </li>
-              {userRole !== 2 && (
+              {userRole !== 2 && userRole !== 3 && (
                 <>
                   <li className="nav__list__item">
                     <Link
@@ -113,7 +113,7 @@ const NavBar = () => {
                 </>
               )}
 
-              {userRole !== 2 && (
+              {userRole !== 2 && userRole !== 3 && (
                 <>
                   <li className="nav__list__item">
                     <Link
