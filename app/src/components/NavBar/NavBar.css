@@ -48,6 +48,7 @@
   text-decoration: none;
   text-transform: uppercase;
   color: var(--clr-text);
+  transition: 200ms ease-in;
 }
 
 .nav__link:hover {
@@ -56,6 +57,7 @@
 
 .active {
   color: var(--clr-primary);
+  transition: 200ms ease-out;
 }
 
 .btn__logout {

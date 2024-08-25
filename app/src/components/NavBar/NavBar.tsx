@@ -19,25 +19,9 @@ const NavBar = () => {
   const [isMobileNav, setIsMobileNav] = useState<boolean>(false);
 
   const roleRoutes: { [key: number]: string[] } = {
-    1: [
-      "/menu",
-      "/profile",
-      "/reservations",
-      "/add-dish",
-      "/add-drink",
-      "/order",
-      "/order-list",
-      "/statistics",
-    ], // ADMIN
+    1: ["/menu", "/profile", "/reservations", "/add-dish", "/add-drink", "/order", "/order-list", "/statistics"], // ADMIN
     2: ["/menu", "/add-dish", "/add-drink", "/order-list"], // KUHAR
-    3: [
-      "/menu",
-      "/reservations",
-      "/add-drink",
-      "/add-dish",
-      "/order",
-      "/order-list",
-    ], // KONOBAR
+    3: ["/menu", "/reservations", "/add-drink", "/add-dish", "/order", "/order-list"], // KONOBAR
     4: ["/profile", "/my-reservations"], // KORISNIK
   };
 
@@ -67,7 +51,9 @@ const NavBar = () => {
       <div className="main__layout__container">
         <div className="container">
           <div className="logo__container">
-            <img className="logo__navigation" src={logo} alt="logo" />
+            <Link to={"/"}>
+              <img className="logo__navigation" src={logo} alt="logo" />
+            </Link>
             <div className="burger__menu" onClick={handleMobileNav}>
               <div className={`bar ${isMobileNav ? "bar--open" : ""}`}></div>
               <div className={`bar ${isMobileNav ? "bar--open" : ""}`}></div>
@@ -80,7 +66,7 @@ const NavBar = () => {
                 <>
                   <li className="nav__list__item">
                     <Link
-                      className="nav__link"
+                      className={`nav__link ${location.pathname === "/" ? "active" : ""} `}
                       to="/"
                       onClick={handleMobileNav}
                     >
@@ -92,7 +78,7 @@ const NavBar = () => {
 
               <li className="nav__list__item">
                 <Link
-                  className="nav__link"
+                  className={`nav__link ${location.pathname === "/menu" ? "active" : ""} `}
                   to="/menu"
                   onClick={handleMobileNav}
                 >
@@ -103,7 +89,7 @@ const NavBar = () => {
                 <>
                   <li className="nav__list__item">
                     <Link
-                      className="nav__link"
+                      className={`nav__link ${location.pathname === "/reservation" ? "active" : ""} `}
                       to="/reservation"
                       onClick={handleMobileNav}
                     >
@@ -117,7 +103,7 @@ const NavBar = () => {
                 <>
                   <li className="nav__list__item">
                     <Link
-                      className="nav__link"
+                      className={`nav__link ${location.pathname === "/special-occasions" ? "active" : ""} `}
                       to="/special-occasions"
                       onClick={handleMobileNav}
                     >
@@ -133,7 +119,7 @@ const NavBar = () => {
                     return (
                       <li key={index} className="nav__list__item">
                         <Link
-                          className="nav__link"
+                          className={`nav__link ${location.pathname === "/reservations" ? "active" : ""} `}
                           to={route}
                           onClick={handleMobileNav}
                         >
@@ -145,7 +131,7 @@ const NavBar = () => {
                     return (
                       <li key={index} className="nav__list__item">
                         <Link
-                          className="nav__link"
+                          className={`nav__link ${location.pathname === "/profile" ? "active" : ""} `}
                           to={route}
                           onClick={handleMobileNav}
                         >
@@ -157,7 +143,7 @@ const NavBar = () => {
                     return (
                       <li key={index} className="nav__list__item">
                         <Link
-                          className="nav__link"
+                          className={`nav__link ${location.pathname === "/my-reservations" ? "active" : ""} `}
                           to={route}
                           onClick={handleMobileNav}
                         >
@@ -169,7 +155,7 @@ const NavBar = () => {
                     return (
                       <li key={index} className="nav__list__item">
                         <Link
-                          className="nav__link"
+                          className={`nav__link ${location.pathname === "/order" ? "active" : ""} `}
                           to={route}
                           onClick={handleMobileNav}
                         >
@@ -181,7 +167,7 @@ const NavBar = () => {
                     return (
                       <li key={index} className="nav__list__item">
                         <Link
-                          className="nav__link"
+                          className={`nav__link ${location.pathname === "/order-list" ? "active" : ""} `}
                           to={route}
                           onClick={handleMobileNav}
                         >
@@ -193,7 +179,7 @@ const NavBar = () => {
                     return (
                       <li key={index} className="nav__list__item">
                         <Link
-                          className="nav__link"
+                          className={`nav__link ${location.pathname === "/statistics" ? "active" : ""} `}
                           to={route}
                           onClick={handleMobileNav}
                         >
