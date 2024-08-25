@@ -4,7 +4,7 @@ import "./Menu.css";
 import Dish from "../Dish/Dish";
 import Drink from "../Drink/Drink";
 import MenuFilter from "../MenuFilter/MenuFilter";
-import MenuSort from "../MenuSort/MenuSort";
+import MenuSort, { SortOption } from "../MenuSort/MenuSort";
 import AddDrinkButton from "../AddDrinkButton/AddDrinkButton";
 import AddDishButton from "../AddDishButton/AddDishButton";
 import { jwtDecode } from "jwt-decode";
@@ -16,6 +16,13 @@ interface DecodedToken {
     role: number;
   };
 }
+
+const sortOptions = [
+  { value: "price-asc", label: "Price - Ascending" },
+  { value: "price-desc", label: "Price - Descending" },
+  { value: "name-asc", label: "Name - Ascending" },
+  { value: "name-desc", label: "Name - Descending" },
+];
 
 const Menu = () => {
   const [selectedCategory, setSelectedCategory] = useState("Main course");
@@ -53,7 +60,9 @@ const Menu = () => {
       <div className="main__layout__container">
         <div className="menu__item__container">
           <MenuFilter selectedCategory={selectedCategory} handleCategoryClick={handleCategoryClick} />
-          {showMenuSort && <MenuSort handleSortOrder={handleSortOrder} />}
+          {showMenuSort && (
+            <MenuSort handleSortOrder={handleSortOrder} options={sortOptions} value={sortOrder} name="menu_sort" />
+          )}
           {selectedCategory === "Non-alcoholic beverages" ||
           selectedCategory === "White wine" ||
           selectedCategory === "Red wine" ||

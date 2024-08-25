@@ -10,14 +10,11 @@
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
-}
-
-.logo__container {
-  padding: 1rem;
+  padding-block: 0.5rem;
 }
 
 .logo__navigation {
-  width: 113px;
+  min-width: 113px;
   height: 84px;
 }
 
@@ -28,7 +25,7 @@
 }
 
 .nav__menu {
-  padding: 2rem;
+  /* padding: 2rem; */
   display: flex;
 }
 
@@ -43,16 +40,24 @@
   font-size: var(--fs-regular);
   list-style: none;
   flex-wrap: wrap;
+  margin-inline: 2rem;
+  margin-block: 2rem;
 }
 
 .nav__link {
   text-decoration: none;
   text-transform: uppercase;
   color: var(--clr-text);
+  transition: 200ms ease-in;
 }
 
 .nav__link:hover {
   color: var(--clr-primary);
+}
+
+.active {
+  color: var(--clr-primary);
+  transition: 200ms ease-out;
 }
 
 .btn__logout {
@@ -127,5 +132,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin-block: 1rem;
   }
 }

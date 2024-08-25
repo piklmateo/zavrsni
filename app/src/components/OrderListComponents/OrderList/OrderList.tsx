@@ -57,20 +57,29 @@ const OrderList = () => {
 
   return (
     <div className="main__layout__container">
-      <div className="order__card__container">
-        {paginatedOrders.map((orders) => (
-          <OrderListCard key={orders[0].id_order} orders={orders} />
-        ))}
-      </div>
-      {totalPages > 1 && (
-        <div className="reservations__table__wrapper">
-          <Pagination
-            currentPage={currentPage}
-            pageSize={pageSize}
-            totalItems={totalItems}
-            onPageChange={setCurrentPage}
-          />
+      {paginatedOrders.length === 0 && (
+        <div className="empty-reservations-message">
+          <h1>No orders avaliable</h1>
         </div>
+      )}
+      {paginatedOrders.length !== 0 && (
+        <>
+          <div className="order__card__container">
+            {paginatedOrders.map((orders) => (
+              <OrderListCard key={orders[0].id_order} orders={orders} />
+            ))}
+          </div>
+          {totalPages > 1 && (
+            <div className="reservations__table__wrapper">
+              <Pagination
+                currentPage={currentPage}
+                pageSize={pageSize}
+                totalItems={totalItems}
+                onPageChange={setCurrentPage}
+              />
+            </div>
+          )}
+        </>
       )}
     </div>
   );

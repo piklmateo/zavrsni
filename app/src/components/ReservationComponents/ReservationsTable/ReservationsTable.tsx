@@ -31,6 +31,9 @@ const ReservationsTable = () => {
     return <div>Error: {error}</div>;
   }
 
+  console.log("normal : ", reservationList);
+  console.log("special : ", specialReservationsList);
+
   const totalItemsStandard = reservationList.length;
   const totalItemsSpecial = specialReservationsList.length;
 
@@ -43,95 +46,111 @@ const ReservationsTable = () => {
     currentPageSpecial * pageSize
   );
 
+  console.log("normal paginated: ", paginatedReservations);
+  console.log("special paginated: ", paginatedSpecialReservations);
+
   return (
     <div className="main__layout__container">
+      {paginatedReservations.length === 0 && paginatedSpecialReservations.length === 0 && (
+        <div className="empty-reservations-message">
+          <h1>No reservations avaliable</h1>
+        </div>
+      )}
       <div className="reservations__table__wrapper">
-        <h1>Standard reservations</h1>
-        <table className="reservations__table">
-          <thead>
-            <tr>
-              <th>
-                <h2>Date</h2>
-              </th>
-              <th>
-                <h2>Time</h2>
-              </th>
-              <th>
-                <h2>Table</h2>
-              </th>
-              <th>
-                <h2>Name</h2>
-              </th>
-              <th>
-                <h2>Email</h2>
-              </th>
-              <th>
-                <h2>Phone</h2>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {paginatedReservations.map((reservation) => (
-              <tr key={reservation.id_reservation}>
-                <td>{formatDate(reservation.date.toString())}</td>
-                <td>{formatTime(reservation.time)}</td>
-                <td>{reservation.table_number}</td>
-                <td>{reservation.name}</td>
-                <td>{reservation.email}</td>
-                <td>{reservation.phone}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <Pagination
-          currentPage={currentPageStandard}
-          totalItems={totalItemsStandard}
-          pageSize={pageSize}
-          onPageChange={setCurrentPageStandard}
-        />
-        <h1>Special occasions</h1>
-        <table className="reservations__table">
-          <thead>
-            <tr>
-              <th>
-                <h2>Date</h2>
-              </th>
-              <th>
-                <h2>Time</h2>
-              </th>
-              <th>
-                <h2>Table</h2>
-              </th>
-              <th>
-                <h2>Name</h2>
-              </th>
-              <th>
-                <h2>Email</h2>
-              </th>
-              <th>
-                <h2>Phone</h2>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {paginatedSpecialReservations.map((reservation) => (
-              <tr key={reservation.id_reservation}>
-                <td>{formatDate(reservation.date.toString())}</td>
-                <td>{formatTime(reservation.time)}</td>
-                <td>{reservation.table_number}</td>
-                <td>{reservation.name}</td>
-                <td>{reservation.email}</td>
-                <td>{reservation.phone}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <Pagination
-          currentPage={currentPageSpecial}
-          totalItems={totalItemsSpecial}
-          pageSize={pageSize}
-          onPageChange={setCurrentPageSpecial}
-        />
+        {paginatedReservations.length !== 0 && (
+          <>
+            <h1>Standard reservations</h1>
+            <table className="reservations__table">
+              <thead>
+                <tr>
+                  <th>
+                    <h2>Date</h2>
+                  </th>
+                  <th>
+                    <h2>Time</h2>
+                  </th>
+                  <th>
+                    <h2>Table</h2>
+                  </th>
+                  <th>
+                    <h2>Name</h2>
+                  </th>
+                  <th>
+                    <h2>Email</h2>
+                  </th>
+                  <th>
+                    <h2>Phone</h2>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {paginatedReservations.map((reservation) => (
+                  <tr key={reservation.id_reservation}>
+                    <td>{formatDate(reservation.date.toString())}</td>
+                    <td>{formatTime(reservation.time)}</td>
+                    <td>{reservation.table_number}</td>
+                    <td>{reservation.name}</td>
+                    <td>{reservation.email}</td>
+                    <td>{reservation.phone}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <Pagination
+              currentPage={currentPageStandard}
+              totalItems={totalItemsStandard}
+              pageSize={pageSize}
+              onPageChange={setCurrentPageStandard}
+            />
+          </>
+        )}
+        {paginatedSpecialReservations.length !== 0 && (
+          <>
+            <h1>Special occasions</h1>
+            <table className="reservations__table">
+              <thead>
+                <tr>
+                  <th>
+                    <h2>Date</h2>
+                  </th>
+                  <th>
+                    <h2>Time</h2>
+                  </th>
+                  <th>
+                    <h2>Table</h2>
+                  </th>
+                  <th>
+                    <h2>Name</h2>
+                  </th>
+                  <th>
+                    <h2>Email</h2>
+                  </th>
+                  <th>
+                    <h2>Phone</h2>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {paginatedSpecialReservations.map((reservation) => (
+                  <tr key={reservation.id_reservation}>
+                    <td>{formatDate(reservation.date.toString())}</td>
+                    <td>{formatTime(reservation.time)}</td>
+                    <td>{reservation.table_number}</td>
+                    <td>{reservation.name}</td>
+                    <td>{reservation.email}</td>
+                    <td>{reservation.phone}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <Pagination
+              currentPage={currentPageSpecial}
+              totalItems={totalItemsSpecial}
+              pageSize={pageSize}
+              onPageChange={setCurrentPageSpecial}
+            />
+          </>
+        )}
       </div>
     </div>
   );
