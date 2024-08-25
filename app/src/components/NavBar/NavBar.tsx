@@ -51,9 +51,15 @@ const NavBar = () => {
       <div className="main__layout__container">
         <div className="container">
           <div className="logo__container">
-            <Link to={"/"}>
+            {userRole !== 2 && userRole !== 3 ? (
+              <>
+                <Link to={"/"}>
+                  <img className="logo__navigation" src={logo} alt="logo" />
+                </Link>
+              </>
+            ) : (
               <img className="logo__navigation" src={logo} alt="logo" />
-            </Link>
+            )}
             <div className="burger__menu" onClick={handleMobileNav}>
               <div className={`bar ${isMobileNav ? "bar--open" : ""}`}></div>
               <div className={`bar ${isMobileNav ? "bar--open" : ""}`}></div>

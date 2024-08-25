@@ -109,7 +109,7 @@ export const fetchReservationsWholeDay = createAsyncThunk("reservations/fetchRes
       return [];
     }
 
-    const res = await fetch(`http://localhost:12413/api/reservations`, {
+    const res = await fetch(`http://localhost:12413/api/reservations/special`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
