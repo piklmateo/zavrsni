@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 
-const nameRegex = /^[A-Za-z\s]+$/;
+const nameRegex = /^[A-Za-zčćžšđČĆŽŠĐ\s]+$/;
 
 export const AddDrinkValidationSchema = Yup.object().shape({
   name: Yup.string()

@@ -1,7 +1,8 @@
 import * as Yup from "yup";
 
-const nameRegex = /^[A-Za-z\s]+$/;
-const ingredientsRegex = /^[A-Za-z]+(?:\s+[A-Za-z]+)*(?:,\s*[A-Za-z]+(?:\s+[A-Za-z]+)*)*$/;
+const nameRegex = /^[A-Za-zčćžšđČĆŽŠĐ\s]+$/;
+const ingredientsRegex =
+  /^[A-Za-zčćžšđČĆŽŠĐ]+(?:\s+[A-Za-zčćžšđČĆŽŠĐ]+)*(?:,\s*[A-Za-zčćžšđČĆŽŠĐ]+(?:\s+[A-Za-zčćžšđČĆŽŠĐ]+)*)*$/;
 
 export const AddDishValidationSchema = Yup.object().shape({
   name: Yup.string()

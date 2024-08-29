@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 
-const nameRegex = /^[A-Za-z\s]+$/;
+const nameRegex = /^[A-Za-zčćžšđČĆŽŠĐ\s]+$/;
 const phoneRegex = /^(\+?1\s?)?(\(?\d{3}\)?[\s.-]?)?\d{3}[\s.-]?\d{4}$|^\d{10}$/;
 
 export const ReservationSchema = Yup.object().shape({
