@@ -16,10 +16,8 @@ const Dish = ({ category, sortOrder }: DishProps) => {
   const error = useSelector((state: RootState) => state.dish.error);
 
   useEffect(() => {
-    if (status === "idle") {
-      dispatch(fetchDishes());
-    }
-  }, [status, dispatch]);
+    dispatch(fetchDishes());
+  }, [dispatch]);
 
   if (status === "loading") {
     return <div>Loading...</div>;

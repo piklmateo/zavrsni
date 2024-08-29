@@ -12,8 +12,6 @@ import { ValidationError } from "webpack";
 const ProfileForm = () => {
   const dispatch = useDispatch<AppDispatch>();
   const userList = useSelector((state: RootState) => state.user.user);
-  const status = useSelector((state: RootState) => state.user.status);
-  const error = useSelector((state: RootState) => state.user.error);
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [serverError, setServerError] = useState("");
@@ -30,11 +28,8 @@ const ProfileForm = () => {
   const [toastMessage, setToastMessage] = useState<string>("");
 
   useEffect(() => {
-    if (status === "idle") {
-      console.log("Fetching user data...");
-      dispatch(fetchUserData());
-    }
-  }, [status, dispatch]);
+    dispatch(fetchUserData());
+  }, [dispatch]);
 
   useEffect(() => {
     if (userList && userList.length > 0) {
@@ -45,17 +40,6 @@ const ProfileForm = () => {
       });
     }
   }, [userList]);
-
-  console.log("Status:", status);
-  console.log("Form data:", formData);
-
-  if (status === "loading") {
-    return <div>Loading...</div>;
-  }
-
-  if (status === "failed") {
-    return <div>Error: {error}</div>;
-  }
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement>,

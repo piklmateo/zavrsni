@@ -15,6 +15,7 @@ import ReservationDatePicker from "../ReservationDatePicker/DatePickerComponent"
 import ReservationTimeSelect from "../ReservationTimeSelect/ReservationTimeSelect";
 import ReservationTableSelect from "../ReservationTableSelect/ReservationTableSelect";
 import ReservationUserInput from "../ReservationUserInput/ReservationUserInput";
+import ToastComponent from "../../ToastComponent/ToastComponent";
 
 const ReservationForm = () => {
   const [step, setStep] = useState(1);
@@ -29,6 +30,14 @@ const ReservationForm = () => {
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [serverError, setServerError] = useState<string>("");
+
+  const [toastMessage, setToastMessage] = useState<string>("");
+
+  const resetToastState = () => {
+    setTimeout(() => {
+      setToastMessage("");
+    }, 1000);
+  };
 
   const [formData, setFormData] = useState<User>({
     id_user: null,
@@ -75,6 +84,7 @@ const ReservationForm = () => {
   return (
     <div className="main__layout__container">
       <div className="reservation__form__wrapper">
+        <ToastComponent message={toastMessage} />
         {isLoading ? (
           <div className="loader__container">
             <ClockLoader color="var(--clr-primary)" size={100} />
@@ -83,15 +93,9 @@ const ReservationForm = () => {
           <>
             <h1>Reservation</h1>
             <div className="step__indicator">
-              <div
-                className={`step__line ${step >= 1 ? "step__active" : ""}`}
-              ></div>
-              <div
-                className={`step__line ${step >= 2 ? "step__active" : ""}`}
-              ></div>
-              <div
-                className={`step__line ${step >= 3 ? "step__active" : ""}`}
-              ></div>
+              <div className={`step__line ${step >= 1 ? "step__active" : ""}`}></div>
+              <div className={`step__line ${step >= 2 ? "step__active" : ""}`}></div>
+              <div className={`step__line ${step >= 3 ? "step__active" : ""}`}></div>
             </div>
             <form className="form">
               {step === 1 && (
@@ -138,6 +142,9 @@ const ReservationForm = () => {
                       reservationData={reservationData}
                       setErrors={setErrors}
                       setServerError={setServerError}
+                      setToastMessage={setToastMessage}
+                      resetToastState={resetToastState}
+                      setStep={setStep}
                     />
                   </div>
                 </>
@@ -146,31 +153,15 @@ const ReservationForm = () => {
             <div className="navigation__buttons">
               {step !== 1 && (
                 <div>
-                  <button
-                    className="navigation__btn"
-                    onClick={() => setStep(step - 1)}
-                  >
-                    <img
-                      alt="arrow-back"
-                      src={LeftArrow}
-                      width={40}
-                      height={40}
-                    />
+                  <button className="navigation__btn" onClick={() => setStep(step - 1)}>
+                    <img alt="arrow-back" src={LeftArrow} width={40} height={40} />
                   </button>
                 </div>
               )}
               {step !== 3 && (
                 <div>
-                  <button
-                    className="navigation__btn"
-                    onClick={() => setStep(step + 1)}
-                  >
-                    <img
-                      alt="arrow-next"
-                      src={RightArrow}
-                      width={40}
-                      height={40}
-                    />
+                  <button className="navigation__btn" onClick={() => setStep(step + 1)}>
+                    <img alt="arrow-next" src={RightArrow} width={40} height={40} />
                   </button>
                 </div>
               )}

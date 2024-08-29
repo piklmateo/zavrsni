@@ -33,6 +33,9 @@ interface ReservationSubmitButtonProps {
     }>
   >;
   setServerError: React.Dispatch<React.SetStateAction<string>>;
+  setToastMessage?: React.Dispatch<React.SetStateAction<string>>;
+  setStep?: React.Dispatch<React.SetStateAction<number>>;
+  resetToastState?: () => void;
 }
 
 const ReservationSubmitButton = ({
@@ -40,12 +43,13 @@ const ReservationSubmitButton = ({
   reservationData,
   setServerError,
   setErrors,
+  setToastMessage,
+  resetToastState,
+  setStep,
 }: ReservationSubmitButtonProps) => {
   const dispatch = useDispatch();
 
-  const handleSubmit = async (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
+  const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
     const token = sessionStorage.getItem("token");
 
@@ -89,12 +93,17 @@ const ReservationSubmitButton = ({
 
       if (res.ok) {
         dispatch(updateUser(dataToSend));
-        window.location.reload();
+        if (location.pathname === "/reservation") {
+          setToastMessage("Reservation created succesfully");
+          resetToastState();
+          setStep(1);
+        } else {
+          window.location.reload();
+        }
+
         console.log("Successful reservation!");
       } else {
-        setServerError(
-          "Reservation failed: Internal server error, check data."
-        );
+        setServerError("Reservation failed: Internal server error, check data.");
         console.log("Error: response not ok");
       }
     } catch (error) {
@@ -107,9 +116,7 @@ const ReservationSubmitButton = ({
         });
         setErrors(validationErrors);
       } else {
-        setServerError(
-          "Reservation failed: Internal server error, check data."
-        );
+        setServerError("Reservation failed: Internal server error, check data.");
       }
     }
   };

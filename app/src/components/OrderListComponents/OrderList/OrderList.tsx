@@ -28,10 +28,8 @@ const OrderList = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
 
   useEffect(() => {
-    if (orderStatus === "idle") {
-      dispatch(fetchOrders());
-    }
-  }, [orderStatus, dispatch]);
+    dispatch(fetchOrders());
+  }, [dispatch]);
 
   if (orderStatus === "loading") {
     return <div>Loading...</div>;

@@ -15,10 +15,8 @@ const Drink = ({ category, sortOrder }: DrinkProps) => {
   const error = useSelector((state: RootState) => state.drink.error);
 
   useEffect(() => {
-    if (status === "idle") {
-      dispatch(fetchDrinks());
-    }
-  }, [status, dispatch]);
+    dispatch(fetchDrinks());
+  }, [dispatch]);
 
   if (status === "loading") {
     return <div>Loading...</div>;

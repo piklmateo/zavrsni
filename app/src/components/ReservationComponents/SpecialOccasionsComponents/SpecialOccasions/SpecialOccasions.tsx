@@ -7,6 +7,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ReservationSubmitButton from "../../ReservationSubmitButton/ReservationSubmitButton";
 import { AppDispatch, RootState } from "../../../../state/store/store";
+import ToastComponent from "../../../ToastComponent/ToastComponent";
 import "./SpecialOccasions.css";
 
 const SpecialOccasions = () => {
@@ -50,11 +51,9 @@ const SpecialOccasions = () => {
     if (token) {
       setIsLoggedIn(true);
     }
-    if (status === "idle") {
-      dispatch(fetchUserData());
-      dispatch(fetchBookedDates());
-    }
-  }, [status, dispatch]);
+    dispatch(fetchBookedDates());
+    dispatch(fetchUserData());
+  }, [dispatch]);
 
   useEffect(() => {
     if (userList) {
