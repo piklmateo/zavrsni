@@ -62,12 +62,6 @@ function startServer() {
   });
 }
 
-//PITATI ZAŠTO JE TAKO (POST /api/users/:username blokira /api/users/register)
-//1 - admin
-//2 - kuhar
-//3 - konobar
-//4 - korisnik
-
 function prepareUserPaths() {
   server.post("/api/users/register", restUser.registerUser);
   server.post("/api/users/login", restUser.loginUser);

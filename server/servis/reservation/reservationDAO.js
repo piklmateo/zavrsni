@@ -31,7 +31,7 @@ class ReservationDAO {
     }
   }
 
-  async getAllNoWholeDay(limit, offset) {
+  async getAllNoWholeDay() {
     try {
       let sql = `
         SELECT
