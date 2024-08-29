@@ -80,10 +80,8 @@ const orderSlice = createSlice({
         const updatedQuantity = existingItem.quantity - 1;
 
         if (updatedQuantity === 0) {
-          // If quantity becomes zero, remove the item from the order
           return state.filter((item, index) => index !== existingIndex);
         } else {
-          // Update the quantity and totalPrice of the existing item
           return state.map((item, index) =>
             index === existingIndex
               ? {

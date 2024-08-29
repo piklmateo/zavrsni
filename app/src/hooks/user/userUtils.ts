@@ -1,5 +1,5 @@
 import { updateUser, User } from "../../state/slices/user/userSlice";
-import { fetchUserData } from "../../state/slices/user/userSlice"; // Correct import
+import { fetchUserData } from "../../state/slices/user/userSlice";
 
 import { jwtDecode, JwtPayload } from "jwt-decode";
 import { Dispatch } from "@reduxjs/toolkit";

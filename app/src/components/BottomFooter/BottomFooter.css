@@ -1,6 +1,5 @@
 .bottom__footer__container {
   width: 100%;
-  /* border: 1px solid blue; */
   background-color: var(--clr-secondary);
   color: var(--clr-neutral);
 }
