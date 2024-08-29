@@ -20,10 +20,8 @@ const DrinkForm = () => {
   const [toastMessage, setToastMessage] = useState<string>("");
 
   useEffect(() => {
-    if (status === "idle") {
-      dispatch(fetchCategories());
-    }
-  }, [status, dispatch]);
+    dispatch(fetchCategories());
+  }, [dispatch]);
 
   if (status === "loading") {
     return <div>Loading...</div>;
@@ -96,6 +94,15 @@ const DrinkForm = () => {
     }
   };
 
+  const drinkCategories = categoryList.filter(
+    (category) =>
+      category.name === "Alcoholic beverages" ||
+      category.name === "Non-alcoholic beverages" ||
+      category.name === "White wine" ||
+      category.name === "Beer" ||
+      category.name === "Red wine"
+  );
+
   return (
     <div className="main__layout__container">
       <div className="add-drink__form__wrapper">
@@ -116,7 +123,7 @@ const DrinkForm = () => {
           <div className="add-drink__form__category">
             <label htmlFor="category">Category</label>
             <select name="category" id="category">
-              {categoryList.map((category, index) => (
+              {drinkCategories.map((category, index) => (
                 <option key={category.id_category || index} value={category.id_category}>
                   {category.name}
                 </option>

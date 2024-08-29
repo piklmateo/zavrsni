@@ -20,10 +20,8 @@ const Dish = () => {
   const [toastMessage, setToastMessage] = useState<string>("");
 
   useEffect(() => {
-    if (status === "idle") {
-      dispatch(fetchCategories());
-    }
-  }, [status, dispatch]);
+    dispatch(fetchCategories());
+  }, [dispatch]);
 
   if (status === "loading") {
     return <div>Loading...</div>;
@@ -38,6 +36,15 @@ const Dish = () => {
       setToastMessage("");
     }, 1000);
   };
+
+  const dishCategories = categoryList.filter(
+    (category) =>
+      category.name === "Main course" ||
+      category.name === "Cold appetizer" ||
+      category.name === "Warm appetizer" ||
+      category.name === "Pizza" ||
+      category.name === "Pasta"
+  );
 
   const handleSubmit = async (event: FormEvent) => {
     try {
@@ -108,7 +115,11 @@ const Dish = () => {
           </div>
           <div className="add-dish__form__ingridients">
             <label htmlFor="ingridients">Ingridients</label>
-            <textarea name="ingridients" id="ingridients" className={errors.ingridients ? "error__input" : ""}></textarea>
+            <textarea
+              name="ingridients"
+              id="ingridients"
+              className={errors.ingridients ? "error__input" : ""}
+            ></textarea>
             {errors && <div className="error__message">{errors.ingridients}</div>}
           </div>
           <div className="add-dish__form__price">
@@ -119,7 +130,7 @@ const Dish = () => {
           <div className="add-dish__form__category">
             <label htmlFor="category">Category</label>
             <select name="category" id="category">
-              {categoryList.map((category, index) => (
+              {dishCategories.map((category, index) => (
                 <option key={category.id_category || index} value={category.id_category}>
                   {category.name}
                 </option>
