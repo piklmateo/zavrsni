@@ -81,6 +81,14 @@ footer {
   margin-top: auto;
 }
 
+.bold {
+  font-weight: var(--fw-900);
+}
+
+.text-justify {
+  text-align: justify;
+}
+
 .main__layout__container {
   width: 100%;
   max-width: 1150px;
