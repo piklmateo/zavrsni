@@ -2,6 +2,9 @@
 
 Ovaj repozitorij sadrži završni rad koji predstavlja web aplikaciju za restoran napisanu u Reactu za frontend i Node.js s Expressom za backend. Aplikacija omogućuje rezervaciju stolova, naručivanje hrane, prikaz rezervacija i narudžbi te druge funkcionalnosti relevantne za restoranski posao.
 
+## Demo
+[Restaurant app](https://zavrsni-server.vercel.app/)
+
 ## Naziv rada
 ### (hr)
 Usporedba alata za automatizaciju procesa programiranja na strani klijenta
