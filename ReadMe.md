@@ -4,6 +4,9 @@ Ovaj repozitorij sadrži završni rad koji predstavlja web aplikaciju za restora
 
 ## Demo
 [Restaurant app](https://zavrsni-server.vercel.app/)
+### Admin user
+username: admin
+password: 321321
 
 ## Naziv rada
 ### (hr)
